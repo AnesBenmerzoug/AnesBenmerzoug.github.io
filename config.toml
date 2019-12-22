@@ -1,0 +1,62 @@
+baseURL = "https://anesbenmerzoug.github.io"
+title = "Anes Benmerzoug"
+theme = "hugo-coder"
+RelativeURLs=true
+CanonifyURLs=true
+
+languageCode = "en"
+defaultcontentlanguage = "en"
+
+paginate = 20
+canonifyurls = true
+
+pygmentsstyle = "b2"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+[params]
+    author = "Anes Benmerzoug"
+    description = "Anes Benmerzoug's personal website"
+    keywords = "resume,developer"
+    info = "Artifical Intelligence Researcher and Software Developer"
+    avatarurl = "images/avatar.jpg"
+
+    footercontent = " "
+
+    hideCredits = true
+    hideCopyright = true
+
+    rtl = false
+
+    # Use inverted colors
+    colorscheme = "light"
+
+    # Series see also post count
+    maxSeeAlsoItems = 5
+
+    # Custom CSS
+    custom_css = []
+
+    # Custom JS
+    custom_js = []
+
+[[menu.main]]
+    name = "About"
+    weight = 1
+    url = "/about/"
+
+[[menu.main]]
+    name = "Resume"
+    weight = 1
+    url = "/resume/"
+
+[[params.social]]
+    name = "Github"
+    icon = "fab fa-github"
+    weight = 1
+    url = "https://github.com/anesbenmerzoug/"
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fab fa-linkedin"
+    weight = 2
+    url = "https://www.linkedin.com/in/anes-benmerzoug/"
