@@ -6,7 +6,8 @@ slug="resume"
 ## Professional Experience
 
 * **Avira** - Tettnang, Germany  
-Artificial Intelligence Researcher / October 2018 - Present 
+  - Specialist Artificial Intelligence Researcher / January 2019 - Present 
+  - Artificial Intelligence Researcher / October 2018 - December 2018 
     
 * **Fraunhofer ITWM** - Kaiserslautern, Germany  
 Research Assistant (HiWi) / July 2018 - September 2018
