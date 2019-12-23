@@ -19,3 +19,13 @@ Technical University of Kaiserslautern / September 2016 - September 2018
 
 * **M.Sc. in Automation and Control Systems**  
 Ecole Nationale Polytechnique Algiers / September 2013 - July 2016
+
+## Skills
+
+{{< skill-list >}}
+  {{< skill-item name="Machine Learning" level="95" >}}
+  {{< skill-item name="Python" level="95" >}}
+  {{< skill-item name="Docker" level="90" >}}
+  {{< skill-item name="Kubernetes" level="80" >}}
+  {{< skill-item name="Go" level="70" >}}
+{{< /skill-list >}}
