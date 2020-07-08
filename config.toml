@@ -26,13 +26,13 @@ pygmentsStyle = "monokai"
 
     footercontent = " "
 
-    hideCredits = true
-    hideCopyright = true
+    hideCredits = false
+    hideCopyright = false
 
     rtl = false
 
     # Use inverted colors
-    colorscheme = "light"
+    colorscheme = "auto"
 
     # Series see also post count
     maxSeeAlsoItems = 5
