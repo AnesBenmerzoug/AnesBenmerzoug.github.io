@@ -2,6 +2,10 @@
   --skill-gradient: linear-gradient(to right, #000000 0%,#2a5f60 50%,#22c1c3 100%);
 }
 
+.center {
+  text-align: center;
+}
+
 .skill-list {
   list-style-type: none;
 }
@@ -39,6 +43,11 @@
 }
 .percentage-80 {
   width: 80%;
+  border-radius: 5px;
+  background: var(--skill-gradient);
+}
+.percentage-85 {
+  width: 85%;
   border-radius: 5px;
   background: var(--skill-gradient);
 }
