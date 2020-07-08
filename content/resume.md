@@ -1,7 +1,7 @@
-+++ 
-title="Résumé" 
-slug="resume"
-+++
+---
+title: Résumé 
+slug: resume
+---
 
 ## Professional Experience
 

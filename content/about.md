@@ -1,7 +1,7 @@
-+++ 
-title="About Me"
-slug="about"
-+++
+--- 
+title: About Me
+slug: about
+---
 
 I'm an Artificial Intelligence Researcher at [Avira](https://www.avira.com/) 
 where I research and develop systems used to detect malware Office files
