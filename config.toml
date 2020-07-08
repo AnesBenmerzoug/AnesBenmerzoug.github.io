@@ -10,16 +10,19 @@ defaultcontentlanguage = "en"
 paginate = 20
 canonifyurls = true
 
-pygmentsstyle = "b2"
-pygmentscodefences = true
-pygmentscodefencesguesssyntax = true
+pygmentsCodefences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsStyle = "monokai"
 
 [params]
     author = "Anes Benmerzoug"
     description = "Anes Benmerzoug's personal website"
-    keywords = "resume,developer"
+    keywords = "blog,personal,resume,developer"
     info = "Artifical Intelligence Researcher and Software Developer"
     avatarurl = "images/avatar.jpg"
+
+    dateformat = "January 2, 2006"
+    since = 2019
 
     footercontent = " "
 
@@ -34,21 +37,31 @@ pygmentscodefencesguesssyntax = true
     # Series see also post count
     maxSeeAlsoItems = 5
 
+    math = true
+
     # Custom CSS
     custom_css = ["css/custom.css"]
 
     # Custom JS
     custom_js = []
 
+[taxonomies]
+  tag = "tags"
+
 [[menu.main]]
     name = "About"
     weight = 1
-    url = "/about/"
+    url = "about/"
 
 [[menu.main]]
     name = "Resume"
-    weight = 1
-    url = "/resume/"
+    weight = 2
+    url = "resume/"
+
+[[menu.main]]
+    name = "Blog"
+    weight = 2
+    url = "posts/"
 
 [[params.social]]
     name = "Github"
