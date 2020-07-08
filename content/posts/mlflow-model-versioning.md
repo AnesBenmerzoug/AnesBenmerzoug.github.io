@@ -15,10 +15,10 @@ This post will talk about machine learning model versioning and more specificall
 machine learning classifier versioning.
 
 Of course, one could easily compare accuracies ( or whichever metric you're using ) on a separate test set 
-but that doesn't not offer the same guarantees as statistical tests. 
+but that does not offer us the same guarantees as statistical tests. 
 
-For example, one may train two different classifiers on the same dataset and obtain the following results 
-on a separate test set:
+For example, one may train two different classifiers 
+on the same dataset and get the following results on a separate test set:
 
 
 | True Label | Model 1 Prediction | Model 2 Prediction |
@@ -55,7 +55,7 @@ talk about [MLflow](https://mlflow.org/).
 
 ## MLFlow
 
-MLflow is, as described on its [website](https://mlflow.org/), an open source platform for the machine learning lifecycle.
+MLflow is, as described on its [website](https://mlflow.org/), an open source platform for the machine learning life-cycle.
 It is currently composed of four components:
 
 - [MLflow Tracking](https://www.mlflow.org/docs/latest/tracking.html): Used to record and query experiments: code, data, config, and results 
@@ -83,9 +83,9 @@ with the Database (MySQL, MSSQL, SQLITE, or POSTGRESQL) and the Storage (Local o
 In this blog post we're only interested in the last component: the [Model Registry](https://www.mlflow.org/docs/latest/model-registry.html).
 
 It is, as described on its [page](https://www.mlflow.org/docs/latest/model-registry.html), a centralized model store, 
-set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model. 
+set of APIs, and UI, to collaboratively manage the full life-cycle of an MLflow Model. 
 It provides model lineage (which MLflow experiment and run produced the model), 
-model versioning, stage transitions (for example from staging to production), and annotations.
+model versioning, stage transitions (such as from staging to production), and annotations.
 
 A registered model can be in any one of the following stages:
 - **None**
@@ -95,7 +95,7 @@ A registered model can be in any one of the following stages:
 
 As can be seen in the following flowchart, a model would start, when first logged or registered,
 in the **None** stage and then transition through **Staging** and **Production** 
-and finally end its lifecycle in the **Archived** stage.
+and finally end its life-cycle in the **Archived** stage.
 
 {{<mermaid/graph>}}
 flowchart LR
@@ -114,7 +114,7 @@ and that is understandable because the conditions needed to do that depend on th
 
 ## McNemar's test
 
-McNemar's test is a non-parametric statistical test that can be applied to compare two classification models 
+McNemar's test is a non-parametric statistical test that can be used to compare two classification models 
 by constructing a 2x2 contingency table, or confusion matrix, like the following: 
 
 |                 | Model 2 Correct | Model 2 Wrong |
@@ -128,7 +128,7 @@ b and c, since the other elements tell us nothing about whether one model is bet
 McNemar's test statistic:
 $Q = \frac{(b - c)}{b + c}$
 
-Which, for large values of b and c, is distributed like a chi-squared distribution with 1 degree of freedom $\chi_{1}^{2}$
+Which, for large values of b and c, follows a chi-squared distribution with 1 degree of freedom $\chi_{1}^{2}$
 
 ## Model Versioning Flow
 
@@ -165,7 +165,7 @@ random_seed = 16
 np.random.seed(random_seed)
 ```
 
-The example starts off by generating artificial classification data using scikit-learn's [make_classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html) helper function and then splitting it into a training and a testing set:
+In the example, we start off by generating artificial classification data using scikit-learn's [make_classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html) helper function and then splitting it into a training and a testing set:
 
 ```python
 X, y = make_classification(
@@ -180,7 +180,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 ```
 
-After that, a Logistic Regression classifier is trained, then registered and logged into MLflow and finally moved to **Production** phase:
+After that, we fit a Logistic Regression classifier, then register and log it into MLflow and finally move it to the **Production** phase:
 
 ```python
 with mlflow.start_run():
@@ -197,7 +197,7 @@ mlflow_client.transition_model_version_stage(
 )
 ```
 
-Then, a Random Forest classifier is trained, then registered and logged into MLflow and finally moved to **Staging** phase:
+Then, we fit a Random Forest classifier, then register and log it into MLflow and finally move it to the **Staging** phase:
 
 ```python
 with mlflow.start_run():
@@ -231,7 +231,7 @@ lr_model = mlflow.sklearn.load_model(lr_model_download_uri)
 rf_model = mlflow.sklearn.load_model(rf_model_download_uri)
 ```
 
-As a next step, we use both models to generate predctions on the test set. We use these predictions to compute each model's accuracy
+As a next step, we use both models to generate predictions on the test set. We use these predictions to compute each model's accuracy
 and to create a contingency table that is finally used in a corrected version of McNemar's Test to return a P-value: 
 
 ```python
@@ -245,7 +245,7 @@ contingency_table = mcnemar_table(y_test, y_pred_lr, y_pred_rf)
 _, p_value = mcnemar(contingency_table, corrected=True)
 ```
 
-Finally we use the obtained P-value and the accuracies to determine whether we should deploy the Random Forest classifier to Production
+Finally we use the obtained P-value and the accuracies to decide whether we should deploy the Random Forest classifier to Production
 and archive the Logistic Regression classifier or not:
 
 ```python
@@ -270,5 +270,5 @@ the Logistic Regression classifier's version 1 was archived:
 
 We have seen that thanks to the Model Registry component of MLflow we can have a pretty simple automated 
 model versioning flow for classifiers.
-This flow can be of course be extended and made more complete, depending on the use case, by for example
-using a second metric in case of a tie in the first one.
+This flow can be and should be extended and made more complete, depending on the use case. 
+For example, by using a second metric for when a tie happens in the first one.
