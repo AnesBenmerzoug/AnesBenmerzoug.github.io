@@ -29,8 +29,8 @@ on the same dataset and get the following results on a separate test set:
 |  A         |        A           |       B            |
 |  A         |        B           |       B            |
 |  B         |        B           |       A            |
-|  B         |        A           |       B            |
 |  B         |        B           |       B            |
+|  B         |        A           |       B            |
 |  A         |        A           |       A            |
 |  A         |        B           |       A            |
 
@@ -48,20 +48,20 @@ To verify that we construct the following confusion matrix:
 By comparing the off-diagonal elements, we can intuitively know that there isn't much of a difference between the two classifiers.
 To make that more precise we can use statistical tests instead of just comparing numbers.
 
-One such tests is [McNemar's Test](https://en.wikipedia.org/wiki/McNemar%27s_test).
+One such tests is [McNemar's Test][McNemar's Test - Wikipedia].
 
 Before explaining McNemar's and the different steps used to compare two machine learning classifiers, let's first
-talk about [MLflow](https://mlflow.org/).
+talk about [MLflow][MLflow Page].
 
 ## MLFlow
 
-MLflow is, as described on its [website](https://mlflow.org/), an open source platform for the machine learning life-cycle.
+MLflow is, as described on its [website][MLflow Page], an open source platform for the machine learning life-cycle.
 It is currently composed of four components:
 
-- [MLflow Tracking](https://www.mlflow.org/docs/latest/tracking.html): Used to record and query experiments: code, data, config, and results 
-- [MLflow Projects](https://www.mlflow.org/docs/latest/projects.html): Used to package data science code in a format to reproduce runs on any platform
-- [MLflow Models](https://www.mlflow.org/docs/latest/models.html): Used to deploy machine learning models in diverse serving environments 
-- [MLflow Model Registry](https://www.mlflow.org/docs/latest/model-registry.html): Used to store, annotate, discover, and manage models in a central repository 
+- [MLflow Tracking][MLflow Tracking Page]: Used to record and query experiments: code, data, config, and results
+- [MLflow Projects][MLflow Projects Page]: Used to package data science code in a format to reproduce runs on any platform
+- [MLflow Models][MLflow Models Page]: Used to deploy machine learning models in diverse serving environments
+- [MLflow Model Registry][MLflow Model Registry Page]: Used to store, annotate, discover, and manage models in a central repository
 
 When deployed it looks as in the following diagram:
 
@@ -80,9 +80,9 @@ flowchart TD
 The Client, user, interacts directly with the Server and the Server in turn interacts 
 with the Database (MySQL, MSSQL, SQLITE, or POSTGRESQL) and the Storage (Local or Cloud).
 
-In this blog post we're only interested in the last component: the [Model Registry](https://www.mlflow.org/docs/latest/model-registry.html).
+In this blog post we're only interested in the last component: the **Model Registry**.
 
-It is, as described on its [page](https://www.mlflow.org/docs/latest/model-registry.html), a centralized model store, 
+It is, as described on its [page][MLflow Model Registry Page], a centralized model store, 
 set of APIs, and UI, to collaboratively manage the full life-cycle of an MLflow Model. 
 It provides model lineage (which MLflow experiment and run produced the model), 
 model versioning, stage transitions (such as from staging to production), and annotations.
@@ -125,10 +125,25 @@ by constructing a 2x2 contingency table, or confusion matrix, like the following
 In order to test if there is a significant difference between the two models, we use only the off-diagonal elements,
 b and c, since the other elements tell us nothing about whether one model is better than the other or not.
 
-McNemar's test statistic:
-$Q = \frac{(b - c)}{b + c}$
+McNemar's test statistic is:
 
-Which, for large values of b and c, follows a chi-squared distribution with 1 degree of freedom $\chi_{1}^{2}$
+{{<center>}}
+$Q = \frac{(b - c)}{b + c}$
+{{</center>}}
+
+Which, for large values of b and c, follows a chi-squared distribution with 1 degree of freedom $\chi_{1}^{2}$.
+
+To more closely approximate the chi-squared distribution we can use the following definition instead which contains a continuity correction:
+
+{{<center>}}
+$Q = \frac{(|b - c| - 1)}{b + c}$
+{{</center>}}
+
+If the result is significant, i.e. greater than a pre-defined significance level which is usually set to 0.05 but can be changed
+depending on the use case, then we can conclude that the two models are significantly different from each other.
+
+If we apply that to the example above we get as result *1.0* and can confidently say that there is no significant difference between
+the two models. 
 
 ## Model Versioning Flow
 
@@ -156,7 +171,7 @@ Here we use accuracy, but it could be replaced by other metrics such false posit
 
 ## Example
 
-In [this repository](https://github.com/AnesBenmerzoug/mlflow_model_versioning) you can find example code that shows how to do model versioning for machine learning classifiers with MLflow.
+In [this repository][Example Repository] you can find example code that shows how to do model versioning for machine learning classifiers with MLflow.
 
 One important thing that should always be done is to pin the random seed to ensure the experiment's repeatability.
 
@@ -165,7 +180,7 @@ random_seed = 16
 np.random.seed(random_seed)
 ```
 
-In the example, we start off by generating artificial classification data using scikit-learn's [make_classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html) helper function and then splitting it into a training and a testing set:
+In the example, we start off by generating artificial classification data using scikit-learn's [make_classification][Scikit-Learn make_classification] helper function and then splitting it into a training and a testing set:
 
 ```python
 X, y = make_classification(
@@ -272,3 +287,13 @@ We have seen that thanks to the Model Registry component of MLflow we can have a
 model versioning flow for classifiers.
 This flow can be and should be extended and made more complete, depending on the use case. 
 For example, by using a second metric for when a tie happens in the first one.
+
+
+[Example Repository]: https://github.com/AnesBenmerzoug/mlflow_model_versioning
+[MLflow Main Page]: https://mlflow.org/
+[McNemar's Test - Wikipedia]: https://en.wikipedia.org/wiki/McNemar%27s_test
+[MLflow Tracking Page]: https://www.mlflow.org/docs/latest/tracking.html
+[MLflow Projects Page]: https://www.mlflow.org/docs/latest/projects.html
+[MLflow Models Page]: https://www.mlflow.org/docs/latest/models.html
+[MLflow Model Registry Page]: https://www.mlflow.org/docs/latest/model-registry.html
+[Scikit-Learn make_classification]: https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html
