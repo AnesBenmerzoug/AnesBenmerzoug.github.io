@@ -1,0 +1,92 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Anes Benmerzoug"><meta name=description content="Anes Benmerzoug's personal website"><meta name=keywords content="blog,personal,resume,developer"><meta name=twitter:card content="summary"><meta name=twitter:title content="Pruning ECR Images used on Kubernetes"><meta name=twitter:description content="In this post we will talk about taking advantage of ECR&rsquo;s lifecycle policies to prune images that were not deployed on Kubernetes.
+We will be using AWS, a Kubernetes Cluster (self-hosted or EKS), as well as a Continuous Integration system, or CI for short, to build and push images continously to ECR.
+If we just keep pushing images to ECR we will eventually hit the maximum number of images in a given repository and receive an error message for every subsequent push attempt."><meta property="og:title" content="Pruning ECR Images used on Kubernetes"><meta property="og:description" content="In this post we will talk about taking advantage of ECR&rsquo;s lifecycle policies to prune images that were not deployed on Kubernetes.
+We will be using AWS, a Kubernetes Cluster (self-hosted or EKS), as well as a Continuous Integration system, or CI for short, to build and push images continously to ECR.
+If we just keep pushing images to ECR we will eventually hit the maximum number of images in a given repository and receive an error message for every subsequent push attempt."><meta property="og:type" content="article"><meta property="og:url" content="https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/"><meta property="article:published_time" content="2020-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-25T00:00:00+00:00"><base href=https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/><title>Pruning ECR Images used on Kubernetes · Anes Benmerzoug</title><link rel=canonical href=https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/><link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel=stylesheet><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.11.2/css/all.css integrity=sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous><link rel=stylesheet href=../../css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz+DRsBr08iQK1YWABpw=" crossorigin=anonymous media=screen><link rel=stylesheet href=../../css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin=anonymous media=screen><link rel=stylesheet href=../../css/custom.css><link rel=icon type=image/png href=https://anesbenmerzoug.github.io/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://anesbenmerzoug.github.io/images/favicon-16x16.png sizes=16x16><meta name=generator content="Hugo 0.73.0"></head><body class=colorscheme-auto><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=../../>Anes Benmerzoug</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fas fa-bars"></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/about/>About</a></li><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/resume/>Resume</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title>Pruning ECR Images used on Kubernetes</h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fas fa-calendar"></i><time datetime=2020-07-25T00:00:00Z>July 25, 2020</time></span>
+<span class=reading-time><i class="fas fa-clock"></i>4 minutes read</span></div><div class=tags><i class="fas fa-tag"></i><a href=../../tags/aws/>AWS</a>
+<span class=separator>•</span>
+<a href=../../tags/ecr/>ECR</a>
+<span class=separator>•</span>
+<a href=../../tags/kubernetes/>Kubernetes</a>
+<span class=separator>•</span>
+<a href=../../tags/go/>Go</a></div></div></header><div><p>In this post we will talk about taking advantage of <a href=https://aws.amazon.com/ecr/>ECR</a>&rsquo;s <a href=https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html>lifecycle policies</a>
+to prune images that were not deployed on <a href=https://kubernetes.io/>Kubernetes</a>.</p><p>We will be using <a href=https://aws.amazon.com/>AWS</a>, a <a href=https://kubernetes.io/>Kubernetes</a> Cluster (self-hosted or <a href=https://aws.amazon.com/eks/>EKS</a>),
+as well as a <a href=https://en.wikipedia.org/wiki/Continuous_integration>Continuous Integration</a> system, or CI for short, to build and push images continously to ECR.</p><p>If we just keep pushing images to ECR we will eventually hit <a href=https://docs.aws.amazon.com/AmazonECR/latest/userguide/service-quotas.html>the maximum number of images in a given repository</a> and
+receive an error message for every subsequent push attempt.</p><p>In most cases, especially at the beginning of a project, there won&rsquo;t be a problem because the maximum number of images per repository is quite high
+(it is currently set to 10000 by default. <a href=https://aws.amazon.com/about-aws/whats-new/2019/07/amazon-ecr-now-supports-increased-repository-and-image-limits/>It was increase from its previous value of 1000</a>).</p><p>For all other cases we should use ECR&rsquo;s lifecycle policies to, at the very least, remove untagged images and prune old images.
+But, once we start using them we quickly realize that the allowed rules are quite limited. For example we cannot currently
+remove all images with a certain tag prefix older than a certain number of days while keeping the latest one even if it is too old.</p><p>To solve this we could either create our own service or tool to do that and avoid using ECR&rsquo;s lifecycle policies or we
+could complement it with a small service or tool that adds a given tag to certain images.</p><p>I went with the later and wrote a small tool called <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a> for that.</p><p>Before presenting the proposed solution, let&rsquo;s have a look into ECR lifecycle policies a bit more in detail.</p><h2 id=ecr-lifecycle-policies>ECR Lifecycle Policies</h2><p><a href=https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html>ECR lifecycle policies</a>, as written on its page, is a part of ECR that enables us to specify
+the lifecycle management of images in a repository.
+A lifecycle policy, such as the following, is a set of one or more rules, where each rule defines an action for ECR.
+The actions apply to images that contain tags prefixed with the given strings.
+This allows the automation of cleaning up unused images, for example expiring images based on age or count.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;rules&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;rulePriority&#34;</span>: <span style=color:#ae81ff>1</span>,
+            <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Expire images older than 14 days&#34;</span>,
+            <span style=color:#f92672>&#34;selection&#34;</span>: {
+                <span style=color:#f92672>&#34;tagStatus&#34;</span>: <span style=color:#e6db74>&#34;untagged&#34;</span>,
+                <span style=color:#f92672>&#34;countType&#34;</span>: <span style=color:#e6db74>&#34;sinceImagePushed&#34;</span>,
+                <span style=color:#f92672>&#34;countUnit&#34;</span>: <span style=color:#e6db74>&#34;days&#34;</span>,
+                <span style=color:#f92672>&#34;countNumber&#34;</span>: <span style=color:#ae81ff>14</span>
+            },
+            <span style=color:#f92672>&#34;action&#34;</span>: {
+                <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;expire&#34;</span>
+            }
+        }
+    ]
+}
+</code></pre></div><p>The allowed rules and actions are limited. They do not allow complex rules such as remove all images with a given tag prefix after a certain amount of time
+while also excluding the latest one.</p><p>There cannot be exceptions to a rule. Once a rule matches an image it cannot be changed by another rule with a lower priority.
+You can only add and not remove from a rule.</p><p>That&rsquo;s why we need something more in order to solve our problem.</p><h2 id=kube-ecr-tagger>kube-ecr-tagger</h2><p>To keep the lifecycle policies simple and to ensure that no unnused image remains in our ECR repositories, I wrote a simple tool called <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a>.</p><p>The tool runs inside the cluster and tags the used ECR images in a given namespace, or in all namespaces, with either a given tag or a tag created by appending a unix timestamp to the passed tag prefix.</p><p>If a tag is passed then there will only be one such tag in each repository. If a tag prefix is passed instead then there will be multiple tags in each repository with the same prefix.</p><p>Let&rsquo;s use a concrete example. Let&rsquo;s assume that we use semantic versioning to tag our images in CI and that we are currently at version 1.0.X and that not
+all images that are pushed will be used in production. Perhaps some of them will fail in the acceptance/staging phase or be flagged for security issues if image scanning is activated.</p><p>We want to keep the last 1000 images that are deployed in production and at the same time remove images whose tag starts with &lsquo;1.0&rsquo; and that are older than 30 days. For that we could the following lifecycle policy:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;rules&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;rulePriority&#34;</span>: <span style=color:#ae81ff>10</span>,
+            <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Keep last 1000 images with tag prefix &#39;production&#39; &#34;</span>,
+            <span style=color:#f92672>&#34;selection&#34;</span>: {
+                <span style=color:#f92672>&#34;tagStatus&#34;</span>: <span style=color:#e6db74>&#34;tagged&#34;</span>,
+                <span style=color:#f92672>&#34;tagPrefixList&#34;</span>: [<span style=color:#e6db74>&#34;production&#34;</span>],
+                <span style=color:#f92672>&#34;countType&#34;</span>: <span style=color:#e6db74>&#34;imageCountMoreThan&#34;</span>,
+                <span style=color:#f92672>&#34;countNumber&#34;</span>: <span style=color:#ae81ff>100</span>
+            },
+            <span style=color:#f92672>&#34;action&#34;</span>: { <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;expire&#34;</span> }
+        },
+        {
+            <span style=color:#f92672>&#34;rulePriority&#34;</span>: <span style=color:#ae81ff>20</span>,
+            <span style=color:#f92672>&#34;description&#34;</span>: <span style=color:#e6db74>&#34;Remove images with tag prefix &#39;1.0&#39; that are older than 30 days&#34;</span>,
+            <span style=color:#f92672>&#34;selection&#34;</span>: {
+                <span style=color:#f92672>&#34;tagStatus&#34;</span>: <span style=color:#e6db74>&#34;tagged&#34;</span>,
+                <span style=color:#f92672>&#34;tagPrefixList&#34;</span>: [<span style=color:#e6db74>&#34;1.0&#34;</span>],
+                <span style=color:#f92672>&#34;countType&#34;</span>: <span style=color:#e6db74>&#34;sinceImagePushed&#34;</span>,
+                <span style=color:#f92672>&#34;countNumber&#34;</span>: <span style=color:#ae81ff>30</span>,
+                <span style=color:#f92672>&#34;countUnit&#34;</span>: <span style=color:#e6db74>&#34;days&#34;</span>
+            },
+            <span style=color:#f92672>&#34;action&#34;</span>: { <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;expire&#34;</span> }
+        }
+    ]
+}
+</code></pre></div><p>Then, in order to tag the images in production, which we assume for the sake of simplicity are deployed in the <strong>prod</strong> namespace, we will deploy kube-ecr-tagger with the following command:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kube-ecr-tagger --namespace<span style=color:#f92672>=</span>prod --tag-prefix<span style=color:#f92672>=</span>production
+</code></pre></div><p>Of course, we have to make sure that it has the right IAM permissions:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;Version&#34;</span>: <span style=color:#e6db74>&#34;2012-10-17&#34;</span>,
+    <span style=color:#f92672>&#34;Statement&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;Effect&#34;</span>: <span style=color:#e6db74>&#34;Allow&#34;</span>,
+            <span style=color:#f92672>&#34;Action&#34;</span>: [
+                <span style=color:#e6db74>&#34;ecr:GetAuthorizationToken&#34;</span>,
+                <span style=color:#e6db74>&#34;ecr:BatchCheckLayerAvailability&#34;</span>,
+                <span style=color:#e6db74>&#34;ecr:GetDownloadUrlForLayer&#34;</span>,
+                <span style=color:#e6db74>&#34;ecr:DescribeImages&#34;</span>,
+                <span style=color:#e6db74>&#34;ecr:BatchGetImage&#34;</span>,
+                <span style=color:#e6db74>&#34;ecr:PutImage&#34;</span>,
+            ],
+            <span style=color:#f92672>&#34;Resource&#34;</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+        }
+    ]
+}
+</code></pre></div></div><footer></footer></article><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js id=MathJax-script></script><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script></section></div><footer class=footer><section class=container><p></p>© 2019-2020 Anes Benmerzoug
+·
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main></body></html>
