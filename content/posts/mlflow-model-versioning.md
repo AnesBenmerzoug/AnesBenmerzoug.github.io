@@ -11,11 +11,11 @@ tags: [
 
 {{< mermaid/include version=8.5.2 >}}   
 
-This post will talk about machine learning model versioning and more specifically
+In this very first post we will talk about machine learning model versioning and more specifically
 machine learning classifier versioning.
 
-Of course, one could easily compare accuracies ( or whichever metric you're using ) on a separate test set 
-but that does not offer us the same guarantees as statistical tests. 
+Of course, one could simply compare accuracies ( or whichever metric you're using ) on a separate test set
+and promote whichever classifier has a better value but that does not offer us the same guarantees as statistical tests. 
 
 For example, one may train two different classifiers 
 on the same dataset and get the following results on a separate test set:
@@ -38,7 +38,7 @@ We can see that the first classifier has an accuracy of 60% and the second class
 If we were to stop here we would just say that the first classifier is better than the second one and that could be true,
 but can this result be trusted?
 
-To verify that we construct the following confusion matrix:
+To verify that we construct the following [confusion matrix][Confusion Matrix]:
 
 |                 | Model 2 Correct | Model 2 Wrong |
 |-----------------|-----------------|---------------|
@@ -48,14 +48,14 @@ To verify that we construct the following confusion matrix:
 By comparing the off-diagonal elements, we can intuitively know that there isn't much of a difference between the two classifiers.
 To make that more precise we can use statistical tests instead of just comparing numbers.
 
-One such tests is [McNemar's Test][McNemar's Test - Wikipedia].
+One such test is [McNemar's Test][McNemar's Test - Wikipedia].
 
-Before explaining McNemar's and the different steps used to compare two machine learning classifiers, let's first
-talk about [MLflow][MLflow Page].
+Before explaining McNemar's Test and the different steps used to compare two machine learning classifiers, let's first
+talk about [MLflow][MLflow Main Page].
 
 ## MLFlow
 
-MLflow is, as described on its [website][MLflow Page], an open source platform for the machine learning life-cycle.
+[MLflow][MLflow Main Page] is an open source platform for the machine learning life-cycle.
 It is currently composed of four components:
 
 - [MLflow Tracking][MLflow Tracking Page]: Used to record and query experiments: code, data, config, and results
@@ -63,7 +63,7 @@ It is currently composed of four components:
 - [MLflow Models][MLflow Models Page]: Used to deploy machine learning models in diverse serving environments
 - [MLflow Model Registry][MLflow Model Registry Page]: Used to store, annotate, discover, and manage models in a central repository
 
-When deployed it looks as in the following diagram:
+It uses a classic client server architecture as depicted in the following diagram:
 
 {{<center>}}
 {{<mermaid/graph>}}
@@ -78,12 +78,11 @@ flowchart TD
 {{</center>}}
 
 The Client, user, interacts directly with the Server and the Server in turn interacts 
-with the Database (MySQL, MSSQL, SQLITE, or POSTGRESQL) and the Storage (Local or Cloud).
+with the Database (MySQL, MSSQL, SQLITE, or POSTGRESQL) and the Storage backend (Local or Cloud).
 
-In this blog post we're only interested in the last component: the **Model Registry**.
+In this post we're only interested in the last component: the [**Model Registry**][MLflow Model Registry Page].
 
-It is, as described on its [page][MLflow Model Registry Page], a centralized model store, 
-set of APIs, and UI, to collaboratively manage the full life-cycle of an MLflow Model. 
+It is a centralized model store, set of APIs, and UI, to collaboratively manage the full life-cycle of an MLflow Model. 
 It provides model lineage (which MLflow experiment and run produced the model), 
 model versioning, stage transitions (such as from staging to production), and annotations.
 
@@ -93,8 +92,8 @@ A registered model can be in any one of the following stages:
 - **Production**
 - **Archived**
 
-As can be seen in the following flowchart, a model would start, when first logged or registered,
-in the **None** stage and then transition through **Staging** and **Production** 
+As can be seen in the following flowchart, a model starts, when first logged or registered,
+in the **None** stage and then transitions to the **Staging** stage, then to the **Production** stage 
 and finally end its life-cycle in the **Archived** stage.
 
 {{<mermaid/graph>}}
@@ -109,8 +108,10 @@ flowchart LR
     production --> archived
 {{</mermaid/graph>}}
 
+For simplicity's sake we won't consider other possible transitions (e.g. **Staging** -> **Archived**).
+
 What the Model Registry does not take care of is automatically transition a given model to the appropriate stage
-and that is understandable because the conditions needed to do that depend on the actual domain.
+and that is understandable because the conditions needed to do that depend on the actual application.
 
 ## McNemar's test
 
@@ -139,16 +140,19 @@ To more closely approximate the chi-squared distribution we can use the followin
 $Q = \frac{(|b - c| - 1)}{b + c}$
 {{</center>}}
 
-If the result is significant, i.e. greater than a pre-defined significance level which is usually set to 0.05 but can be changed
-depending on the use case, then we can conclude that the two models are significantly different from each other.
+If the result is significant, i.e. greater than a pre-defined significance level, usually set to 0.05 but can be changed
+depending on the use case, then we can conclude that the two models are significantly different from each other. 
 
-If we apply that to the example above we get as result *1.0* and can confidently say that there is no significant difference between
-the two models. 
+But it does not end there, we still have to determine which one of the two is better than the other one. 
+For that, we can use one or a combination of the usual metrics: Accuracy, F-Score, False Positive Rate, etc.
+
+If we apply the continuity corrected version of the test on our previous example we get as result *1.0* 
+and can confidently say that there is no significant difference between the two classifiers. 
 
 ## Model Versioning Flow
 
-The following flow chart shows the different steps taken to automatically
-compare two different classification models.
+Now that we have defined and explained all the required parts of the flow. We can assemble them into the following chart
+that shows the different steps taken to compare two different classification models:
 
 {{<center>}}
 {{<mermaid/graph>}}
@@ -167,11 +171,12 @@ graph TD
 {{</mermaid/graph>}}
 {{</center>}}
 
-Here we use accuracy, but it could be replaced by other metrics such false positives, false negatives, etc.
+Here we use accuracy, but it could be replaced by other metrics such as False Positive Rate, False Negative Rate, etc.
 
 ## Example
 
-In [this repository][Example Repository] you can find example code that shows how to do model versioning for machine learning classifiers with MLflow.
+In [this repository][Example Repository] you can find example code in Python 
+that shows how to use the previous flow to do model versioning for machine learning classifiers with MLflow.
 
 One important thing that should always be done is to pin the random seed to ensure the experiment's repeatability.
 
@@ -280,6 +285,8 @@ the Logistic Regression classifier's version 1 was archived:
 {{< figure src="/images/mlflow_model_versioning_screenshot.png"  >}}
 {{</center>}}
 
+All that's left now is to run this or similar code either on a schedule or as part of a training workflow each time a new classifier is trained and logged.
+
 
 ## Conclusion
 
@@ -287,6 +294,9 @@ We have seen that thanks to the Model Registry component of MLflow we can have a
 model versioning flow for classifiers.
 This flow can be and should be extended and made more complete, depending on the use case. 
 For example, by using a second metric for when a tie happens in the first one.
+
+I hope that you have learned at a thing or two from this post. 
+If there are any mistakes or if you have questions please do not hesitate to reach out to me.
 
 
 [Example Repository]: https://github.com/AnesBenmerzoug/mlflow_model_versioning
@@ -297,3 +307,4 @@ For example, by using a second metric for when a tie happens in the first one.
 [MLflow Models Page]: https://www.mlflow.org/docs/latest/models.html
 [MLflow Model Registry Page]: https://www.mlflow.org/docs/latest/model-registry.html
 [Scikit-Learn make_classification]: https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html
+[Confusion Matrix]: https://en.wikipedia.org/wiki/Confusion_matrix
