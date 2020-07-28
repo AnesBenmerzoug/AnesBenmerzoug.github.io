@@ -57,7 +57,7 @@ Before presenting it, let's have a look into ECR Lifecycle Policies a bit more i
 the lifecycle management of images in a repository. 
 A lifecycle policy, such as the following, is a set of one or more rules, where each rule defines an action for ECR. 
 The actions apply to images that contain tags prefixed with the given strings. 
-This allows the automation of cleaning up unused images, for example expiring images based on age or count.
+This allows the automation of cleaning up unused images, for example expiring images based on age or count:
 
 ```json
 {
@@ -79,18 +79,18 @@ This allows the automation of cleaning up unused images, for example expiring im
 }
 ```
 
-The allowed rules and actions are limited. They do not allow complex rules such as remove all images with a given tag prefix after a certain amount of time
-while also excluding the latest one.
+The allowed rules and actions are limited. For example, you cannot do any of the following:
 
-There cannot be exceptions to a rule. Once a rule matches an image it cannot be changed by another rule with a lower priority.
+- Match the same image with multiple rules ( this could be used to add exceptions to a rule ). If a rule matches an image it cannot be matched by another rule with a lower priority
+- Expire images both by count and by age
+- Choose to keep images that match a rule instead of expiring them
+- Match images with an exact tag, only tag prefixes are allowed
 
-That's why we need something more in order to solve our problem.
+To avoid some of these limitations and to solve our problem from the previous section I developed a simple tool called [kube-ecr-tagger][kube-ecr-tagger].
 
 ## kube-ecr-tagger
 
-To keep the lifecycle policies simple and to ensure that no unnused image remains in our ECR repositories, I wrote a simple tool called [kube-ecr-tagger][kube-ecr-tagger].
-
-The tool runs inside the cluster and tags the used ECR images in a given namespace, or in all namespaces, with either a given tag or a tag created by appending a unix timestamp to the passed tag prefix.
+[kube-ecr-tagger][kube-ecr-tagger] runs inside the cluster and tags the used ECR images in a given namespace, or in all namespaces, with either a given tag or a tag created by appending a unix timestamp to the passed tag prefix.
 
 If a tag is passed then there will only be one such tag in each repository. If a tag prefix is passed instead then there will be multiple tags in each repository with the same prefix.
 
@@ -129,13 +129,28 @@ We want to keep the last 100 images that are deployed in production and at the s
 }
 ```
 
-Then, in order to tag the images in production, which we assume for the sake of simplicity are deployed in the **prod** namespace, we will deploy kube-ecr-tagger with the following command:
+Then, in order to tag the images in production, which we assume for the sake of simplicity are deployed in the **prod** namespace, we will deploy kube-ecr-tagger as a Deployment in the **kube-system** namespace with the following example manifest:
 
-```bash
-kube-ecr-tagger --namespace=prod --tag-prefix=production
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: kube-ecr-tagger
+   namespace: kube-system
+spec:
+   template:
+      spec:
+        containers:
+         - name: kube-ecr-tagger
+           image: anesbenmerzoug/kube-ecr-tagger:latest 
+           command:
+           - kube-ecr-tagger
+           args:
+           - --namespace=prod
+           - --tag-prefix=production
 ```
 
-Of course, we have to make sure that it has the right IAM permissions:
+We should not forget to add a service account, if we're using IAM roles for service accounts, or the right annotation, if we're using [kiam][kiam] or [kube2iam][kube2iam], with the right IAM permissions:
 
 ```json
 {
@@ -157,9 +172,15 @@ Of course, we have to make sure that it has the right IAM permissions:
 }
 ```
 
+kube-ecr-tagger will then check ECR images of all deployed containers in the **prod** namespace and add tags with the prefix **production** if it is not already present.
+
 ## Conclusion
 
-If you want to try [kube-ecr-tagger][kube-ecr-tagger] you can simply
+We have seen in this post that by combining a small tool with ECR Lifecycle Policies we can achieve more complicated rules than with plain lifecycle policies.
+
+Of course, [kube-ecr-tagger][kube-ecr-tagger] is limited in what it can do but one can already have an idea of what can be achieved.
+
+If you want to try kube-ecr-tagger you can simply
 use the built container images from [this repository](https://hub.docker.com/r/anesbenmerzoug/kube-ecr-tagger) on Dockerhub.
 
 I hope that you have learned at a thing or two from this post. 
@@ -175,3 +196,5 @@ If there are any mistakes or if you have questions please do not hesitate to rea
 [Kubernetes]: https://kubernetes.io/
 [Continuous Integration]: https://en.wikipedia.org/wiki/Continuous_integration
 [kube-ecr-tagger]: https://github.com/AnesBenmerzoug/kube-ecr-tagger
+[kiam]: https://github.com/uswitch/kiam
+[kube2iam]: https://github.com/jtblin/kube2iam
