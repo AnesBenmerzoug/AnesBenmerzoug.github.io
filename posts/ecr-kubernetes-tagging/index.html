@@ -3,7 +3,7 @@ We will be using AWS, a Kubernetes Cluster (self-hosted or EKS), as well as a Co
 We will be using AWS, a Kubernetes Cluster (self-hosted or EKS), as well as a Continuous Integration system, or CI for short, to build and push images continously to ECR."><meta property="og:type" content="article"><meta property="og:url" content="https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/"><meta property="article:published_time" content="2020-07-28T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-28T00:00:00+00:00"><base href=https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/><title>When ECR lifecycle policies are not enough... · Anes Benmerzoug</title><link rel=canonical href=https://anesbenmerzoug.github.io/posts/ecr-kubernetes-tagging/><link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel=stylesheet><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.11.2/css/all.css integrity=sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous><link rel=stylesheet href=../../css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz+DRsBr08iQK1YWABpw=" crossorigin=anonymous media=screen><link rel=stylesheet href=../../css/coder-dark.min.83a2010dac9f59f943b3004cd6c4f230507ad036da635d3621401d42ec4e2835.css integrity="sha256-g6IBDayfWflDswBM1sTyMFB60DbaY102IUAdQuxOKDU=" crossorigin=anonymous media=screen><link rel=stylesheet href=../../css/custom.css><link rel=icon type=image/png href=https://anesbenmerzoug.github.io/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://anesbenmerzoug.github.io/images/favicon-16x16.png sizes=16x16><meta name=generator content="Hugo 0.73.0"></head><body class=colorscheme-auto><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=../../>Anes Benmerzoug</a>
 <input type=checkbox id=menu-toggle>
 <label class="menu-button float-right" for=menu-toggle><i class="fas fa-bars"></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/about/>About</a></li><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=https://anesbenmerzoug.github.io/resume/>Resume</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title>When ECR lifecycle policies are not enough...</h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fas fa-calendar"></i><time datetime=2020-07-28T00:00:00Z>July 28, 2020</time></span>
-<span class=reading-time><i class="fas fa-clock"></i>5 minutes read</span></div><div class=tags><i class="fas fa-tag"></i><a href=../../tags/aws/>AWS</a>
+<span class=reading-time><i class="fas fa-clock"></i>6 minutes read</span></div><div class=tags><i class="fas fa-tag"></i><a href=../../tags/aws/>AWS</a>
 <span class=separator>•</span>
 <a href=../../tags/ecr/>ECR</a>
 <span class=separator>•</span>
@@ -23,7 +23,7 @@ could complement it with a small service/tool that adds a given tag to certain i
 the lifecycle management of images in a repository.
 A lifecycle policy, such as the following, is a set of one or more rules, where each rule defines an action for ECR.
 The actions apply to images that contain tags prefixed with the given strings.
-This allows the automation of cleaning up unused images, for example expiring images based on age or count.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+This allows the automation of cleaning up unused images, for example expiring images based on age or count:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;rules&#34;</span>: [
         {
             <span style=color:#f92672>&#34;rulePriority&#34;</span>: <span style=color:#ae81ff>1</span>,
@@ -40,8 +40,7 @@ This allows the automation of cleaning up unused images, for example expiring im
         }
     ]
 }
-</code></pre></div><p>The allowed rules and actions are limited. They do not allow complex rules such as remove all images with a given tag prefix after a certain amount of time
-while also excluding the latest one.</p><p>There cannot be exceptions to a rule. Once a rule matches an image it cannot be changed by another rule with a lower priority.</p><p>That&rsquo;s why we need something more in order to solve our problem.</p><h2 id=kube-ecr-tagger>kube-ecr-tagger</h2><p>To keep the lifecycle policies simple and to ensure that no unnused image remains in our ECR repositories, I wrote a simple tool called <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a>.</p><p>The tool runs inside the cluster and tags the used ECR images in a given namespace, or in all namespaces, with either a given tag or a tag created by appending a unix timestamp to the passed tag prefix.</p><p>If a tag is passed then there will only be one such tag in each repository. If a tag prefix is passed instead then there will be multiple tags in each repository with the same prefix.</p><p>Let&rsquo;s use a concrete example. Let&rsquo;s assume that we use semantic versioning to tag our images in CI and that we are currently at version 1.0.X and that not
+</code></pre></div><p>The allowed rules and actions are limited. For example, you cannot do any of the following:</p><ul><li>Match the same image with multiple rules ( this could be used to add exceptions to a rule ). If a rule matches an image it cannot be matched by another rule with a lower priority</li><li>Expire images both by count and by age</li><li>Choose to keep images that match a rule instead of expiring them</li><li>Match images with an exact tag, only tag prefixes are allowed</li></ul><p>To avoid some of these limitations and to solve our problem from the previous section I developed a simple tool called <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a>.</p><h2 id=kube-ecr-tagger>kube-ecr-tagger</h2><p><a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a> runs inside the cluster and tags the used ECR images in a given namespace, or in all namespaces, with either a given tag or a tag created by appending a unix timestamp to the passed tag prefix.</p><p>If a tag is passed then there will only be one such tag in each repository. If a tag prefix is passed instead then there will be multiple tags in each repository with the same prefix.</p><p>Let&rsquo;s use a concrete example. Let&rsquo;s assume that we use semantic versioning to tag our images in CI and that we are currently at version 1.0.X and that not
 all images that are pushed will be used in production. Perhaps some of them will fail in the acceptance/staging phase or be flagged for security issues if image scanning is activated.</p><p>We want to keep the last 100 images that are deployed in production and at the same time remove images whose tag starts with &lsquo;1.0&rsquo; and that are older than 30 days. For that we could the following lifecycle policy:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;rules&#34;</span>: [
         {
@@ -69,8 +68,23 @@ all images that are pushed will be used in production. Perhaps some of them will
         }
     ]
 }
-</code></pre></div><p>Then, in order to tag the images in production, which we assume for the sake of simplicity are deployed in the <strong>prod</strong> namespace, we will deploy kube-ecr-tagger with the following command:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>kube-ecr-tagger --namespace<span style=color:#f92672>=</span>prod --tag-prefix<span style=color:#f92672>=</span>production
-</code></pre></div><p>Of course, we have to make sure that it has the right IAM permissions:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>Then, in order to tag the images in production, which we assume for the sake of simplicity are deployed in the <strong>prod</strong> namespace, we will deploy kube-ecr-tagger as a Deployment in the <strong>kube-system</strong> namespace with the following example manifest:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#66d9ef>apiVersion</span>: apps/v1
+<span style=color:#66d9ef>kind</span>: Deployment
+<span style=color:#66d9ef>metadata</span>:
+   <span style=color:#66d9ef>name</span>: kube-ecr-tagger
+   <span style=color:#66d9ef>namespace</span>: kube-system
+<span style=color:#66d9ef>spec</span>:
+   <span style=color:#66d9ef>template</span>:
+      <span style=color:#66d9ef>spec</span>:
+        <span style=color:#66d9ef>containers</span>:
+         - <span style=color:#66d9ef>name</span>: kube-ecr-tagger
+           <span style=color:#66d9ef>image</span>: anesbenmerzoug/kube-ecr-tagger:latest 
+           <span style=color:#66d9ef>command</span>:
+           - kube-ecr-tagger
+           <span style=color:#66d9ef>args</span>:
+           - --namespace=prod
+           - --tag-prefix=production
+</code></pre></div><p>We should not forget to add a service account, if we&rsquo;re using IAM roles for service accounts, or the right annotation, if we&rsquo;re using <a href=https://github.com/uswitch/kiam>kiam</a> or <a href=https://github.com/jtblin/kube2iam>kube2iam</a>, with the right IAM permissions:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;Version&#34;</span>: <span style=color:#e6db74>&#34;2012-10-17&#34;</span>,
     <span style=color:#f92672>&#34;Statement&#34;</span>: [
         {
@@ -87,7 +101,7 @@ all images that are pushed will be used in production. Perhaps some of them will
         }
     ]
 }
-</code></pre></div><h2 id=conclusion>Conclusion</h2><p>If you want to try <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a> you can simply
+</code></pre></div><p>kube-ecr-tagger will then check ECR images of all deployed containers in the <strong>prod</strong> namespace and add tags with the prefix <strong>production</strong> if it is not already present.</p><h2 id=conclusion>Conclusion</h2><p>We have seen in this post that by combining a small tool with ECR Lifecycle Policies we can achieve more complicated rules than with plain lifecycle policies.</p><p>Of course, <a href=https://github.com/AnesBenmerzoug/kube-ecr-tagger>kube-ecr-tagger</a> is limited in what it can do but one can already have an idea of what can be achieved.</p><p>If you want to try kube-ecr-tagger you can simply
 use the built container images from <a href=https://hub.docker.com/r/anesbenmerzoug/kube-ecr-tagger>this repository</a> on Dockerhub.</p><p>I hope that you have learned at a thing or two from this post.
 If there are any mistakes or if you have questions please do not hesitate to reach out to me.</p></div><footer></footer></article><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script type=text/javascript async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script><script src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js id=MathJax-script></script><script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],processEscapes:true,processEnvironments:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script></section></div><footer class=footer><section class=container><p></p>© 2019-2020 Anes Benmerzoug
 ·
