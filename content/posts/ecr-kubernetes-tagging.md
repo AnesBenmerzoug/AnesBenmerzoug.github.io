@@ -172,7 +172,9 @@ We should not forget to add a service account, if we're using IAM roles for serv
 }
 ```
 
-kube-ecr-tagger will then check ECR images of all deployed containers in the **prod** namespace and add tags with the prefix **production** if it is not already present.
+Example manifests can be found in the kube-ecr-tagger [repository][kube-ecr-tagger] under the [manifests][kube-ecr-tagger manifests] folder.
+
+Once deployed, it will then check the ECR images of all deployed containers in the **prod** namespace and add tags with the prefix **production** to each image, if one does not exist already.
 
 ## Conclusion
 
@@ -196,5 +198,6 @@ If there are any mistakes or if you have questions please do not hesitate to rea
 [Kubernetes]: https://kubernetes.io/
 [Continuous Integration]: https://en.wikipedia.org/wiki/Continuous_integration
 [kube-ecr-tagger]: https://github.com/AnesBenmerzoug/kube-ecr-tagger
+[kube-ecr-tagger manifests]: https://github.com/AnesBenmerzoug/kube-ecr-tagger/tree/master/manifests
 [kiam]: https://github.com/uswitch/kiam
 [kube2iam]: https://github.com/jtblin/kube2iam
