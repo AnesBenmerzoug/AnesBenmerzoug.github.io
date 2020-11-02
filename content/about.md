@@ -3,9 +3,11 @@ title: About Me
 slug: about
 ---
 
-I'm an Artificial Intelligence Researcher at [Avira](https://www.avira.com/) 
-where I research and develop systems used to detect malware Office files
-in the cloud.
+I'm an Artificial Intelligence Researcher at [Avira](https://www.avira.com/).
+I research the use of traditional Machine Learning methods as well as Deep Learning 
+methods for the detection of Malware script files and develop systems to train and evaluate said methods end-to-end in the Cloud.
+
+I'm passionate about Machine Learning, Software Development, Natural Language Processing and Distributed Systems. 
 
 I hold a M.Sc. in Embedded Systems from the [Technical University 
 of Kaiserslautern](https://www.uni-kl.de/en/home/) and an M.Sc. in Automation and Control Systems
