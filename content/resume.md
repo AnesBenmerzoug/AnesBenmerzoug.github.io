@@ -5,8 +5,11 @@ slug: resume
 
 ## Professional Experience
 
+* **appliedAI - UnternehmerTUM** - Munich, Germany
+  - Artificial Intelligence Engineer / June 2021 - Present
+
 * **Avira** - Tettnang, Germany  
-  - Specialist Artificial Intelligence Researcher / January 2019 - Present 
+  - Specialist Artificial Intelligence Researcher / January 2019 - May 2021 
   - Artificial Intelligence Researcher / October 2018 - December 2018 
     
 * **Fraunhofer ITWM** - Kaiserslautern, Germany  
