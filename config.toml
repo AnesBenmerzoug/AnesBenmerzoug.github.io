@@ -63,13 +63,21 @@ pygmentsStyle = "monokai"
     weight = 2
     url = "posts/"
 
+[[menu.main]]
+    name = "Notes"
+    weight = 3
+    url = "notes/"
+
+
 [[params.social]]
     name = "Github"
     icon = "fab fa-github"
     weight = 1
     url = "https://github.com/anesbenmerzoug/"
+
 [[params.social]]
     name = "LinkedIn"
     icon = "fab fa-linkedin"
     weight = 2
     url = "https://www.linkedin.com/in/anes-benmerzoug/"
+
