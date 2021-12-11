@@ -17,8 +17,8 @@ pygmentsStyle = "monokai"
 [params]
     author = "Anes Benmerzoug"
     description = "Anes Benmerzoug's personal website"
-    keywords = "blog,personal,resume,developer"
-    info = "Artifical Intelligence Researcher and Software Developer"
+    keywords = "blog,notes,personal,resume,developer"
+    info = "Artifical Intelligence Engineer"
     avatarurl = "images/avatar.jpg"
 
     dateformat = "January 2, 2006"
@@ -55,7 +55,7 @@ pygmentsStyle = "monokai"
 
 [[menu.main]]
     name = "Resume"
-    weight = 2
+    weight = 4
     url = "resume/"
 
 [[menu.main]]
@@ -67,7 +67,6 @@ pygmentsStyle = "monokai"
     name = "Notes"
     weight = 3
     url = "notes/"
-
 
 [[params.social]]
     name = "Github"
