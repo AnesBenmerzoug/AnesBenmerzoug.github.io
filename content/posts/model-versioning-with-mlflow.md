@@ -3,9 +3,9 @@ date: 2020-07-08
 title: Model Versioning with MLflow
 tags: [
     "MLflow", 
-    "Model Versioning", 
-    "McNemar's Test", 
-    "Machine Learning"
+    "Model-Versioning", 
+    "McNemar's-Test", 
+    "Machine-Learning"
 ]
 ---
 

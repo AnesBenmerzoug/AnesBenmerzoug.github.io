@@ -1,9 +1,10 @@
 ---
 title: Knuth–Morris–Pratt algorithm
 tags: [
-    "Knuth–Morris–Pratt", 
     "string-searching",
 	"string-matching",
+	"algorithm",
+	"notes",
 ]
 date: 2021-12-21
 draft: True

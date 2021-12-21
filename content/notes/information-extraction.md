@@ -2,7 +2,7 @@
 title: Information Extraction Notes
 slug: IE Notes
 tags: [
-    "Information Extraction", 
+    "Information-Extraction", 
     "spaCy",
 ]
 date: 2021-12-11

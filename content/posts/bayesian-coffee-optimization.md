@@ -2,10 +2,10 @@
 date: 2020-08-27
 title: Bayesian Coffee Optimization
 tags: [
-    "Bayesian Optimization", 
-    "Gaussian Processes", 
+    "Bayesian-Optimization", 
+    "Gaussian-Processes", 
     "Aeropress", 
-    "Coffee Brewing",
+    "Coffee-Brewing",
     "Coffee",
 ]
 draft: True

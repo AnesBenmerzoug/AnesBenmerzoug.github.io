@@ -1,9 +1,9 @@
 ---
 title: Homomorphic Encryption Notes
 tags: [
-    "Homomorphic Encryption", 
+    "Homomorphic-Encryption", 
     "Cryptography",
-	"Ring Algebra",
+	"Ring-Algebra",
 	"Microsoft SEAL",
 ]
 date: 2021-12-15
