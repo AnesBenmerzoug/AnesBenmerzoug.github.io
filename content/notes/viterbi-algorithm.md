@@ -10,3 +10,9 @@ tags: [
 date: 2021-12-21
 draft: True
 ---
+
+# Explanation
+
+# Simplified Explanation
+
+# Analogy
