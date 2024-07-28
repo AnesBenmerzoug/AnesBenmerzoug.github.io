@@ -3,11 +3,17 @@ title: About Me
 slug: about
 ---
 
-I'm an Artificial Intelligence Engineer at [appliedAI](https://www.appliedai.de/), Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI.
+I'm a Senior AI Engineer at [appliedAI Initiative](https://www.appliedai.de/), Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI. 
 
-I am currently working on Natural Language Processing use cases with different clients and at the same time trying to contribute to open source projects.
+I'm passionate about machine learning, software engineering, and open-source development. 
 
-I'm passionate about Machine Learning, Software Development, Natural Language Processing and Distributed Systems. 
+I am currently working on LLM and NLP use cases with different clients.
+When I'm not staffed on client projects, I work on internal projects,
+contribute to open-source projects such as [pyDVL](https://github.com/aai-institute/pyDVL)
+and help with [TransferLab](https://github.com/aai-institute/pyDVL)'s researh projects
+such as the [replication](https://github.com/ReScience/MLRC/blob/main/2022/32/article.pdf) of
+the [If You Like Shapley Then You’ll Love the Core](http://procaccia.info/wp-content/uploads/2020/12/core.pdf) paper.
 
 I hold a M.Sc. in Embedded Systems from the [Technical University 
-of Kaiserslautern](https://www.uni-kl.de/en/home/) and a M.Sc. in Automation and Control Systems from the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
+of Kaiserslautern](https://www.uni-kl.de/en/home/) and a M.Sc. in Control and Automation from
+the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
