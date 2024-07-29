@@ -3,7 +3,7 @@ name: Publish Docs to Github Pages
 on:
   push:
     branches:
-    - source
+    - main
   workflow_dispatch:
 
 
