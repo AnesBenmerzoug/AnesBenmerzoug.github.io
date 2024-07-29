@@ -1,8 +1,8 @@
-![Publish Docs](https://github.com/AnesBenmerzoug/AnesBenmerzoug.github.io/workflows/Publish%20Docs/badge.svg?branch=source)
+![CI](https://github.com/AnesBenmerzoug/AnesBenmerzoug.github.io/workflows/Publish%20Docs%20to%20Github%20Pages/badge.svg?branch=main)
 
 This repository contains the source code for [https://anesbenmerzoug.github.io](https://anesbenmerzoug.github.io)
 
-The pages are generated using Github Actions and are pushed to the [master](https://github.com/AnesBenmerzoug/AnesBenmerzoug.github.io/tree/master) branch
+The pages are generated using Github Actions and are pushed to the main branch
 
 # Local Development
 
