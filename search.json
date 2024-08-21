@@ -1,31 +1,10 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "About Me",
+    "objectID": "posts/index.html",
+    "href": "posts/index.html",
+    "title": "Posts",
     "section": "",
-    "text": "I’m a Senior AI Engineer at appliedAI Initiative, Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI.\nI’m passionate about machine learning, software engineering, and open-source development.\nI am currently working on LLM and NLP use cases with different clients. When I’m not staffed on client projects, I work on internal projects, contribute to open-source projects such as pyDVL and help with TransferLab’s researh projects such as the replication of the If You Like Shapley Then You’ll Love the Core paper.\nI hold a M.Sc. in Embedded Systems from the Technical University of Kaiserslautern and a M.Sc. in Control and Automation from the Ecole Nationale Polytechnique in Algiers."
-  },
-  {
-    "objectID": "index.html#professional-experience",
-    "href": "index.html#professional-experience",
-    "title": "About Me",
-    "section": "Professional Experience",
-    "text": "Professional Experience\n\nappliedAI Initiative GmbH / Munich, Germany / July 2023 - Present\n\nSenior Artificial Intelligence Engineer\n\nappliedAI - UnternehmerTUM / Munich, Germany / June 2021 - July 2023\n\nArtificial Intelligence Engineer\n\nAvira / Tettnang, Germany / October 2018 - May 2021\n\nSpecialist Artificial Intelligence Researcher\n\nFraunhofer ITWM / Kaiserslautern, Germany / July 2018 - September 2018\n\nResearch Assistant (HiWi)"
-  },
-  {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "About Me",
-    "section": "Education",
-    "text": "Education\n\nM.Sc. in Embedded Systems / September 2016 - October 2018\n\nTechnical University of Kaiserslautern\n\nM.Sc. in Automation and Control Systems / September 2013 - July 2016\n\nEcole Nationale Polytechnique Algiers"
-  },
-  {
-    "objectID": "index.html#skills",
-    "href": "index.html#skills",
-    "title": "About Me",
-    "section": "Skills",
-    "text": "Skills\n\nLanguages\n\nPython\nSQL\nGo\nC#\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies\n\nDocker\nKubernetes\nPostgreSQL\nFastAPI\nAWS, Azure"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWhen ECR lifecycle policies are not enough…\n\n\n\n\n\n\n\n\n\n\n\nJul 28, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nModel Versioning with MLflow\n\n\n\n\n\n\n\n\n\n\n\nJul 8, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/when-ecr-lifecycle-policies-are-not-enough/index.html",
@@ -54,6 +33,34 @@
     "title": "When ECR lifecycle policies are not enough…",
     "section": "Conclusion",
     "text": "Conclusion\nWe have seen in this post that by combining a small tool with ECR Lifecycle Policies we can achieve more complicated rules than with plain lifecycle policies.\nOf course, kube-ecr-tagger is limited in what it can do but one can already have an idea of what can be achieved.\nIf you want to try kube-ecr-tagger you can simply use the built container images from this repository on Dockerhub.\nI hope that you have learned at a thing or two from this post. If there are any mistakes or if you have questions please do not hesitate to reach out to me."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "About Me",
+    "section": "",
+    "text": "I’m a Senior AI Engineer at appliedAI Initiative, Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI.\nI’m passionate about machine learning, software engineering, and open-source development.\nI am currently working on LLM and NLP use cases with different clients. When I’m not staffed on client projects, I work on internal projects, contribute to open-source projects such as pyDVL and help with TransferLab’s researh projects such as the replication of the If You Like Shapley Then You’ll Love the Core paper.\nI hold a M.Sc. in Embedded Systems from the Technical University of Kaiserslautern and a M.Sc. in Control and Automation from the Ecole Nationale Polytechnique in Algiers."
+  },
+  {
+    "objectID": "index.html#professional-experience",
+    "href": "index.html#professional-experience",
+    "title": "About Me",
+    "section": "Professional Experience",
+    "text": "Professional Experience\n\nappliedAI Initiative GmbH / Munich, Germany / July 2023 - Present\n\nSenior Artificial Intelligence Engineer\n\nappliedAI - UnternehmerTUM / Munich, Germany / June 2021 - July 2023\n\nArtificial Intelligence Engineer\n\nAvira / Tettnang, Germany / October 2018 - May 2021\n\nSpecialist Artificial Intelligence Researcher\n\nFraunhofer ITWM / Kaiserslautern, Germany / July 2018 - September 2018\n\nResearch Assistant (HiWi)"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\n\nM.Sc. in Embedded Systems / September 2016 - October 2018\n\nTechnical University of Kaiserslautern\n\nM.Sc. in Automation and Control Systems / September 2013 - July 2016\n\nEcole Nationale Polytechnique Algiers"
+  },
+  {
+    "objectID": "index.html#skills",
+    "href": "index.html#skills",
+    "title": "About Me",
+    "section": "Skills",
+    "text": "Skills\n\nLanguages\n\nPython\nSQL\nGo\nC#\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies\n\nDocker\nKubernetes\nPostgreSQL\nFastAPI\nAWS, Azure"
   },
   {
     "objectID": "posts/model-versioning-with-mlflow/index.html",
@@ -96,12 +103,5 @@
     "title": "Model Versioning with MLflow",
     "section": "Conclusion",
     "text": "Conclusion\nWe have seen that thanks to the Model Registry component of MLflow we can have a pretty simple automated model versioning flow for classifiers. This flow can be and should be extended and made more complete, depending on the use case. For example, by using a second metric for when a tie happens in the first one.\nI hope that you have learned at a thing or two from this post. If there are any mistakes or if you have questions please do not hesitate to reach out to me."
-  },
-  {
-    "objectID": "posts/index.html",
-    "href": "posts/index.html",
-    "title": "Posts",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWhen ECR lifecycle policies are not enough…\n\n\n\n\n\n\n\n\n\n\n\nJul 28, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nModel Versioning with MLflow\n\n\n\n\n\n\n\n\n\n\n\nJul 8, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\nNo matching items"
   }
 ]

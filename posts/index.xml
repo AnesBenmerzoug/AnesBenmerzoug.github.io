@@ -10,7 +10,7 @@
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
 <generator>quarto-1.5.56</generator>
-<lastBuildDate>Mon, 27 Jul 2020 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 28 Jul 2020 00:00:00 GMT</lastBuildDate>
 <item>
   <title>When ECR lifecycle policies are not enough…</title>
   <dc:creator>Anes Benmerzoug</dc:creator>
@@ -601,7 +601,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/</guid>
-  <pubDate>Mon, 27 Jul 2020 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 28 Jul 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Model Versioning with MLflow</title>
@@ -1091,7 +1091,7 @@ font-style: inherit;">"Production"</span>,</span>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/</guid>
-  <pubDate>Tue, 07 Jul 2020 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 08 Jul 2020 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

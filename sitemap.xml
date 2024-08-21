@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
-    <lastmod>2024-08-21T18:37:33.985Z</lastmod>
+    <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
+    <lastmod>2024-08-21T18:48:23.661Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
-    <lastmod>2024-08-21T18:37:33.985Z</lastmod>
+    <lastmod>2024-08-21T18:48:23.661Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
+    <lastmod>2024-08-21T18:48:23.661Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
-    <lastmod>2024-08-21T18:37:33.985Z</lastmod>
-  </url>
-  <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
-    <lastmod>2024-08-21T18:37:33.985Z</lastmod>
+    <lastmod>2024-08-21T18:48:23.661Z</lastmod>
   </url>
 </urlset>
