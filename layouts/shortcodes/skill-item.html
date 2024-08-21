@@ -1,8 +1,0 @@
-{{- $name := .Get "name" -}}
-{{- $level := .Get "level" -}}
-<li class="skill-item">
-    <span class="skill-name">{{ $name }}</span>
-    <div class="skill-bar">
-        <div class="skill-bar-inner percentage-{{ $level }}">{{ $level }}</div>
-    </div>
-</li>

@@ -1,12 +1,13 @@
 ---
-date: 2020-07-28
 title: When ECR lifecycle policies are not enough...
-tags: [
+date: 2020-07-28
+keywords: [
     "AWS",
     "ECR",
     "Kubernetes",
     "Go", 
 ]
+license: "CC BY"
 ---
 
 In this second post we will talk about something a bit different from last time.

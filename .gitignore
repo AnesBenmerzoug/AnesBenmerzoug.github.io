@@ -1,4 +1,5 @@
-.idea
-resources
-public
-.obsidian
+*.html
+site_libs
+index-listing.json
+/.quarto/
+_site/

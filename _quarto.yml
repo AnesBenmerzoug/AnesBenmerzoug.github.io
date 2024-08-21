@@ -1,0 +1,23 @@
+project:
+  type: website
+
+website:
+  title: "Personal Blog"
+  description: "This is Anes Benmerzoug's personal Blog."
+  site-url: https://AnesBenmerzoug.github.io
+  repo-url: https://github.com:AnesBenmerzoug/AnesBenmerzoug.github.io
+  reader-mode: true
+  search: true
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: posts/index.qmd
+        text: Posts
+      - icon: github
+        href: https://github.com/AnesBenmerzoug
+
+format:
+  html:
+    theme: simplex
+    toc: true
