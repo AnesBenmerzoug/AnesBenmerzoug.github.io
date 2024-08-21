@@ -1,0 +1,9 @@
+[
+  {
+    "listing": "/posts/index.html",
+    "items": [
+      "/posts/when-ecr-lifecycle-policies-are-not-enough/index.html",
+      "/posts/model-versioning-with-mlflow/index.html"
+    ]
+  }
+]
