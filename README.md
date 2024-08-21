@@ -1,17 +1,18 @@
-![Publish Docs](https://github.com/AnesBenmerzoug/AnesBenmerzoug.github.io/workflows/Publish%20Docs/badge.svg?branch=source)
+# Personal Blog
 
-This repository contains the source code for [https://anesbenmerzoug.github.io](https://anesbenmerzoug.github.io)
+This repository contains the source code for my personal blog hosted at
+[https://anesbenmerzoug.github.io](https://anesbenmerzoug.github.io)
 
-The pages are generated using Github Actions and are pushed to the [master](https://github.com/AnesBenmerzoug/AnesBenmerzoug.github.io/tree/master) branch
+The pages are generated using Github Actions and are pushed to the `gh-pages` branch.
 
-# Local Development
+## Getting Started
 
-In order to add more contents and visualize it in real-time, you should run the following from the root of the repository:
+1. Install [Quarto](https://quarto.org/docs/get-started/)
 
-```bash
-hugo server --disableFastRender
-```
+2. Preview the content using:
 
-This will start a server that will watch the repository for changes, rebuilds the webpage and exposes it on the local network.
+   ```shell
+   quarto preview
+   ```
 
-Navigate to http://localhost:1313/ in your browser.
+   This is will open the url http://localhost:6848/ in your default browser.
