@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: docs
 
+execute:
+  freeze: auto
+
 website:
   title: "Personal Blog"
   description: "This is Anes Benmerzoug's personal Blog."
