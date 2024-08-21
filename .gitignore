@@ -3,3 +3,4 @@ site_libs
 index-listing.json
 /.quarto/
 _site/
+docs/
