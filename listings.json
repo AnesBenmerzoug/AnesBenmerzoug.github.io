@@ -1,7 +1,12 @@
 [
   {
+    "listing": "/posts/control-series/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/control-series/index.html",
       "/posts/when-ecr-lifecycle-policies-are-not-enough/index.html",
       "/posts/model-versioning-with-mlflow/index.html"
     ]

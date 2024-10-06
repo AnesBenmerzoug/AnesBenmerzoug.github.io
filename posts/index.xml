@@ -9,7 +9,7 @@
 <link>https://AnesBenmerzoug.github.io/posts/</link>
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
-<generator>quarto-1.5.56</generator>
+<generator>quarto-1.5.57</generator>
 <lastBuildDate>Tue, 28 Jul 2020 00:00:00 GMT</lastBuildDate>
 <item>
   <title>When ECR lifecycle policies are not enough…</title>
@@ -1092,6 +1092,37 @@ font-style: inherit;">"Production"</span>,</span>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/</guid>
   <pubDate>Wed, 08 Jul 2020 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Series: Control</title>
+  <dc:creator>Anes Benmerzoug</dc:creator>
+  <link>https://AnesBenmerzoug.github.io/posts/control-series/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <guid>https://AnesBenmerzoug.github.io/posts/control-series/</guid>
+  <pubDate>Sun, 06 Oct 2024 08:17:22 GMT</pubDate>
 </item>
 </channel>
 </rss>
