@@ -1,6 +1,6 @@
 ---
 title: Poetry and Python Versions
-date: 2024-10-21
+date: 2024-10-22
 keywords: [
     "Python",
     "Python 3.13",
@@ -10,7 +10,6 @@ keywords: [
     "Benchmark",
 ]
 license: "CC BY"
-draft: true
 ---
 
 After a long pause of more than 4 years, I have finally decided to come back to my personal blog and start writing again.
