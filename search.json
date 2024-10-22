@@ -35,6 +35,34 @@
     "text": "Conclusion\nWe have seen in this post that by combining a small tool with ECR Lifecycle Policies we can achieve more complicated rules than with plain lifecycle policies.\nOf course, kube-ecr-tagger is limited in what it can do but one can already have an idea of what can be achieved.\nIf you want to try kube-ecr-tagger you can simply use the built container images from this repository on Dockerhub.\nI hope that you have learned at a thing or two from this post. If there are any mistakes or if you have questions please do not hesitate to reach out to me."
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "About Me",
+    "section": "",
+    "text": "I’m a Senior AI Engineer at appliedAI Initiative, Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI.\nI’m passionate about machine learning, software engineering, and open-source development.\nI am currently working on LLM and NLP, more specifically RAG (Retrieval-Augmented Generation), projects for different clients. When I’m not staffed on client projects, I work on internal projects, contribute to open-source projects such as pyDVL and help with TransferLab’s research projects such as the replication of the If You Like Shapley Then You’ll Love the Core paper.\nI hold a M.Sc. in Embedded Systems from the Technical University of Kaiserslautern and a M.Sc. in Control and Automation from the Ecole Nationale Polytechnique in Algiers."
+  },
+  {
+    "objectID": "index.html#professional-experience",
+    "href": "index.html#professional-experience",
+    "title": "About Me",
+    "section": "Professional Experience",
+    "text": "Professional Experience\n\nappliedAI Initiative GmbH / Munich, Germany / July 2023 - Present\n\nSenior Artificial Intelligence Engineer\n\nappliedAI - UnternehmerTUM / Munich, Germany / June 2021 - July 2023\n\nArtificial Intelligence Engineer\n\nAvira / Tettnang, Germany / October 2018 - May 2021\n\nSpecialist Artificial Intelligence Researcher\n\nFraunhofer ITWM / Kaiserslautern, Germany / July 2018 - September 2018\n\nResearch Assistant (HiWi)"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\n\nM.Sc. in Embedded Systems / September 2016 - October 2018\n\nTechnical University of Kaiserslautern\n\nM.Sc. in Automation and Control Systems / September 2013 - July 2016\n\nEcole Nationale Polytechnique Algiers"
+  },
+  {
+    "objectID": "index.html#skills",
+    "href": "index.html#skills",
+    "title": "About Me",
+    "section": "Skills",
+    "text": "Skills\n\nLanguages\n\nPython\nSQL\nGo\nC\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies\n\nDocker\nKubernetes\nPostgreSQL\nFastAPI\nAWS, Azure"
+  },
+  {
     "objectID": "posts/model-versioning-with-mlflow/index.html",
     "href": "posts/model-versioning-with-mlflow/index.html",
     "title": "Model Versioning with MLflow",
@@ -77,38 +105,17 @@
     "text": "Conclusion\nWe have seen that thanks to the Model Registry component of MLflow we can have a pretty simple automated model versioning flow for classifiers. This flow can be and should be extended and made more complete, depending on the use case. For example, by using a second metric for when a tie happens in the first one.\nI hope that you have learned at a thing or two from this post. If there are any mistakes or if you have questions please do not hesitate to reach out to me."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "About Me",
+    "objectID": "posts/poetry-and-python-versions/index.html",
+    "href": "posts/poetry-and-python-versions/index.html",
+    "title": "Poetry and Python Versions",
     "section": "",
-    "text": "I’m a Senior AI Engineer at appliedAI Initiative, Europe’s largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe’s innovative power in AI.\nI’m passionate about machine learning, software engineering, and open-source development.\nI am currently working on LLM and NLP, more specifically RAG (Retrieval-Augmented Generation), projects for different clients. When I’m not staffed on client projects, I work on internal projects, contribute to open-source projects such as pyDVL and help with TransferLab’s researh projects such as the replication of the If You Like Shapley Then You’ll Love the Core paper.\nI hold a M.Sc. in Embedded Systems from the Technical University of Kaiserslautern and a M.Sc. in Control and Automation from the Ecole Nationale Polytechnique in Algiers."
-  },
-  {
-    "objectID": "index.html#professional-experience",
-    "href": "index.html#professional-experience",
-    "title": "About Me",
-    "section": "Professional Experience",
-    "text": "Professional Experience\n\nappliedAI Initiative GmbH / Munich, Germany / July 2023 - Present\n\nSenior Artificial Intelligence Engineer\n\nappliedAI - UnternehmerTUM / Munich, Germany / June 2021 - July 2023\n\nArtificial Intelligence Engineer\n\nAvira / Tettnang, Germany / October 2018 - May 2021\n\nSpecialist Artificial Intelligence Researcher\n\nFraunhofer ITWM / Kaiserslautern, Germany / July 2018 - September 2018\n\nResearch Assistant (HiWi)"
-  },
-  {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "About Me",
-    "section": "Education",
-    "text": "Education\n\nM.Sc. in Embedded Systems / September 2016 - October 2018\n\nTechnical University of Kaiserslautern\n\nM.Sc. in Automation and Control Systems / September 2013 - July 2016\n\nEcole Nationale Polytechnique Algiers"
-  },
-  {
-    "objectID": "index.html#skills",
-    "href": "index.html#skills",
-    "title": "About Me",
-    "section": "Skills",
-    "text": "Skills\n\nLanguages\n\nPython\nSQL\nGo\nC\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies\n\nDocker\nKubernetes\nPostgreSQL\nFastAPI\nAWS, Azure"
+    "text": "After a long pause of more than 4 years, I have finally decided to come back to my personal blog and start writing again.\nFor this first post in a long while, I wanted to do something simple: benchmark the performance of Poetry the python package manager when using different Python versions. The idea came to me after I saw that Python 3.13 was released with experimental free threading support where the global interpreter lock (GIL) is disabled.\nAs a daily user of Poetry either for work or for personal projects, I was curious to see whether its performance changes significantly based on the Python version used. To answer this question, I decided to take inspiration from the python-package-manager-shootout repository, which benchmarks different Python package managers using a fixed Python version.\n\nUnfortunately, as of writing this blog post Poetry can’t installed be directly from PyPI using Pyhton 3.13 with the GIL disabled due to an issue with some of its dependencies, namely msgpack and cryptography. once that’s resolved, I will try to update this post or write another one.\n\nThe remainder of this post is structured as follows:\n\nwe will briefly see how to install the new Python version with free threading enabled,\nthen, we will describe the different operations as well as the setup that will used in the benchmarks\nfinally, we will visually analyze the result of the benchmarks.\n\n\nDisclaimer This experiment has several limitations that should be considered when interpreting the results. Firstly, we’re only testing with a limited set of Python versions (namely 3.11, 3.12, and 3.13). Additionaly, we’re using a fixed set of packages (Sentry’s requirements.txt file) to test Poetry’s performance. Both of these choices may not capture the full range of use cases and scenarios that Poetry may encounter in real-world use cases.\n\n\nInstallation\nWe will now see how to install Python 3.13 version with and without free threading using pyenv, a popular tool for managing multiple Python versions.\nLet’s first start by listing all available python versions for installation:\npyenv install -l\nThe result should look something like:\nAvailable versions:\n  2.1.3\n  2.2.3\n  2.3.7\n  ...\n  ...\n  3.13.0\n  3.13.0t\n  ...\n  ...\nIf you don’t see python 3.13 listed, it probably means that you need to update pyenv to the latest version using:\npyenv update\nTo install Python 3.13 with free threading disabled (i.e. GIL enabled), you would use:\npyenv install 3.13.0\nTo install Python 3.13 with free threading enabled (e.g. GIL disabled), you would use:\npyenv install 3.13.0t\nTo test whether this worked, you would use:\npython -VV\nThe output should contain “experimental free-threading build” for the latter and not for the former.\nFor more detailed instructions and explanations, please refer to this blog post from realpython.com\n\n\nMethodology\nTo benchmark Poetry’s performance, I used the latest version of Poetry (version 1.8.4 as of writing this blog post) with a few different Python versions: 3.11, 3.12 and 3.13\nAll the files related to this blog post can be found in this repository. It is heavily inspired by the python-package-manager-shootout repository.\nSimilarly to that repository, we use a list of packages from a fixed version of Sentry’s requirements.txt file which was chosen arbitrarily as a non-trivial real-world example.\nUnlike in python-package-manager-shootout, we use a newer version of Sentry’s requirements to avoid any issues during package installation with newer Python versions. Additionally, we use hyperfine, a command-line benchmarking tool, to handle the execution and timing of each operation.\nI benchmarked the following operations:\n\nimport: For this operation, we call poetry add --lock --no-cache to import all of the requirements in Sentry’s requirements.txt file into a newly initialized pyproject.toml file (We use Poetry’s --lock flag to prevent it from installing packages at this point).\nlock: For this operation, we call poetry lock both with and without the --no-cache. We delete the poetry.lock before every call to make sure the lock creation starts from scratch each time.\ninstall: For this operation, we call poetry install both with and without the --no-cache. We delete the created virtual environment before every call to make sure the installation starts from scratch each time.\nupdate: For this operation, we call poetry update both with and without the --no-cache. We delete the poetry.lock and restore it before every call to make sure the update starts from the same point each time.\nadd package: For this operation, we call poetry add numpy --no-cache. We remove the numpy package after every call to make sure adding the package starts from the same point each time.\n\n\nThe --no-cache flag is used to tell poetry to ignore its own cache stored, by default on Linux, under ~/.cache/pypoetry/cache.\n\n\n\nResults\nI ran the benchmarks in CI to have a more or less consistent environment. The workflow runs the operations, collects and combines the results and then creates plots based on them.\nThe results and plots can be found as artifacts of the repository’s benchmark CI workflow. The plots used in this post come from this specific workflow, from the benchmark-plots artifact.\nIn Figure 1, we can see that poetry with python 3.13 performs the best on average for the import operation.\n\n\n\n\n\n\nFigure 1: Benchmark result of poetry import operation\n\n\n\nIn Figure 2, we can see that poetry with python 3.13 performs the best on average for the lock operation both with and without caching.\n\n\n\n\n\n\nFigure 2: Benchmark result of poetry lock operation\n\n\n\nIn Figure 3, we can see that poetry with python 3.11 performs the best on average for the install operation both with and without caching.\n\n\n\n\n\n\nFigure 3: Benchmark result of poetry install operation\n\n\n\nIn Figure 4, we can see that poetry with python 3.13 performs the best on average for the update operation both with and without caching.\n\n\n\n\n\n\nFigure 4: Benchmark result of poetry update operation\n\n\n\nIn Figure 5, we can see that poetry with python 3.11 and 3.13 perform similarily on average for the add package operation.\n\n\n\n\n\n\nFigure 5: Benchmark result of poetry add package operation\n\n\n\nAs we can see from the results, python 3.13 without free threading does improve poetry’s performance on average in 3 out of the 5 operations (import, lock, update) both with and without caching. In the other 2 operations, the performance difference is minimal.\n\n\nConclusion\nIn conclusion, our little experiment has shown that Poetry with Python 3.13 performs better than Poetry with Python 3.11 and 3.12 on average in most cases. However the performance is not that significant, and it remains to be seen whether the experimental free threading feature would make a significant difference.\nFor now, I will keep on eye on Python 3.13 with free threading’s support for Poetry, and update my findings as more information becomes available. This experiment is just one of many possible tests of Poetry’s performance with different Python versions, and the results should be taken as a rough indication only as they may not necessarily reflect real-world use cases.\n\n\n\n\nReuseCC BY 4.0"
   },
   {
     "objectID": "posts/index.html",
     "href": "posts/index.html",
     "title": "Posts",
     "section": "",
-    "text": "Series\n\nControl Series\nThis series contains blog plots about different ways to control a specific system.\n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSeries: Control\n\n\n\n\n\n\n\n\n\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nWhen ECR lifecycle policies are not enough…\n\n\n\n\n\n\n\n\n\n\n\nJul 28, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nModel Versioning with MLflow\n\n\n\n\n\n\n\n\n\n\n\nJul 8, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\nNo matching items"
+    "text": "Series\n\nControl Series\nThis series contains blog plots about different ways to control a specific system.\n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSeries: Control\n\n\n\n\n\n\n\n\n\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nPoetry and Python Versions\n\n\n\n\n\n\n\n\n\n\n\nOct 22, 2024\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nWhen ECR lifecycle policies are not enough…\n\n\n\n\n\n\n\n\n\n\n\nJul 28, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\n\n\n\n\n\n\nModel Versioning with MLflow\n\n\n\n\n\n\n\n\n\n\n\nJul 8, 2020\n\n\nAnes Benmerzoug\n\n\n\n\n\n\nNo matching items"
   }
 ]

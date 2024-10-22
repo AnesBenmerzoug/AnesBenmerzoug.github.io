@@ -10,7 +10,149 @@
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
 <generator>quarto-1.5.57</generator>
-<lastBuildDate>Tue, 28 Jul 2020 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 22 Oct 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Poetry and Python Versions</title>
+  <dc:creator>Anes Benmerzoug</dc:creator>
+  <link>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>After a long pause of more than 4 years, I have finally decided to come back to my personal blog and start writing again.</p>
+<p>For this first post in a long while, I wanted to do something simple: benchmark the performance of <a href="https://python-poetry.org/">Poetry</a> the python package manager when using different Python versions. The idea came to me after I saw that Python 3.13 was released with experimental <a href="https://docs.python.org/3/howto/free-threading-python.html">free threading</a> support where the <a href="https://docs.python.org/3/glossary.html#term-global-interpreter-lock">global interpreter lock (GIL)</a> is disabled.</p>
+<p>As a daily user of Poetry either for work or for personal projects, I was curious to see whether its performance changes significantly based on the Python version used. To answer this question, I decided to take inspiration from the <a href="https://github.com/lincolnloop/python-package-manager-shootout">python-package-manager-shootout</a> repository, which benchmarks different Python package managers using a fixed Python version.</p>
+<blockquote class="blockquote">
+<p>Unfortunately, as of writing this blog post Poetry can’t installed be directly from PyPI using Pyhton 3.13 with the GIL disabled due to an issue with some of its dependencies, namely msgpack and cryptography. once that’s resolved, I will try to update this post or write another one.</p>
+</blockquote>
+<p>The remainder of this post is structured as follows:</p>
+<ul>
+<li>we will briefly see how to install the new Python version with free threading enabled,</li>
+<li>then, we will describe the different operations as well as the setup that will used in the benchmarks</li>
+<li>finally, we will visually analyze the result of the benchmarks.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Disclaimer</strong> This experiment has several limitations that should be considered when interpreting the results. Firstly, we’re only testing with a limited set of Python versions (namely 3.11, 3.12, and 3.13). Additionaly, we’re using a fixed set of packages (Sentry’s <code>requirements.txt</code> file) to test Poetry’s performance. Both of these choices may not capture the full range of use cases and scenarios that Poetry may encounter in real-world use cases.</p>
+</blockquote>
+<section id="installation" class="level1">
+<h1>Installation</h1>
+<p>We will now see how to install Python 3.13 version with and without free threading using <a href="https://github.com/pyenv/pyenv">pyenv</a>, a popular tool for managing multiple Python versions.</p>
+<p>Let’s first start by listing all available python versions for installation:</p>
+<pre class="shell"><code>pyenv install -l</code></pre>
+<p>The result should look something like:</p>
+<pre class="shell"><code>Available versions:
+  2.1.3
+  2.2.3
+  2.3.7
+  ...
+  ...
+  3.13.0
+  3.13.0t
+  ...
+  ...</code></pre>
+<p>If you don’t see python 3.13 listed, it probably means that you need to update pyenv to the latest version using:</p>
+<pre class="shell"><code>pyenv update</code></pre>
+<p>To install Python 3.13 with free threading disabled (i.e.&nbsp;GIL enabled), you would use:</p>
+<pre class="shell"><code>pyenv install 3.13.0</code></pre>
+<p>To install Python 3.13 with free threading enabled (e.g.&nbsp;GIL disabled), you would use:</p>
+<pre class="shell"><code>pyenv install 3.13.0t</code></pre>
+<p>To test whether this worked, you would use:</p>
+<pre class="shell"><code>python -VV</code></pre>
+<p>The output should contain “experimental free-threading build” for the latter and not for the former.</p>
+<p>For more detailed instructions and explanations, please refer to <a href="https://realpython.com/python313-free-threading-jit/">this blog post</a> from <a href="https://realpython.com">realpython.com</a></p>
+</section>
+<section id="methodology" class="level1">
+<h1>Methodology</h1>
+<p>To benchmark Poetry’s performance, I used the latest version of Poetry (version 1.8.4 as of writing this blog post) with a few different Python versions: 3.11, 3.12 and 3.13</p>
+<p>All the files related to this blog post can be found in <a href="https://github.com/AnesBenmerzoug/poetry-python-benchmark">this repository</a>. It is heavily inspired by the <a href="https://github.com/lincolnloop/python-package-manager-shootout">python-package-manager-shootout</a> repository.</p>
+<p>Similarly to that repository, we use a list of packages from a fixed version of <a href="https://github.com/getsentry/sentry/blob/da11f63098ef5c661e879effb8688178bb5eccee/requirements-base.txt">Sentry’s <code>requirements.txt</code> file</a> which was chosen arbitrarily as a non-trivial real-world example.</p>
+<p>Unlike in <a href="https://lincolnloop.github.io/python-package-manager-shootout/">python-package-manager-shootout</a>, we use a newer version of Sentry’s requirements to avoid any issues during package installation with newer Python versions. Additionally, we use <a href="https://github.com/sharkdp/hyperfine">hyperfine</a>, a command-line benchmarking tool, to handle the execution and timing of each operation.</p>
+<p>I benchmarked the following operations:</p>
+<ul>
+<li><code>import</code>: For this operation, we call <code>poetry add --lock --no-cache</code> to import all of the requirements in Sentry’s requirements.txt file into a newly initialized pyproject.toml file (We use Poetry’s <code>--lock</code> flag to prevent it from installing packages at this point).</li>
+<li><code>lock</code>: For this operation, we call <code>poetry lock</code> both with and without the <code>--no-cache</code>. We delete the <code>poetry.lock</code> before every call to make sure the lock creation starts from scratch each time.</li>
+<li><code>install</code>: For this operation, we call <code>poetry install</code> both with and without the <code>--no-cache</code>. We delete the created virtual environment before every call to make sure the installation starts from scratch each time.</li>
+<li><code>update</code>: For this operation, we call <code>poetry update</code> both with and without the <code>--no-cache</code>. We delete the <code>poetry.lock</code> and restore it before every call to make sure the update starts from the same point each time.</li>
+<li><code>add package</code>: For this operation, we call <code>poetry add numpy --no-cache</code>. We remove the <code>numpy</code> package after every call to make sure adding the package starts from the same point each time.</li>
+</ul>
+<blockquote class="blockquote">
+<p>The <code>--no-cache</code> flag is used to tell poetry to ignore its own cache stored, by default on Linux, under <code>~/.cache/pypoetry/cache</code>.</p>
+</blockquote>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>I ran the benchmarks in CI to have a more or less consistent environment. The workflow runs the operations, collects and combines the results and then creates plots based on them.</p>
+<p>The results and plots can be found as artifacts of the repository’s <a href="https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions">benchmark CI workflow</a>. The plots used in this post come from <a href="https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions/runs/11463804221">this specific workflow</a>, from the <a href="https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions/runs/11463804221/artifacts/2089086106">benchmark-plots</a> artifact.</p>
+<p>In Figure&nbsp;1, we can see that poetry with python 3.13 performs the best on average for the import operation.</p>
+<div id="fig-import" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-import-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="plot_import.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Benchmark result of poetry import operation"><img src="https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/plot_import.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-import-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Benchmark result of poetry import operation
+</figcaption>
+</figure>
+</div>
+<p>In Figure&nbsp;2, we can see that poetry with python 3.13 performs the best on average for the lock operation both with and without caching.</p>
+<div id="fig-lock" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lock-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="plot_lock.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Benchmark result of poetry lock operation"><img src="https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/plot_lock.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lock-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Benchmark result of poetry lock operation
+</figcaption>
+</figure>
+</div>
+<p>In Figure&nbsp;3, we can see that poetry with python 3.11 performs the best on average for the install operation both with and without caching.</p>
+<div id="fig-install" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="plot_install.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Benchmark result of poetry install operation"><img src="https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/plot_install.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Benchmark result of poetry install operation
+</figcaption>
+</figure>
+</div>
+<p>In Figure&nbsp;4, we can see that poetry with python 3.13 performs the best on average for the update operation both with and without caching.</p>
+<div id="fig-update" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="plot_update.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Benchmark result of poetry update operation"><img src="https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/plot_update.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-update-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Benchmark result of poetry update operation
+</figcaption>
+</figure>
+</div>
+<p>In Figure&nbsp;5, we can see that poetry with python 3.11 and 3.13 perform similarily on average for the add package operation.</p>
+<div id="fig-add" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-add-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="plot_add.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Benchmark result of poetry add package operation"><img src="https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/plot_add.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-add-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Benchmark result of poetry add package operation
+</figcaption>
+</figure>
+</div>
+<p>As we can see from the results, python 3.13 without free threading does improve poetry’s performance on average in 3 out of the 5 operations (import, lock, update) both with and without caching. In the other 2 operations, the performance difference is minimal.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>In conclusion, our little experiment has shown that Poetry with Python 3.13 performs better than Poetry with Python 3.11 and 3.12 on average in most cases. However the performance is not that significant, and it remains to be seen whether the experimental free threading feature would make a significant difference.</p>
+<p>For now, I will keep on eye on Python 3.13 with free threading’s support for Poetry, and update my findings as more information becomes available. This experiment is just one of many possible tests of Poetry’s performance with different Python versions, and the results should be taken as a rough indication only as they may not necessarily reflect real-world use cases.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <guid>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/</guid>
+  <pubDate>Tue, 22 Oct 2024 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>When ECR lifecycle policies are not enough…</title>
   <dc:creator>Anes Benmerzoug</dc:creator>
@@ -1122,7 +1264,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/control-series/</guid>
-  <pubDate>Sun, 20 Oct 2024 20:19:02 GMT</pubDate>
+  <pubDate>Tue, 22 Oct 2024 17:25:33 GMT</pubDate>
 </item>
 </channel>
 </rss>
