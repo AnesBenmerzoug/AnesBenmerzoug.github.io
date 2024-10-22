@@ -21,7 +21,7 @@ I'm passionate about machine learning, software engineering, and open-source dev
 I am currently working on LLM and NLP, more specifically RAG (Retrieval-Augmented Generation), projects for different clients.
 When I'm not staffed on client projects, I work on internal projects,
 contribute to open-source projects such as [pyDVL](https://github.com/aai-institute/pyDVL)
-and help with [TransferLab](https://transferlab.ai/)'s researh projects
+and help with [TransferLab](https://transferlab.ai/authors/anes-benmerzoug)'s research projects
 such as the [replication](https://github.com/ReScience/MLRC/blob/main/2022/32/article.pdf) of
 the [If You Like Shapley Then You'll Love the Core](http://procaccia.info/wp-content/uploads/2020/12/core.pdf) paper.
 
