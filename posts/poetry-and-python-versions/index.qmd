@@ -122,22 +122,23 @@ I ran the benchmarks in CI to have a more or less consistent environment. The wo
 
 The results and plots can be found as artifacts of the repository's [benchmark CI workflow](https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions). The plots used in this post come from [this specific workflow](https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions/runs/11463804221), from the [benchmark-plots](https://github.com/AnesBenmerzoug/poetry-python-benchmark/actions/runs/11463804221/artifacts/2089086106) artifact.
 
-In @fig-import, we can see that poetry with python 3.13 performs the best on average for this operation.
+In @fig-import, we can see that poetry with python 3.13 performs the best on average for the import operation.
 
 ![Benchmark result of poetry import operation](plot_import.svg){#fig-import .lightbox}
 
-In @fig-lock, we can see that poetry with python 3.13 performs the best on average for this operation both with and without caching.
+In @fig-lock, we can see that poetry with python 3.13 performs the best on average for the lock operation both with and without caching.
+
 ![Benchmark result of poetry lock operation](plot_lock.svg){#fig-lock .lightbox}
 
-In @fig-install, we can see that poetry with python 3.11 performs the best on average for this operation both with and without caching.
+In @fig-install, we can see that poetry with python 3.11 performs the best on average for the install operation both with and without caching.
 
 ![Benchmark result of poetry install operation](plot_install.svg){#fig-install .lightbox}
 
-In @fig-update, we can see that poetry with python 3.13 performs the best on average for this operation both with and without caching.
+In @fig-update, we can see that poetry with python 3.13 performs the best on average for the update operation both with and without caching.
 
 ![Benchmark result of poetry update operation](plot_update.svg){#fig-update .lightbox}
 
-In @fig-add, we can see that poetry with python 3.11 and 3.13 perform similarily on average for this operation.
+In @fig-add, we can see that poetry with python 3.11 and 3.13 perform similarily on average for the add package operation.
 
 ![Benchmark result of poetry add package operation](plot_add.svg){#fig-add .lightbox}
 
