@@ -7,9 +7,13 @@ The pages are generated using Github Actions and are pushed to the `gh-pages` br
 
 ## Getting Started
 
-1. Install [Quarto](https://quarto.org/docs/get-started/)
+1. Install Python 3.11
 
-2. Preview the content using:
+2. Install Hatch
+
+3. Install [Quarto](https://quarto.org/docs/get-started/)
+
+4. Preview the content using:
 
    ```shell
    quarto preview
