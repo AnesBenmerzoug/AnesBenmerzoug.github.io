@@ -18,5 +18,4 @@ dependencies = [
     "llama-cpp-python==0.3.2",
     "huggingface-hub==0.26.2",
     "deepdiff==8.0.1",
-    "dspy==2.5.32",
 ]
