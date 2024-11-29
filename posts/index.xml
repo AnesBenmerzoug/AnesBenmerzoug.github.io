@@ -9,7 +9,7 @@
 <link>https://AnesBenmerzoug.github.io/posts/</link>
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
-<generator>quarto-1.5.57</generator>
+<generator>quarto-1.6.39</generator>
 <lastBuildDate>Tue, 22 Oct 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Poetry and Python Versions</title>
@@ -1264,7 +1264,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/control-series/</guid>
-  <pubDate>Fri, 22 Nov 2024 17:52:03 GMT</pubDate>
+  <pubDate>Fri, 29 Nov 2024 08:20:53 GMT</pubDate>
 </item>
 </channel>
 </rss>
