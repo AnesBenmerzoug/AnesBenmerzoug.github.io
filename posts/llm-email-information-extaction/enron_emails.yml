@@ -1,0 +1,2894 @@
+-   extracted_information:
+        recipients:
+        -   email: mlenhart@enron.com
+            name: Matt Lenhart
+            type: to
+            organization: Enron Corp.
+        sender:
+            email: derekaberle@aec.ca
+            name: Derek Aberle
+            organization: Alberta Energy Company
+        subject: Liquidated Damages Pertaining to May 11 Gas Day
+        date: 14.05.2001
+    raw_email: |-
+        Message-ID: <9674717.1075858138824.JavaMail.evans@thyme>
+        Date: Mon, 14 May 2001 03:42:00 -0700 (PDT)
+        From: derekaberle@aec.ca
+        To: mlenhart@enron.com
+        Subject: Liquidated Damages Pertaining to May 11 Gas Day
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: "Aberle, Derek" <DerekAberle@aec.ca>
+        X-To: "'mlenhart@enron.com'" <mlenhart@enron.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \Matthew_Lenhart_Jun2001\Notes Folders\Notes inbox
+        X-Origin: Lenhart-M
+        X-FileName: mlenhar.nsf
+
+         Matt
+
+         I am passing on these penalties for non-performance Friday for the
+        firm volumes that did not flow.  The firm sales amount of which you did not
+        perform was  5000 mmbtu at $6.90.  Gas daily reported that the weekend
+        traded as low as $3.70.  Therefore, we are assessing liquidated damages in
+        the amount of US$16,000, the amount of which Lisa Feisst will invoice.  I
+        would like to ensure that this problem does not happen again. Wildgoose is
+        not the swing market, and all transactions completed on your screen are firm
+        as are all transactions, unless otherwise specified, with Wildgoose and
+        Alberta Energy Company.  We, at Alberta Energy Company consider this a
+        serious matter, not the dollar figure associated but the implications in the
+        California market place and are treating it as such.  Our companies have had
+        a longstanding relationship and we would like rectify this problem so we can
+        regain trading together in the future.  A letter outlining the above will be
+        sent to yourself  and John Lavorado for your records.
+
+         Thanks
+
+-   extracted_information:
+        recipients:
+        -   email: ricki.winters@enron.com
+            name: Ricki Winters
+            type: to
+            organization: Enron Corp.
+        -   email: shelley.corman@enron.com
+            name: Shelly Corman
+            type: to
+            organization: Enron Corp.
+        -   email: tk.lohman@enron.com
+            name: TK Lohman
+            type: to
+            organization: Enron Corp.
+        sender:
+            email: kevin.hyatt@enron.com
+            name: Kevin Hyatt
+            organization: Enron Corp.
+        subject: Contact info for Kevin Hyatt
+        date: 25.03.2002
+    raw_email: |-
+        Message-ID: <26028137.1075861083824.JavaMail.evans@thyme>
+        Date: Mon, 25 Mar 2002 11:23:32 -0800 (PST)
+        From: kevin.hyatt@enron.com
+        To: shelley.corman@enron.com, ricki.winters@enron.com, tk.lohman@enron.com
+        Subject: Contact info for Kevin Hyatt
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Hyatt, Kevin </O=ENRON/OU=NA/CN=RECIPIENTS/CN=KHYATT>
+        X-To: Corman, Shelley </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Scorman>, Winters,
+         Ricki </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rwinter>, Lohman, TK
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tlohman>
+        X-cc:
+        X-bcc:
+        X-Folder: \Shelley_Corman_Mar2002\Corman, Shelley\Inbox
+        X-Origin: Corman-S
+        X-FileName: scorman (Non-Privileged).pst
+
+        should you need to get hold of me while I'm travelling:
+
+        pager: 888-582-7421  (almost always works)
+        cell: 281-615-7061
+        home: 281-852-6590
+
+-   extracted_information:
+        recipients:
+        -   email: bilal.bajwa@enron.com
+            name: Bilal Bajwa
+            type: to
+            organization: Enron Corp.
+        -   email: dan.thibaut@enron.com
+            name: Dan Thibaut
+            type: to
+            organization: Enron Corp.
+        -   email: dutch.quigley@enron.com
+            name: Dutch Quigley
+            type: to
+            organization: Enron Corp.
+        -   email: errol.mclaughlin@enron.com
+            name: Error Mclaughlin
+            type: to
+            organization: Enron Corp.
+        -   email: george.huan@enron.com
+            name: George Huan
+            type: to
+            organization: Enron Corp.
+        -   email: hal.mckinney@enron.com
+            name: Hal McKinney
+            type: to
+            organization: Enron Corp.
+        -   email: joey.taylor@enron.com
+            name: Joey Taylor
+            type: to
+            organization: Enron Corp.
+        -   email: john.arnold@enron.com
+            name: John Arnold
+            type: to
+            organization: Enron Corp.
+        -   email: john.griffith@enron.com
+            name: John Griffith
+            type: to
+            organization: Enron Corp.
+        -   email: larry.may@enron.com
+            name: Larry May
+            type: to
+            organization: Enron Corp.
+        -   email: mike.maggi@enron.com
+            name: Mike Maggi
+            type: to
+            organization: Enron Corp.
+        -   email: sean.riordan@enron.com
+            name: Sean Riordan
+            type: to
+            organization: Enron Corp.
+        sender:
+            email: errol.mclaughlin@enron.com
+            name: Errol McLaughlin Jr.
+            organization: Enron Corp.
+        subject: 'TRV Notification:  (NG - PROPT P/L - 10/29/2001)'
+        date: 29.10.2001
+    raw_email: |-
+        Message-ID: <18160078.1075852270265.JavaMail.evans@thyme>
+        Date: Mon, 29 Oct 2001 15:03:51 -0800 (PST)
+        From: errol.mclaughlin@enron.com
+        To: john.arnold@enron.com, bilal.bajwa@enron.com, john.griffith@enron.com,
+            george.huan@enron.com, mike.maggi@enron.com, larry.may@enron.com,
+            hal.mckinney@enron.com, errol.mclaughlin@enron.com,
+            dutch.quigley@enron.com, sean.riordan@enron.com,
+            joey.taylor@enron.com, dan.thibaut@enron.com
+        Subject: TRV Notification:  (NG - PROPT P/L - 10/29/2001)
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: McLaughlin Jr., Errol </O=ENRON/OU=NA/CN=RECIPIENTS/CN=EMCLAUG>
+        X-To: Arnold, John </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jarnold>, Bajwa, Bilal
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Bbajwa>, Griffith, John
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jgriffit>, Huan, George
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Ghuan>, Maggi, Mike
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mmaggi>, May, Larry
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lmay2>, McKinney, Hal
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Hmckinne>, McLaughlin Jr., Errol
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Emclaug>, Quigley, Dutch
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Dquigle>, Riordan, Sean
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Sriordan>, Taylor, Joey
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jtaylor1>, Thibaut, Dan
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Dthibaut>
+        X-cc:
+        X-bcc:
+        X-Folder: \DQUIGLE (Non-Privileged)\Quigley, Dutch\Inbox
+        X-Origin: QUIGLEY-D
+        X-FileName: DQUIGLE (Non-Privileged).pst
+
+        The report named: NG - PROPT P/L <http://trv.corp.enron.com/linkFromExcel.asp?report_cd=11&report_name=NG+-+PROPT+P/L&category_cd=5&category_name=FINANCIAL&toc_hide=1&sTV1=5&TV1Exp=Y&current_efct_date=10/29/2001>, published as of 10/29/2001 is now available for viewing on the website.
+
+-   extracted_information:
+        recipients:
+        -   email: andrew.fastow@enron.com
+            name: Andrew S Fastow
+            type: to
+            organization: Enron Corp.
+        -   email: beena.pradhan@enron.com
+            name: Beena Pradhan
+            type: to
+            organization: Enron Corp.
+        -   email: ben.glisan@enron.com
+            name: Ben F Glisan
+            type: to
+            organization: Enron Corp.
+        -   email: beverly.aden@enron.com
+            name: Beverly Aden
+            type: to
+            organization: Enron Corp.
+        -   email: brenda.castillo@enron.com
+            name: Brenda Castillo
+            type: to
+            organization: Enron Corp.
+        -   email: bridget.maronge@enron.com
+            name: Bridget Maronge
+            type: to
+            organization: Enron Corp.
+        -   email: carol.brown@enron.com
+            name: Carol Ann Brown
+            type: to
+            organization: Enron Corp.
+        -   email: carol.moffett@enron.com
+            name: Carol Moffett
+            type: to
+            organization: Enron Corp.
+        -   email: cathy.phillips@enron.com
+            name: Cathy Phillips
+            type: to
+            organization: Enron Corp.
+        -   email: christina.grow@enron.com
+            name: Christina Grow
+            type: to
+            organization: Enron Corp.
+        -   email: cindy.olson@enron.com
+            name: Cindy Olson
+            type: to
+            organization: Enron Corp.
+        -   email: cindy.stark@enron.com
+            name: Cindy Stark
+            type: to
+            organization: Enron Corp.
+        -   email: cliff.baxter@enron.com
+            name: Cliff Baxter
+            type: to
+            organization: Enron Corp.
+        -   email: connie.blackwood@enron.com
+            name: Connie Blackwood
+            type: to
+            organization: Enron Corp.
+        -   email: dan.leff@enron.com
+            name: Dan Leff
+            type: to
+            organization: Enron Corp.
+        -   email: danny.mccarty@enron.com
+            name: Danny McCarty
+            type: to
+            organization: Enron Corp.
+        -   email: david.cox@enron.com
+            name: David Cox
+            type: to
+            organization: Enron Corp.
+        -   email: david.delainey@enron.com
+            name: David W Delainey
+            type: to
+            organization: Enron Corp.
+        -   email: david.haug@enron.com
+            name: David Haug
+            type: to
+            organization: Enron Corp.
+        -   email: diomedes.christodoulou@enron.com
+            name: Diomedes Christodoulou
+            type: to
+            organization: Enron Corp.
+        -   email: dolores.fisher@enron.com
+            name: Dolores Fisher
+            type: to
+            organization: Enron Corp.
+        -   email: dorothy.dalton@enron.com
+            name: Dorothy Dalton
+            type: to
+            organization: Enron Corp.
+        -   email: elaine.rodriguez@enron.com
+            name: Elaine Rodriguez
+            type: to
+            organization: Enron Corp.
+        -   email: fiona.stewart@enron.com
+            name: Fiona Stewart
+            type: to
+            organization: Enron Corp.
+        -   email: greg.whalley@enron.com
+            name: Greg Whalley
+            type: to
+            organization: Enron Corp.
+        -   email: harold.buchanan@enron.com
+            name: Harold G Buchanan
+            type: to
+            organization: Enron Corp.
+        -   email: inez.dauterive@enron.com
+            name: Inez Dauterive
+            type: to
+            organization: Enron Corp.
+        -   email: james.bannantine@enron.com
+            name: James M Bannantine
+            type: to
+            organization: Enron Corp.
+        -   email: james.derrick@enron.com
+            name: James Derrick
+            type: to
+            organization: Enron Corp.
+        -   email: james.hughes@enron.com
+            name: James A Hughes
+            type: to
+            organization: Enron Corp.
+        -   email: jana.paxton@enron.com
+            name: Jana L Paxton
+            type: to
+            organization: Enron Corp.
+        -   email: jeff.skilling@enron.com
+            name: Jeff Skilling
+            type: to
+            organization: Enron Corp.
+        -   email: jeffrey.mcmahon@enron.com
+            name: Jeffrey McMahon
+            type: to
+            organization: Enron Corp.
+        -   email: jeffrey.shankman@enron.com
+            name: Jeffrey A Shankman
+            type: to
+            organization: Enron Corp.
+        -   email: jeffrey.sherrick@enron.com
+            name: Jeffrey Sherrick
+            type: to
+            organization: Enron Corp.
+        -   email: jennifer.adams@enron.com
+            name: Jennifer Adams
+            type: to
+            organization: Enron Corp.
+        -   email: jennifer.burns@enron.com
+            name: Jennifer Burns
+            type: to
+            organization: Enron Corp.
+        -   email: jeremy.blachman@enron.com
+            name: Jeremy Blachman
+            type: to
+            organization: Enron Corp.
+        -   email: jim.fallon@enron.com
+            name: Jim Fallon
+            type: to
+            organization: Enron Corp.
+        -   email: joannie.williamson@enron.com
+            name: Joannie Williamson
+            type: to
+            organization: Enron Corp.
+        -   email: john.lavorato@enron.com
+            name: John J Lavorato
+            type: to
+            organization: Enron Corp.
+        -   email: john.sherriff@enron.com
+            name: John Sherriff
+            type: to
+            organization: Enron Corp.
+        -   email: judy.smith@enron.com
+            name: Judy G Smith
+            type: to
+            organization: Enron Corp.
+        -   email: julie.armstrong@enron.com
+            name: Julie Armstrong
+            type: to
+            organization: Enron Corp.
+        -   email: karen.heathman@enron.com
+            name: Karen K Heathman
+            type: to
+            organization: Enron Corp.
+        -   email: karen.owens@enron.com
+            name: Karen Owens
+            type: to
+            organization: Enron Corp.
+        -   email: katherine.brown@enron.com
+            name: Katherine Brown
+            type: to
+            organization: Enron Corp.
+        -   email: kathryn.greer@enron.com
+            name: Kathryn Greer
+            type: to
+            organization: Enron Corp.
+        -   email: kathy.campos@enron.com
+            name: Kathy Campos
+            type: to
+            organization: Enron Corp.
+        -   email: kathy.dodgen@enron.com
+            name: Kathy Dodgen
+            type: to
+            organization: Enron Corp.
+        -   email: kathy.mcmahon@enron.com
+            name: Kathy McMahon
+            type: to
+            organization: Enron Corp.
+        -   email: kay.chapman@enron.com
+            name: Kay Chapman
+            type: to
+            organization: Enron Corp.
+        -   email: ken.rice@enron.com
+            name: Ken Rice
+            type: to
+            organization: Enron Corp.
+        -   email: kenneth.lay@enron.com
+            name: Kenneth Lay
+            type: to
+            organization: Enron Corp.
+        -   email: kerry.ferrari@enron.com
+            name: Kerry Ferrari
+            type: to
+            organization: Enron Corp.
+        -   email: kevin.hannon@enron.com
+            name: Kevin Hannon
+            type: to
+            organization: Enron Corp.
+        -   email: kimberly.hillis@enron.com
+            name: Kimberly Hillis
+            type: to
+            organization: Enron Corp.
+        -   email: larry.izzo@enron.com
+            name: Larry L Izzo
+            type: to
+            organization: Enron Corp.
+        -   email: lauren.urquhart@enron.com
+            name: Lauren Urquhart
+            type: to
+            organization: Enron Corp.
+        -   email: leah.rijo@enron.com
+            name: Leah Rijo
+            type: to
+            organization: Enron Corp.
+        -   email: liz.taylor@enron.com
+            name: Liz M Taylor
+            type: to
+            organization: Enron Corp.
+        -   email: loretta.brelsford@enron.com
+            name: Loretta Brelsford
+            type: to
+            organization: Enron Corp.
+        -   email: lou.pai@enron.com
+            name: Lou L Pai
+            type: to
+            organization: Enron Corp.
+        -   email: louise.kitchen@enron.com
+            name: Louise Kitchen
+            type: to
+            organization: Enron Corp.
+        -   email: lucy.marshall@enron.com
+            name: Lucy Marshall
+            type: to
+            organization: Enron Corp.
+        -   email: marcia.manarin@enron.com
+            name: Marcia Manarin
+            type: to
+            organization: Enron Corp.
+        -   email: mark.frevert@enron.com
+            name: Mark Frevert
+            type: to
+            organization: Enron Corp.
+        -   email: mark.koenig@enron.com
+            name: Mark Koenig
+            type: to
+            organization: Enron Corp.
+        -   email: mark.metts@enron.com
+            name: Mark Metts
+            type: to
+            organization: Enron Corp.
+        -   email: mark.muller@enron.com
+            name: Mark S Muller
+            type: to
+            organization: Enron Corp.
+        -   email: marsha.schiller@enron.com
+            name: Marsha Schiller
+            type: to
+            organization: Enron Corp.
+        -   email: marty.sunde@enron.com
+            name: Marty Sunde
+            type: to
+            organization: Enron Corp.
+        -   email: mary.garza@enron.com
+            name: Mary E Garza
+            type: to
+            organization: Enron Corp.
+        -   email: matthew.scrimshaw@enron.com
+            name: Matthew Scrimshaw
+            type: to
+            organization: Enron Corp.
+        -   email: maureen.mcvicker@enron.com
+            name: Maureen McVicker
+            type: to
+            organization: Enron Corp.
+        -   email: mercedes.estrada@enron.com
+            name: Mercedes Estrada
+            type: to
+            organization: Enron Corp.
+        -   email: michael.brown@enron.com
+            name: Michael R Brown
+            type: to
+            organization: Enron Corp.
+        -   email: mike.mcconnell@enron.com
+            name: Mike McConnell
+            type: to
+            organization: Enron Corp.
+        -   email: molly.bobrow@enron.com
+            name: Molly Bobrow
+            type: to
+            organization: Enron Corp.
+        -   email: mrudula.gadade@enron.com
+            name: Mrudula Gadade
+            type: to
+            organization: Enron Corp.
+        -   email: nicki.daw@enron.com
+            name: Nicki Daw
+            type: to
+            organization: Enron Corp.
+        -   email: peggy.mccurley@enron.com
+            name: Peggy McCurley
+            type: to
+            organization: Enron Corp.
+        -   email: philippe.bibi@enron.com
+            name: Philippe A Bibi
+            type: to
+            organization: Enron Corp.
+        -   email: raymond.bowen@enron.com
+            name: Raymond Bowen
+            type: to
+            organization: Enron Corp.
+        -   email: rebecca.mcdonald@enron.com
+            name: Rebecca McDonald
+            type: to
+            organization: Enron Corp.
+        -   email: richard.causey@enron.com
+            name: Richard Causey
+            type: to
+        -   email: rick.buy@enron.com
+            name: Rick Buy
+            type: to
+            organization: Enron Corp.
+        -   email: rod.hayslett@enron.com
+            name: Rod Hayslett
+            type: to
+        -   email: rosalee.fleming@enron.com
+            name: Rosalee Fleming
+            type: to
+            organization: Enron Corp.
+        -   email: rosane.fabozzi@enron.com
+            name: Rosane Fabozzi
+            type: to
+            organization: Enron Corp.
+        -   email: sanjay.bhatnagar@enron.com
+            name: Sanjay Bhatnagar
+            type: to
+        -   email: sharon.dick@enron.com
+            name: Sharon Dick
+            type: to
+            organization: Enron Corp.
+        -   email: sharron.westbrook@enron.com
+            name: Sharron Westbrook
+            type: to
+            organization: Enron Corp.
+        -   email: sherri.sera@enron.com
+            name: Sherri Sera
+            type: to
+            organization: Enron Corp.
+        -   email: stacy.guidroz@enron.com
+            name: Stacy Guidroz
+            type: to
+            organization: Enron Corp.
+        -   email: stanley.horton@enron.com
+            name: Stanley Horton
+            type: to
+            organization: Enron Corp.
+        -   email: stephanie.harris@enron.com
+            name: Stephanie Harris
+            type: to
+            organization: Enron Corp.
+        -   email: steve.elliott@enron.com
+            name: Steve Elliott
+            type: to
+            organization: Enron Corp.
+        -   email: steven.kean@enron.com
+            name: Steven J Kean
+            type: to
+            organization: Enron Corp.
+        -   email: sue.ford@enron.com
+            name: Sue Ford
+            type: to
+            organization: Enron Corp.
+        -   email: susan.skarness@enron.com
+            name: Susan Skarness
+            type: to
+            organization: Enron Corp.
+        -   email: suzanne.danz@enron.com
+            name: Suzanne Danz
+            type: to
+            organization: Enron Corp.
+        -   email: tammie.schoppe@enron.com
+            name: Tammie Schoppe
+            type: to
+            organization: Enron Corp.
+        -   email: thomas.white@enron.com
+            name: Thomas E White
+            type: to
+            organization: Enron Corp.
+        -   email: tori.wells@enron.com
+            name: Tori L Wells
+            type: to
+            organization: Enron Corp.
+        -   email: vanessa.groscrand@enron.com
+            name: Vanessa Groscrand
+            type: to
+            organization: Enron Corp.
+        -   email: wade.cline@enron.com
+            name: Wade Cline
+            type: to
+            organization: Enron Corp.
+        sender:
+            email: katherine.brown@enron.com
+            name: Katherine Brown
+            organization: Enron Corp.
+        subject: Executive Committee List - Update
+        date: 13.12.2000
+    raw_email: |-
+        Message-ID: <27125134.1075854461549.JavaMail.evans@thyme>
+        Date: Wed, 13 Dec 2000 06:32:00 -0800 (PST)
+        From: katherine.brown@enron.com
+        To: james.bannantine@enron.com, cliff.baxter@enron.com,
+            sanjay.bhatnagar@enron.com, jeremy.blachman@enron.com,
+            philippe.bibi@enron.com, raymond.bowen@enron.com,
+            michael.brown@enron.com, harold.buchanan@enron.com,
+            rick.buy@enron.com, richard.causey@enron.com,
+            diomedes.christodoulou@enron.com, wade.cline@enron.com,
+            david.cox@enron.com, david.delainey@enron.com,
+            james.derrick@enron.com, steve.elliott@enron.com,
+            jim.fallon@enron.com, andrew.fastow@enron.com,
+            mark.frevert@enron.com, ben.glisan@enron.com, kevin.hannon@enron.com,
+            david.haug@enron.com, rod.hayslett@enron.com,
+            stanley.horton@enron.com, james.hughes@enron.com,
+            larry.izzo@enron.com, steven.kean@enron.com,
+            louise.kitchen@enron.com, mark.koenig@enron.com,
+            kenneth.lay@enron.com, john.lavorato@enron.com, dan.leff@enron.com,
+            danny.mccarty@enron.com, mike.mcconnell@enron.com,
+            rebecca.mcdonald@enron.com, jeffrey.mcmahon@enron.com,
+            mark.metts@enron.com, mark.muller@enron.com, cindy.olson@enron.com,
+            lou.pai@enron.com, ken.rice@enron.com, matthew.scrimshaw@enron.com,
+            jeffrey.shankman@enron.com, jeffrey.sherrick@enron.com,
+            john.sherriff@enron.com, jeff.skilling@enron.com,
+            marty.sunde@enron.com, greg.whalley@enron.com,
+            thomas.white@enron.com, marcia.manarin@enron.com,
+            susan.skarness@enron.com, stacy.guidroz@enron.com,
+            beena.pradhan@enron.com, karen.heathman@enron.com,
+            sharron.westbrook@enron.com, kay.chapman@enron.com,
+            molly.bobrow@enron.com, rosane.fabozzi@enron.com,
+            stephanie.harris@enron.com, bridget.maronge@enron.com,
+            nicki.daw@enron.com, inez.dauterive@enron.com, carol.brown@enron.com,
+            elaine.rodriguez@enron.com, cindy.stark@enron.com,
+            mary.garza@enron.com, maureen.mcvicker@enron.com,
+            joannie.williamson@enron.com, rosalee.fleming@enron.com,
+            vanessa.groscrand@enron.com, tori.wells@enron.com,
+            cathy.phillips@enron.com, loretta.brelsford@enron.com,
+            sue.ford@enron.com, dolores.fisher@enron.com, karen.owens@enron.com,
+            dorothy.dalton@enron.com, mercedes.estrada@enron.com,
+            christina.grow@enron.com, lauren.urquhart@enron.com,
+            sherri.sera@enron.com, katherine.brown@enron.com,
+            liz.taylor@enron.com, judy.smith@enron.com, kathy.mcmahon@enron.com,
+            suzanne.danz@enron.com, peggy.mccurley@enron.com,
+            marsha.schiller@enron.com, fiona.stewart@enron.com,
+            jana.paxton@enron.com, connie.blackwood@enron.com,
+            tammie.schoppe@enron.com, kimberly.hillis@enron.com,
+            jennifer.burns@enron.com, sharon.dick@enron.com,
+            beverly.aden@enron.com, kathy.dodgen@enron.com,
+            kerry.ferrari@enron.com, carol.moffett@enron.com,
+            jennifer.adams@enron.com, leah.rijo@enron.com,
+            lucy.marshall@enron.com, kathy.campos@enron.com,
+            julie.armstrong@enron.com, kathryn.greer@enron.com,
+            mrudula.gadade@enron.com, brenda.castillo@enron.com
+        Subject: Executive Committee List - Update
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Katherine Brown
+        X-To: James M Bannantine, Cliff Baxter, Sanjay Bhatnagar, Jeremy Blachman,
+         Philippe A Bibi, Raymond Bowen, Michael R Brown, Harold G Buchanan, Rick Buy,
+         Richard Causey, Diomedes Christodoulou, Wade Cline, David Cox, David W
+         Delainey, James Derrick, Steve Elliott, Jim Fallon, Andrew S Fastow, Mark
+         Frevert, Ben F Glisan, Kevin Hannon, David Haug, Rod Hayslett, Stanley
+         Horton, James A Hughes, Larry L Izzo, Steven J Kean, Louise Kitchen, Mark
+         Koenig, Kenneth Lay, John J Lavorato, Dan Leff, Danny McCarty, Mike
+         McConnell, Rebecca McDonald, Jeffrey McMahon, Mark Metts, Mark S Muller,
+         Cindy Olson, Lou L Pai, Ken Rice, Matthew Scrimshaw, Jeffrey A Shankman,
+         Jeffrey Sherrick, John Sherriff, Jeff Skilling, Marty Sunde, Greg Whalley,
+         Thomas E White, Marcia Manarin, Susan Skarness, Stacy Guidroz, Beena Pradhan,
+         Karen K Heathman, Sharron Westbrook, Kay Chapman, Molly Bobrow, Rosane
+         Fabozzi, Stephanie Harris, Bridget Maronge, Nicki Daw, Inez Dauterive, Carol
+         Ann Brown, Elaine Rodriguez, Cindy Stark, Mary E Garza, Maureen McVicker,
+         Joannie Williamson, Rosalee Fleming, Vanessa Groscrand, Tori L Wells, Cathy
+         Phillips, Loretta Brelsford, Sue Ford, Dolores Fisher, Karen Owens, Dorothy
+         Dalton, Mercedes Estrada, Christina Grow, Lauren Urquhart, Sherri Sera,
+         Katherine Brown, Liz M Taylor, Judy G Smith, Kathy McMahon, Suzanne Danz,
+         Peggy McCurley, Marsha Schiller, Fiona Stewart, Jana L Paxton, Connie
+         Blackwood, Tammie Schoppe, Kimberly Hillis, Jennifer Burns, Sharon Dick,
+         Beverly Aden, Kathy Dodgen, Kerry Ferrari, Carol Moffett, Jennifer Adams,
+         Leah Rijo, Lucy Marshall, Kathy Campos, Julie Armstrong, Kathryn Greer,
+         Mrudula Gadade, Brenda Castillo
+        X-cc:
+        X-bcc:
+        X-Folder: \David_Delainey_Dec2000\Notes Folders\Notes inbox
+        X-Origin: Delainey-D
+        X-FileName: ddelain.nsf
+
+        Updates
+        Jennifer Burns - new cell phone number
+        Kathy McMahon - new executive committee assistant
+
+-   extracted_information:
+        recipients: []
+        sender:
+            email: awe@caiso.com
+        subject: CANCEL Warning Notice
+        date: 24.08.2000
+    raw_email: |-
+        Message-ID: <8949453.1075863605205.JavaMail.evans@thyme>
+        Date: Thu, 24 Aug 2000 11:51:00 -0700 (PDT)
+        From: awe@caiso.com
+        Subject: CANCEL Warning Notice
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: awe@caiso.com
+        X-To: undisclosed-recipients:,
+        X-cc:
+        X-bcc:
+        X-Folder: \Robert_Badeer_Aug2000\Notes Folders\Notes inbox
+        X-Origin: Badeer-R
+        X-FileName: rbadeer.nsf
+
+                SYSTEM WARNING CANCELLATION [200000204]
+
+        Effective 08/24/2000 at 19:00 the California Independent System Operator
+        has terminated the "Warning" of the Electrical Emergency Plan.
+
+        The "Warning"  has been in effect since Thu Aug 24 11:00:00 2000 PDT.
+
+
+
+        This message is from Market Operations  at the California ISO.
+
+        This notice cancels notice 200000203
+
+        Notice issued at: 08/24/2000 18:51
+
+-   extracted_information:
+        recipients:
+        -   email: mark.taylor@enron.com
+            name: Mark Taylor
+            type: to
+            organization: Enron Corp.
+        sender:
+            email: gbrown@gcd.com
+            name: Gregory L. Brown
+            phone_number: (312) 245-8703
+            organization: Gardner, Carton & Douglas
+        subject: 'RE: Hey Greg'
+        date: 14.09.2000
+    raw_email: |-
+        Message-ID: <15779075.1075860023547.JavaMail.evans@thyme>
+        Date: Thu, 14 Sep 2000 15:12:00 -0700 (PDT)
+        From: gbrown@gcd.com
+        To: mark.taylor@enron.com
+        Subject: RE: Hey Greg
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: "Brown, Gregory" <gbrown@gcd.com>
+        X-To: "'Mark.Taylor@enron.com'" <Mark.Taylor@enron.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \Mark_Taylor _Dec_2000\Notes Folders\Notes inbox
+        X-Origin: Taylor-M
+        X-FileName: mtaylor.nsf
+
+        Hey Mark, great to hear from you.  I actually went to Argentina and Chile
+        about 5 years ago for 2 weeks and had a blast.  I'd love to go back for a
+        longer period.  I was recommending it to Linda for a new place to go.
+
+        It sounds like things are going well for you in Houston.  I wish I knew you
+        were down there.  I was down for a weekend in July.  My college roommate and
+        his wife and their kids live there.  He's a 6th? 7th? year in Skadden's
+        Houston office.  Charles Still.  Ever work with him?  I'll let you know when
+        I'm back down there.
+
+        Have you been back to the Caribbean lately?  I was back in April for a week
+        in the BVI.  I really missed the place.  Do you ever get to Chicago?  Let me
+        know if you're going to be around.  Take care.
+
+
+        Gregory L. Brown
+        Gardner, Carton & Douglas
+        321 North Clark Street, Suite 3400
+        Chicago, Illinois 60610-4795
+        Direct dial: 312.245.8703
+        Facsimile: 312.644.3381
+        E-mail:  gbrown@gcd.com
+
+
+
+        -----Original Message-----
+        From: Mark.Taylor@enron.com [mailto:Mark.Taylor@enron.com]
+        Sent: Wednesday, September 13, 2000 8:20 PM
+        To: Brown, Greg - Health Atty
+        Subject: Hey Greg
+
+
+        I've been to Argentina - what can I tell you about it?  We need to get
+        sailing soon!  Ever get to Houston?  I have a boat here but don't sail too
+        much - just working too hard.  Hope you're well!
+
+
+         09/14/00
+        22:10:57----------------------------------------------------------------------
+        --------
+
+        This message originates from the law firm of Gardner, Carton &  Douglas.  It
+        contains information which may be confidential or privileged and is intended
+        only for the individual or entity named above.    It is prohibited for anyone
+        else to disclose, copy, distribute or use the contents of this message.  All
+        personal messages express views solely  of the sender, which are not to be
+        attributed to Gardner, Carton &  Douglas, and may not be copied or
+        distributed without this disclaimer.  If you received this message in error,
+        please notify us immediately at  postmaster@gcd.com or (312) 644-3000.
+
+
+        ==============================================================================
+
+-   extracted_information:
+        recipients:
+        -   email: cbush@amgen.com
+            name: Chris Bush
+            type: to
+        -   email: chris@dahlelectric.com
+            name: Chris Dahl
+            type: to
+        -   email: doug.skordal@nike.com
+            name: Doug Skordal
+            type: to
+            organization: Nike
+        -   email: dpraisl@buckman.com
+            name: David P. Raisl
+            type: to
+        -   email: dquillen@aracnet.com
+            name: Darrin Quillen
+            type: to
+        -   email: entrup_william@lilly.com
+            name: William Entrup
+            type: to
+        -   email: jones@mca-architects.com
+            name: Marcus Jones
+            type: to
+        -   email: kiddmyers@aol.com
+            name: Ron Myers
+            type: to
+        -   email: malinlf@ix.netcom.com
+            name: Mark Logomasini
+            type: to
+        -   email: mark.guzman@enron.com
+            name: Mark Guzman
+            type: to
+            organization: Enron Corp.
+        -   email: marysvillegolf@earthlink.net
+            name: Robb Mcavoy
+            type: to
+        -   email: matt.hsu@interwoven.com
+            name: Matt Wilson
+            type: to
+        -   email: matt.wilson@weyerhaeuser.com
+            name: Matt Wilson
+            type: to
+        -   email: sjbikes@hotmail.com
+            name: Sean Jennart
+            type: to
+        -   email: stephan.dillon@weyerhaeuser.com
+            name: Stephan Dillon
+            type: to
+        -   email: yasu_neupdx@hotmail.com
+            name: Yas Suzuki
+            type: to
+        sender:
+            email: mleslie@amgen.com
+            name: Marc Leslie
+            organization: Enron Corp.
+            phone_number: (303)401-7054
+        subject: Fiesta Bowl
+        date: 04.12.2000
+    raw_email: |-
+        Message-ID: <18410812.1075840729791.JavaMail.evans@thyme>
+        Date: Mon, 4 Dec 2000 01:57:00 -0800 (PST)
+        From: mleslie@amgen.com
+        To: cbush@amgen.com, chris@dahlelectric.com, dquillen@aracnet.com,
+            dpraisl@buckman.com, doug.skordal@nike.com, jones@mca-architects.com,
+            malinlf@ix.netcom.com, mark.guzman@enron.com,
+            matt.hsu@interwoven.com, matt.wilson@weyerhaeuser.com,
+            marysvillegolf@earthlink.net, kiddmyers@aol.com, sjbikes@hotmail.com,
+            stephan.dillon@weyerhaeuser.com, entrup_william@lilly.com,
+            yasu_neupdx@hotmail.com
+        Subject: Fiesta Bowl
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: "Leslie, Marc" <mleslie@amgen.com>
+        X-To: "Bush, Chris" <cbush@amgen.com>, "'Chris Dahl (work)'"
+         <chris@dahlelectric.com>, "'Darrin Quillen'" <dquillen@aracnet.com>, "'David
+         P. Raisl'" <dpraisl@buckman.com>, "'Doug Skordal'" <Doug.Skordal@nike.com>,
+         "'Marcus Jones'" <jones@mca-architects.com>, "'Mark Logomasini'"
+         <malinlf@ix.netcom.com>, "'Mark.Guzman'" <Mark.Guzman@enron.com>, "'Matt Hsu
+         (work)'" <matt.hsu@interwoven.com>, "'Matt Wilson'"
+         <matt.wilson@weyerhaeuser.com>, "'Robb Mcavoy'"
+         <marysvillegolf@earthlink.net>, "'Ron Myers'" <kiddmyers@aol.com>, "'Sean
+         Jennart'" <sjbikes@hotmail.com>, "'Stephan Dillon'"
+         <stephan.dillon@weyerhaeuser.com>, "'William Entrup'"
+         <ENTRUP_WILLIAM@lilly.com>, "'Yas Suzuki'" <yasu_neupdx@hotmail.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \mark guzman 6-28-02\Notes Folders\Notes inbox
+        X-Origin: GUZMAN-M
+        X-FileName: mark guzman 6-28-02.nsf
+
+        Beavers make plans to invade Arizona
+             Associated Press
+
+             TEMPE, Ariz. -- Oregon State capped its remarkable emergence from more
+        than a
+             quarter-century of football ineptitude by accepting an invitation to
+        play Notre Dame in the Jan. 1
+             Fiesta Bowl.
+
+             The Beavers were the top choice of the Fiesta Bowl selection committee
+        because they were "a
+             conference co-champion, a 10-win team and an incredible turnaround
+        story that somewhat mirrors
+             what Kansas State has done," Fiesta Bowl president John Junker said.
+
+             "For us to come here from where we were three years go, to go 10-1, and
+        being in the Fiesta
+             Bowl against Notre Dame is a great story," Oregon State coach Dennis
+        Erickson said Sunday.
+
+             As Oregon State's opponent, Virginia Tech had a higher ranking and
+        better record, but the Fiesta
+             could not resist the Irish (9-2) and their huge nationwide following,
+        even though Notre Dame was
+             ranked only 11th in the final Bowl Championship Series standings.
+        Oregon State is sixth.
+
+             It will be a matchup of teams that weren't even in the top 25 in the
+        preseason.
+
+             "I don't think any of us in our wildest imagination would have thought
+        this would have been the
+             matchup," Junker said.
+
+             Notre Dame won its last seven games to become bowl eligible at 9-2.
+
+             The Fiesta considered Miami but decided the Notre Dame-Oregon State
+        matchup was more
+             intriguing, and that the Hurricanes were a better fit against Florida
+        in the Sugar Bowl.
+
+             Fiesta Bowl officials maintained that comments last week by Pac-10
+        commissioner Tom Hansen
+             had no impact on their decision. He suggested the conference should
+        pull out of the BCS if
+             Oregon State was left out of the Fiesta Bowl.
+
+             "We selected Oregon State because they deserved it and won it on the
+        field of battle," Junker
+             said.
+
+             The Fiesta Bowl normally gives an automatic berth to the Big 12
+        champion, but it had two at-large
+             picks this year because Oklahoma will play Florida State for the
+        national championship in the
+             Orange Bowl.
+
+             Oregon State set an NCAA record for futility with 28 consecutive losing
+        seasons, a streak broken
+             when the Beavers went 6-5 last year in Erickson's first season and lost
+        to Hawaii in the Oahu
+             Bowl.
+
+             This year, Oregon State tied Washington and Oregon for the Pac-10
+        title, their first since 1964.
+             That team, coached by Tommy Prothro, lost to Michigan in the Rose Bowl.
+        A 35-year bowl
+             drought followed.
+
+             Notre Dame, by contrast, is a regular at major bowls. Its last
+        appearance in one of the big-four
+             bowls was in 1996, the Orange Bowl. But this Irish team was not
+        expected to get this far,
+             especially after a 2-2 start. There was widespread speculation then
+        that coach Bob Davie would
+             be out of a job when the season ended.
+
+             Davie did not want to talk about vindication.
+
+             "I think so much attention is always placed on the head coach, and I'm
+        sure Dennis would agree
+             with me. This isn't about us. This is about our football players and
+        our assistant coaches who put
+             so much into this.
+
+             "That was a little bit overrated before the season and it's a little
+        bit overrated now. This certainly
+             isn't about me."
+
+             Each team will receive $12 million to $13 million. Oregon State will
+        split the money with the rest
+             of the Pac-10, but Notre Dame, as an independent, keeps it all. No
+        wonder Davie was so anxious
+             as he watched the Oklahoma-Kansas State game, knowing that a K-State
+        victory could have sent
+             Notre Dame to a much lesser holiday payday.
+
+             "It was brutal," he said. "As good as Oklahoma is, and as well coached
+        as they are, I almost
+             went crazy when it was fourth-and-1 and they were in that shotgun for
+        that draw, but they know
+             what they're doing. It was painful watching that game."
+
+             Junker said Oregon State officials have promised 30,000 or more fans
+        will come to the desert from
+             the Northwest for the game. Add to that Notre Dame's unparalleled
+        national following, and the
+             Fiesta already has been declared a sellout. Each school will receive
+        15,000 tickets.
+
+             Beaver players like the idea of playing Notre Dame.
+
+             "I didn't like them growing up," running back Ken Simonton said. "I
+        don't like 'America's teams.' I
+             don't like everybody's favorite. I was always an underdog."
+
+
+        Marc
+        *(303)401-7054
+        *mleslie@amgen.com
+
+-   extracted_information:
+        recipients:
+        -   email: richard.ring@enron.com
+            name: Richard Ring
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: exchange.administrator@enron.com
+            organization: Enron Corp.
+            name: Exchange System Administrator
+        subject: 'WARNING:  Your mailbox is approaching the size limit'
+        date: 25.10.2001
+    raw_email: |-
+        Message-ID: <26298689.1075858663285.JavaMail.evans@thyme>
+        Date: Thu, 25 Oct 2001 00:03:15 -0700 (PDT)
+        From: exchange.administrator@enron.com
+        To: richard.ring@enron.com
+        Subject: WARNING:  Your mailbox is approaching the size limit
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Exchange System Administrator
+        X-To: Ring, Richard </O=ENRON/OU=NA/CN=RECIPIENTS/CN=RRING>
+        X-cc:
+        X-bcc:
+        X-Folder: \RRING (Non-Privileged)\Inbox
+        X-Origin: Ring-R
+        X-FileName: RRING (Non-Privileged)1.pst
+
+        This warning is sent automatically to inform you that your mailbox is approaching the maximum size limit.
+        Your mailbox size is currently 91182 KB.
+
+        Mailbox size limits:
+
+            When your mailbox reaches 75000 KB you will receive this message.To check the size of your mailbox:
+
+          Right-click the mailbox (Outlook Today),
+          Select Properties and click the Folder Size button.
+          This method can be used on individual folders as well.
+
+        To make more space available, delete any items that are no longer needed such as Sent Items and Journal entries.
+
+        You must empty the Deleted Items folder after deleting items or the space will not be freed.
+
+        To turn Journaling off,
+         click Tools | Options | Journaling Options and de-select all items.
+
+        See client Help for more information.
+
+-   extracted_information:
+        recipients:
+        -   email: bill.williams@enron.com
+            name: Bill Williams
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: sap_security@enron.com
+            organization: Enron Corp.
+        subject: Your password has been reset
+        date: Thu, 31 Jan 2002
+    raw_email: |-
+        Message-ID: <9688764.1075839940620.JavaMail.evans@thyme>
+        Date: Thu, 31 Jan 2002 14:47:21 -0800 (PST)
+        From: sap_security@enron.com
+        To: bill.williams@enron.com
+        Subject: Your password has been reset
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: sap_security@enron.com
+        X-To: Williams III, Bill </O=ENRON/OU=NA/CN=RECIPIENTS/CN=BWILLIA5>
+        X-cc:
+        X-bcc:
+        X-Folder: \ExMerge - Williams III, Bill\Inbox
+        X-Origin: WILLIAMS-W3
+        X-FileName:
+
+
+
+        Thank you for using our automated self service password reset option.
+
+        The user id and password in SAP (Apollo Production and HR Production), eHRonline, iBuyit and iPayit are all synchronized.  When you reset your password in eHRonline, it automatically synchronizes the password in the other systems.
+
+        Please follow the steps to reset and synchronize your passwords.
+
+        1.        Go to ehronline.enron.com
+        2.       Click on the   button
+        3.       Enter your User Id (SAP Personnel Number) and temporary password (located at the bottom of this email)
+        4.       You will then be asked to change your password
+        5.       Enter your new password twice
+        6.       Once you have successfully changed your password in eHRonline, you have synchronized your password for SAP (Apollo Production and HR Production), eHRonline, iBuyit and iPayit
+        7.       If you were trying to access an application other than eHRonline, close eHRonline and proceed to the desired application.  You will now be able to log in with your NEW password.
+
+         THIS IS A GENERATED EMAIL - DO NOT REPLY!
+
+        IF YOU NEED FURTHER ASSISTANCE, CONTACT THE ISC HELP DESK AT:  713-345-4727
+
+        The password for your account: P00503927   has been reset to: 13397679
+
+        Go to eHRonline now: http://ehronline.enron.com <https://ehronline.enron.com/>
+
+-   extracted_information:
+        recipients:
+        -   email: kam.keiser@enron.com
+            name: Kam Keiser
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: torrey.moorer@enron.com
+            organization: Enron Corp.
+            name: Torrey Moorer
+        subject: 'RE: EOL id''s'
+        date: 14.01.2002
+    raw_email: |-
+        Message-ID: <26144549.1075840187427.JavaMail.evans@thyme>
+        Date: Mon, 14 Jan 2002 12:27:44 -0800 (PST)
+        From: torrey.moorer@enron.com
+        To: kam.keiser@enron.com
+        Subject: RE: EOL id's
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Moorer, Torrey </O=ENRON/OU=NA/CN=RECIPIENTS/CN=TMOORER>
+        X-To: Keiser, Kam </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Kkeiser>
+        X-cc:
+        X-bcc:
+        X-Folder: \ExMerge - Keiser, Kam\Inbox
+        X-Origin: KEISER-K
+        X-FileName: kam keiser 7-11-02.PST
+
+        Thanks! We''l have the indexes ready in the next 1/2 hour.
+
+         -----Original Message-----
+        From:     Keiser, Kam
+        Sent:    Monday, January 14, 2002 1:43 PM
+        To:    Moorer, Torrey
+        Subject:    EOL id's
+
+        Torrey,
+
+        Here are the new mappings for the EOL products, except for the central desk.  Hunter is still working on his but I wanted to get you something.
+
+        for physical rest of month deals we attached the physical book id
+        for prompt month physical deals we attached the TAGG book id
+
+        is that correct?
+
+
+        I will send the finished product when Hunter is done.  Keep in mind it will probably change again.
+        Kam
+
+         << File: Trader-Book template (US Gas)_EOL new books.xls >>
+
+-   extracted_information:
+        recipients:
+        -   email: monika.causholli@enron.com
+            name: Monika Causholli
+            organization: Enron Corp.
+            phone_number: (713) 345-1510
+            type: to
+        sender:
+            email: eric.hughson@colorado.edu
+            name: Eric Hughson
+            role: Associate Professor of Finance
+            organization: College of Business - Univerity of Colorado
+            phone_number: (303) 735-5384
+        subject: 'RE: PhD in Finance'
+        date: 16.11.2001
+    raw_email: |-
+        Message-ID: <25807195.1075862113309.JavaMail.evans@thyme>
+        Date: Fri, 16 Nov 2001 13:57:59 -0800 (PST)
+        From: eric.hughson@colorado.edu
+        To: monika.causholli@enron.com
+        Subject: RE: PhD in Finance
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Eric Hughson <Eric.Hughson@colorado.edu>
+        X-To: Causholli, Monika </O=ENRON/OU=NA/CN=RECIPIENTS/CN=MCAUSHOL>
+        X-cc:
+        X-bcc:
+        X-Folder: \MCAUSHOL (Non-Privileged)\Causholli, Monika\Inbox
+        X-Origin: Causholli-M
+        X-FileName: MCAUSHOL (Non-Privileged).pst
+
+        Ms Causholli, see below.
+
+        Eric Hughson
+        Associate Professor of Finance
+        College of Business
+        University of Colorado
+        Campus Box 419
+        Boulder, CO 80309
+        phone: 303 735 5384
+        fax:      303 492 5962
+
+
+        -----Original Message-----
+        From: Causholli, Monika [mailto:Monika.Causholli@enron.com]
+        Sent: Friday, November 16, 2001 12:18 PM
+        To: Eric.Hughson@colorado.edu
+        Subject: PhD in Finance
+
+
+        Hello Mr. Hughson,
+
+        Ronald Melicher adviced me to contact you about the PhD program.
+        I am interested in the field of finance and I wanted to learn about the
+        PhD finance program at the University of Colorado.
+        Can you summarize the main points of the program, its requirements,and
+        the deadlines?
+
+        Two years of coursework, economics, econometrics, and finance seminars are what most people normally take.  Math skills are important initially.  Later on, it depends what you do.  Then you take comps and write a thesis.  I think that the deadlines and such are on our website.  The program starts in the fall, and you are advised to start then.  As far as admissions requirements, take the GMAT or GRE, and do well.  We have many applicants with >700 on the GMAT, for instance.
+
+
+
+        I have finished a finance degree from Oregon State University and have
+        two years of work experience.
+
+        Work experience is not much help, unless it specifically relates to what you are working on.  Abstraction is an important skill, and at best, work experience can help you with getting rid of extraneous detail.
+
+        Sincerely,
+        Monika Causholli
+        Enron Corp.
+        (713) 345 1510
+
+
+
+        **********************************************************************
+        This e-mail is the property of Enron Corp. and/or its relevant affiliate and may contain confidential and privileged material for the sole use of the intended recipient (s). Any review, use, distribution or disclosure by others is strictly prohibited. If you are not the intended recipient (or authorized to receive for the recipient), please contact the sender or reply to Enron Corp. at enron.messaging.administration@enron.com and delete all copies of the message. This e-mail (and any attachments hereto) are not intended to be an offer (or an acceptance) and do not create or evidence a binding and enforceable contract between Enron Corp. (or any of its affiliates) and the intended recipient or any other party, and may not be relied on by anyone as the basis of a contract by estoppel or otherwise. Thank you.
+        **********************************************************************
+
+-   extracted_information:
+        recipients:
+        -   email: greg@pira.com
+            name: Greg Shuttlesworth
+            organization: PIRA Energy Group
+            type: to
+        sender:
+            email: cathy@pira.com
+            name: Cathy Lopez
+            organization: PIRA Energy Group
+        subject: 'PIRA''s Special Release Gas Flash: Strong Supply Growth Indicated 04/30/01'
+        date: 30.04.2001
+    raw_email: |-
+        Message-ID: <7555575.1075857946274.JavaMail.evans@thyme>
+        Date: Mon, 30 Apr 2001 11:17:00 -0700 (PDT)
+        From: cathy@pira.com
+        To: greg@pira.com
+        Subject: PIRA's Special Release Gas Flash: Strong Supply Growth Indicated
+         04/30/01
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: "Cathy Lopez" <cathy@pira.com>
+        X-To: "PIRA Natural Gas Retainer Client" <greg@pira.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \Lawrence_May_Jun2001_1\Notes Folders\Notes inbox
+        X-Origin: May-L
+        X-FileName: lmay2.nsf
+
+        Attached is a PIRA Special Release entitled "Gas Flash: Strong Supply Growth
+        Indicated."
+
+        If you have any questions regarding the report's content, please contact:
+        Greg Shuttlesworth (email: greg@pira.com), Tom Howard (email:
+        tazh@pira.com), Richard Redash (email: Rich@pira.com), Nobu Tarui (email:
+        nobuo@pira.com) or Jane Hsu (email: jane@pira.com), at (212) 686-6808.
+
+        Contact John Graziano regarding PIRA report distribution and address changes
+        at (212) 686-6808, email: support@pira.com.
+
+        NOTE: Circulation of the "Gas Flash Weekly" outside a Client's licensed
+        distribution area is strictly prohibited. Clients that are unsure of their
+        licensed distribution or require an extension of their current license
+        should contact their PIRA sales representative, or email to sales@pira.com.
+
+        PIRA Energy Group
+
+
+
+
+         - agaspec043001.pdf
+
+-   extracted_information:
+        recipients:
+        -   email: sabra.dinari@enron.com
+            name: Sabra L. Dinari
+            organization: Enron Corp.
+            type: to
+        -   email: scott.neal@enron.com
+            name: Scott Neal
+            organization: Enron Corp.
+            type: cc
+        -   email: scott.neal@enron.com
+            name: Scott Neal
+            organization: Enron Corp.
+            type: bcc
+        -   email: yuan.tian@enron.com
+            name: Yuan Tian
+            organization: Enron Corp.
+            type: cc
+        -   email: yuan.tian@enron.com
+            name: Yuan Tian
+            organization: Enron Corp.
+            type: bcc
+        sender:
+            email: kam.keiser@enron.com
+            name: Kam Keiser
+            organization: Enron Corp.
+        subject: FP&L
+        date: 10.05.2001
+    raw_email: |-
+        Message-ID: <23530825.1075858413552.JavaMail.evans@thyme>
+        Date: Thu, 10 May 2001 05:08:00 -0700 (PDT)
+        From: kam.keiser@enron.com
+        To: sabra.dinari@enron.com
+        Subject: FP&L
+        Cc: yuan.tian@enron.com, scott.neal@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: yuan.tian@enron.com, scott.neal@enron.com
+        X-From: Kam Keiser
+        X-To: Sabra L Dinari
+        X-cc: Yuan Tian, Scott Neal
+        X-bcc:
+        X-Folder: \Scott_Neal_Jun2001\Notes Folders\Notes inbox
+        X-Origin: Neal-S
+        X-FileName: sneal.nsf
+
+        Sabra,
+
+        I have extended the current FP&L sitara #217969 to the end of the deal
+        (2/2010).
+
+        Keeping the same deal # helps us keep up with the value.
+
+        I set it up with the volumes we booked in TAGG, I know the volumes and
+        locations will change but if you could send me and Yuan an e-mail when you
+        have made your change during bid week we will make the changes to the hedge
+        deal.
+
+
+        Thanks,
+
+        Kam
+
+
+        ps.  Scott, you will not see any problems with this deal in the future.
+        Sorry for the trouble.
+
+-   extracted_information:
+        recipients:
+        -   email: albert.meyers@enron.com
+            name: Albert Meyers
+            organization: Enron Corp.
+            type: cc
+        -   email: albert.meyers@enron.com
+            name: Albert Meyers
+            organization: Enron Corp.
+            type: bcc
+        -   email: bill.williams@enron.com
+            name: Bill Williams III
+            organization: Enron Corp.
+            type: cc
+        -   email: bill.williams@enron.com
+            name: Bill Williams III
+            organization: Enron Corp.
+            type: bcc
+        -   email: craig.dean@enron.com
+            name: Craig Dean
+            organization: Enron Corp.
+            type: cc
+        -   email: craig.dean@enron.com
+            name: Craig Dean
+            organization: Enron Corp.
+            type: bcc
+        -   email: geir.solberg@enron.com
+            name: Geir Solberg
+            organization: Enron Corp.
+            type: cc
+        -   email: geir.solberg@enron.com
+            name: Geir Solberg
+            organization: Enron Corp.
+            type: bcc
+        -   email: john.anderson@enron.com
+            name: John Anderson
+            organization: Enron Corp.
+            type: cc
+        -   email: john.anderson@enron.com
+            name: John Anderson
+            organization: Enron Corp.
+            type: bcc
+        -   email: mark.guzman@enron.com
+            name: Mark Guzman
+            organization: Enron Corp.
+            type: cc
+        -   email: mark.guzman@enron.com
+            name: Mark Guzman
+            organization: Enron Corp.
+            type: bcc
+        -   email: michael.mier@enron.com
+            name: Michael Mier
+            organization: Enron Corp.
+            type: cc
+        -   email: michael.mier@enron.com
+            name: Michael Mier
+            organization: Enron Corp.
+            type: bcc
+        -   email: pete.davis@enron.com
+            name: Pete Davis
+            organization: Enron Corp.
+            type: to
+        -   email: pete.davis@enron.com
+            name: Pete Davis
+            organization: Enron Corp.
+            type: cc
+        -   email: pete.davis@enron.com
+            name: Pete Davis
+            organization: Enron Corp.
+            type: bcc
+        -   email: ryan.slinger@enron.com
+            name: Ryan Slinger
+            organization: Enron Corp.
+            type: cc
+        -   email: ryan.slinger@enron.com
+            name: Ryan Slinger
+            organization: Enron Corp.
+            type: bcc
+        sender:
+            email: pete.davis@enron.com
+            name: Pete Davis
+            organization: Enron Corp.
+        subject: 'Start Date: 2/6/02; HourAhead hour: 18;'
+        date: 06.02.2002
+    raw_email: |-
+        Message-ID: <28625395.1075841317492.JavaMail.evans@thyme>
+        Date: Wed, 6 Feb 2002 15:38:22 -0800 (PST)
+        From: pete.davis@enron.com
+        To: pete.davis@enron.com
+        Subject: Start Date: 2/6/02; HourAhead hour: 18;
+        Cc: albert.meyers@enron.com, bill.williams@enron.com, craig.dean@enron.com,
+            geir.solberg@enron.com, john.anderson@enron.com,
+            mark.guzman@enron.com, michael.mier@enron.com, pete.davis@enron.com,
+            ryan.slinger@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: albert.meyers@enron.com, bill.williams@enron.com, craig.dean@enron.com,
+            geir.solberg@enron.com, john.anderson@enron.com,
+            mark.guzman@enron.com, michael.mier@enron.com, pete.davis@enron.com,
+            ryan.slinger@enron.com
+        X-From: Davis, Pete </O=ENRON/OU=NA/CN=RECIPIENTS/CN=PDAVIS1>
+        X-To: Davis, Pete </O=ENRON/OU=NA/CN=RECIPIENTS/CN=PDAVIS1>
+        X-cc: Meyers, Albert </O=ENRON/OU=NA/CN=RECIPIENTS/CN=BMEYERS>, Williams III,
+         Bill </O=ENRON/OU=NA/CN=RECIPIENTS/CN=BWILLIA5>, Dean, Craig
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=CDEAN2>, Solberg, Geir
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=GSOLBER>, Anderson, John
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=JANDERS3>, Guzman, Mark
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=MGUZMAN3>, Mier, Michael
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=MMIER>, Davis, Pete
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=PDAVIS1>, Slinger, Ryan
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=RSLINGER>
+        X-bcc:
+        X-Folder: \ExMerge - Meyers, Albert\Inbox
+        X-Origin: MEYERS-A
+        X-FileName: bert meyers 6-25-02.PST
+
+
+
+        Start Date: 2/6/02; HourAhead hour: 18;  No ancillary schedules awarded.  No variances detected.
+
+            LOG MESSAGES:
+
+        PARSING FILE -->> O:\Portland\WestDesk\California Scheduling\ISO Final Schedules\2002020618.txt
+        !!!General SQL error.
+        Couldn't update; currently locked by user 'Admin' on machine 'NAHOU-TRDTS5'.
+        Table
+
+        ---- Energy Import/Export Schedule ----
+        *** Final schedule not found for preferred schedule.
+             Details:
+
+          TRANS_TYPE: FINAL
+          SC_ID: ECTstNW
+          MKT_TYPE: 2
+          TRANS_DATE: 2/6/02
+          TIE_POINT: MALIN_5_RNDMTN
+          INTERCHG_ID: ENRJ_CISO_3000
+          ENGY_TYPE: FIRM
+
+-   extracted_information:
+        recipients:
+        -   email: bill.fowler@enron.com
+            name: Bill Fowler
+            organization: Enron Corp.
+            type: cc
+        -   email: bill.fowler@enron.com
+            name: Bill Fowler
+            organization: Enron Corp.
+            type: bcc
+        -   email: chris.sebesta@enron.com
+            name: Chris Sebesta
+            organization: Enron Corp.
+            type: cc
+        -   email: chris.sebesta@enron.com
+            name: Chris Sebesta
+            organization: Enron Corp.
+            type: bcc
+        -   email: courtney.barker@enron.com
+            name: Courtney Barker
+            organization: Enron Corp.
+            type: cc
+        -   email: courtney.barker@enron.com
+            name: Courtney Barker
+            organization: Enron Corp.
+            type: bcc
+        -   email: dana.jones@enron.com
+            name: Dana Jones
+            organization: Enron Corp.
+            type: cc
+        -   email: dana.jones@enron.com
+            name: Dana Jones
+            organization: Enron Corp.
+            type: bcc
+        -   email: joni.bollinger@enron.com
+            name: Joni Bollinger
+            organization: Enron Corp.
+            type: cc
+        -   email: joni.bollinger@enron.com
+            name: Joni Bollinger
+            organization: Enron Corp.
+            type: bcc
+        -   email: karen.lagerstrom@enron.com
+            name: Karen Lagerstrom
+            organization: Enron Corp.
+            type: cc
+        -   email: karen.lagerstrom@enron.com
+            name: Karen Lagerstrom
+            organization: Enron Corp.
+            type: bcc
+        -   email: laura.lantefield@enron.com
+            name: Laura Lantefield
+            organization: Enron Corp.
+            type: cc
+        -   email: laura.lantefield@enron.com
+            name: Laura Lantefield
+            organization: Enron Corp.
+            type: bcc
+        -   email: lynn.blair@enron.com
+            name: Lynn Blair
+            organization: Enron Corp.
+            type: cc
+        -   email: lynn.blair@enron.com
+            name: Lynn Blair
+            organization: Enron Corp.
+            type: bcc
+        -   email: raetta.zadow@enron.com
+            name: Raetta Zadow
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: frank.semin@enron.com
+            name: Frank Semin
+            organization: Enron Corp.
+        subject: Account Receivables
+        date: 19.12.2001
+    raw_email: |-
+        Message-ID: <33458042.1075859378266.JavaMail.evans@thyme>
+        Date: Wed, 19 Dec 2001 11:31:36 -0800 (PST)
+        From: frank.semin@enron.com
+        To: raetta.zadow@enron.com
+        Subject: Account Receivables
+        Cc: bill.fowler@enron.com, dana.jones@enron.com, karen.lagerstrom@enron.com,
+            joni.bollinger@enron.com, courtney.barker@enron.com,
+            chris.sebesta@enron.com, laura.lantefield@enron.com,
+            lynn.blair@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: bill.fowler@enron.com, dana.jones@enron.com, karen.lagerstrom@enron.com,
+            joni.bollinger@enron.com, courtney.barker@enron.com,
+            chris.sebesta@enron.com, laura.lantefield@enron.com,
+            lynn.blair@enron.com
+        X-From: Semin, Frank </O=ENRON/OU=NA/CN=RECIPIENTS/CN=FSEMIN>
+        X-To: Zadow, Raetta </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rzadow>
+        X-cc: Fowler, Bill </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Bfowler>, Jones, Dana
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Djones>, Lagerstrom, Karen
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Klagers>, Bollinger, Joni
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jbollin>, Barker, Courtney
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Cbarker4>, Sebesta, Chris
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Csebest2>, Lantefield, Laura
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Llantef>, Blair, Lynn
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lblair>
+        X-bcc:
+        X-Folder: \Lynn_Blair_Jan2002\Blair, Lynn\Inbox
+        X-Origin: Blair-L
+        X-FileName: lblair (Non-Privileged).pst
+
+        The attached list are outstanding receivables associated with the Central Region group that have occurred prior to December 2000. I would request that these receivables get written off in order to clean up the books. Total value $11,783.70.  If you have any questions, please do not hesitate to give me a call.
+
+-   extracted_information:
+        recipients:
+        -   email: gwhalle@enron.com
+            name: Greg Whalley
+            organization: Enron Corp.
+            type: to
+        -   email: liz.m.taylor@enron.com
+            name: Liz. M. Taylor
+            organization: Enron Corp.
+            type: cc
+        -   email: liz.m.taylor@enron.com
+            name: Liz. M. Taylor
+            organization: Enron Corp.
+            type: bcc
+        sender:
+            email: vince.lagrange@aprimo.com
+            name: Vince LaGrange
+            organization: Aprimo, Inc.
+            phone_number: (940) 390-8097
+        subject: Enron & Aprimo Marketing Follow-up
+        date: 14.06.2001
+    raw_email: |-
+        Message-ID: <30634077.1075845470580.JavaMail.evans@thyme>
+        Date: Thu, 14 Jun 2001 05:01:00 -0700 (PDT)
+        From: vince.lagrange@aprimo.com
+        To: gwhalle@enron.com
+        Subject: Enron & Aprimo Marketing Follow-up
+        Cc: liz.m.taylor@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=ANSI_X3.4-1968
+        Content-Transfer-Encoding: 7bit
+        Bcc: liz.m.taylor@enron.com
+        X-From: Vince LaGrange <Vince.LaGrange@aprimo.com>
+        X-To: "'gwhalle@enron.com'" <gwhalle@enron.com>
+        X-cc: "'liz.m.taylor@enron.com'" <liz.m.taylor@enron.com>
+        X-bcc:
+        X-Folder: \Greg_Whalley_Oct2001\Notes Folders\Notes inbox
+        X-Origin: WHALLEY-G
+        X-FileName: gwhalley.nsf
+
+        Greg,
+
+        You and I met at your office last summer to discuss Aprimo's Marketing
+        Management Solution. At the time, you indicated that there would be other
+        people at Enron that I should speak with. My assigned territory changed
+        shortly after our meeting, and I did not follow-up on these contacts. I am
+        once again responsible for Enron, and would appreciate your direction to the
+        appropriate individuals at Enron.
+
+        Our web-based solution has been adopted by over 60 leading companies over the
+        past 18 months. They are seeing rapid value from Aprimo's unique ability to
+        help them Grow Top-Line Revenue (more effective Marketing) and Reduce
+        Bottom-line Cost (more efficient Marketing). With the opportunities facing
+        Enron, I'm certain that maximizing your Marketing Investments is of interest
+        to the Executive Team and your Shareholders.
+
+        Our solution is delivering improvements across all Marketing Functions, such
+        as:
+
+        - Event Management
+        - Marcom
+        - Marketing Financial Management
+        - Strategic Planning
+        - Direct Marketing
+        - Web Response
+        - Lead Management
+
+        Leading Analysts have identified Aprimo as the clear leader in Enterprise
+        Marketing Management. I would like to arrange brief discovery meetings with
+        some of the individuals responsible for Marketing's contribution to Enron's
+        growth.
+
+        I would appreciate any direction that you and Liz can provide.
+
+        Regards,
+        Vince LaGrange
+        Aprimo, Inc.???????
+        (940) 321-9787 - Office
+        (940) 390-8097 - Mobile
+        vince.lagrange@aprimo.com
+        9901 E. Valley Ranch Parkway
+        Suite 2000
+        Irving, TX 75063
+        ?
+        "Aprimo Marketing - Managing the Business of Marketing"
+
+-   extracted_information:
+        recipients:
+        -   email: blundyp@bennettjones.ca
+            type: cc
+        -   email: blundyp@bennettjones.ca
+            type: bcc
+        -   email: deehyc@lapros.qc.ca
+            name: Christopher Deehy
+            type: to
+            phone_number: (514) 925-6353
+        -   email: dolores.lenfest@enron.com
+            name: Dolores Lenfest
+            organization: Enron Corp.
+            type: cc
+        -   email: dolores.lenfest@enron.com
+            name: Dolores Lenfest
+            organization: Enron Corp.
+            type: bcc
+        -   email: gustavo.junqueira@enron.com
+            name: Gustavo Junqueira
+            organization: Enron Corp.
+            type: cc
+        -   email: gustavo.junqueira@enron.com
+            name: Gustavo Junqueira
+            organization: Enron Corp.
+            type: bcc
+        -   email: jay.boudreaux@enron.com
+            name: Jay Boudreaux
+            organization: Enron Corp.
+            type: cc
+        -   email: jay.boudreaux@enron.com
+            name: Jay Boudreaux
+            organization: Enron Corp.
+            type: bcc
+        -   email: michelle.cash@enron.com
+            name: Michelle Cash
+            organization: Enron Corp.
+            type: cc
+        -   email: michelle.cash@enron.com
+            name: Michelle Cash
+            organization: Enron Corp.
+            type: bcc
+        sender:
+            email: mark.greenberg@enron.com
+            name: Mark Greenberg
+            organization: Enron Corp.
+            role: Senior Counsel, ENA
+            phone_number: (713) 345-8897
+        subject: BENJ.40387
+        date: 07.12.2000
+    raw_email: |-
+        Message-ID: <29009850.1075860494372.JavaMail.evans@thyme>
+        Date: Thu, 7 Dec 2000 13:08:00 -0800 (PST)
+        From: mark.greenberg@enron.com
+        To: deehyc@lapros.qc.ca
+        Subject: BENJ.40387
+        Cc: blundyp@bennettjones.ca, jay.boudreaux@enron.com,
+            gustavo.junqueira@enron.com, michelle.cash@enron.com,
+            dolores.lenfest@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: blundyp@bennettjones.ca, jay.boudreaux@enron.com,
+            gustavo.junqueira@enron.com, michelle.cash@enron.com,
+            dolores.lenfest@enron.com
+        X-From: Mark Greenberg
+        X-To: deehyc@lapros.qc.ca
+        X-cc: blundyp@bennettjones.ca, Jay Boudreaux, Gustavo Junqueira, Michelle
+         Cash, Dolores Lenfest
+        X-bcc:
+        X-Folder: \Michelle_Cash_Dec2000\Notes Folders\Notes inbox
+        X-Origin: Cash-M
+        X-FileName: mcash.nsf
+
+        Christopher -
+
+        Based upon your memo and our due diligence effort to date, is there any
+        indication of (a) any steps Daishowa has taken to put the committee required
+        under the Pay Equity Act or (b) any increase in compensation that would be
+        consistent with the Pay Equity Act and therefore enable Daishowa to dispense
+        with the need for a committee?  Is there any way to currently assess what
+        potential liabilities could be or to view any industry data on this issue
+        that may indicate how extensive liability could be???
+
+        The main concern is that we are negotiating with Daishowa to be in a position
+        to undertake, as of closing, all responsibilities associated with all matters
+        disclosed, unless there is a legal noncompliance issue (e.g., failure to
+        maintain proper permits).  Since the requirements of the Pay Equity Act have
+        not been identified to management as a concern, I need to ensure that this is
+        a real issue (mostly from a $'s exposure standpoint) vs. something so remote
+        that it should not even be discussed.
+
+        Please let me know your thoughts.  Thanks.
+
+        Mark
+        Senior Counsel, ENA
+        Phone:     713-345-8897
+        Facsimile: 713-646-3940
+        E-Mail:      Mark.Greenberg@enron.com
+        ----- Forwarded by Mark Greenberg/NA/Enron on 12/07/2000 08:56 PM -----
+
+            Johanne Berthiaume <berthiaumej@lapros.qc.ca>
+            12/07/2000 10:32 AM
+
+                 To: "'blundyp@bennettjones.ca'" <blundyp@bennettjones.ca>
+                 cc: "'mark.greenberg@enron.com'" <mark.greenberg@enron.com>
+                 Subject: BENJ.40387
+
+
+         <<d4s_03!.DOC>>
+        Memo re: Quebec Labour Issues
+
+
+        Regards
+
+        Christopher Deehy
+        e-mail: deehyc@lapros.qc.ca
+        tel:  (514) 925-6353
+
+
+        >  ___________________________________
+        >  Le pr,sent courrier ,lectronique (courriel) et les documents qui y
+        > sont  attach,s peuvent contenir de l'information confidentielle; ils
+        > s'adressent exclusivement au destinataire mentionn, ci-dessus et nulle
+        > autre personne ne doit en prendre connaissance ni les utiliser ou les
+        > divulguer.  Si vous recevez le pr,sent courriel par erreur, veuillez en
+        > aviser l',metteur imm,diatement par courrier ,lectronique et le d,truire
+        > avec les documents qui y sont attach,s.
+        >
+        >  The information contained in this e-mail and all attachments is
+        > confidential and is for the sole use of its intended recipient. It may not
+        > be disclosed to or used by anyone other than the addressee. If received in
+        > error, please contact the sender by return e-mail and delete this e-mail
+        > and all attachments from your system.
+        >
+        >
+        >
+        >
+         - d4s_03!.DOC
+
+-   extracted_information:
+        recipients:
+        -   email: undisclosed.recipients@mailman.enron.com
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: abc111@mail.uole.com.ve
+        subject: A Fantastic Gift For DVD Move Users!
+        date: 29.11.2001
+    raw_email: |-
+        Message-ID: <1476100.1075862338556.JavaMail.evans@thyme>
+        Date: Wed, 28 Nov 2001 09:03:10 -0800 (PST)
+        From: abc111@mail.uole.com.ve
+        To: undisclosed.recipients@mailman.enron.com
+        Subject: A Fantastic Gift For DVD Move Users!
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: abc111@mail.uole.com.ve@ENRON
+        X-To: Undisclosed.Recipients@mailman.enron.com
+        X-cc:
+        X-bcc:
+        X-Folder: \SHARRIS1 (Non-Privileged)\Harris, Steven\Inbox
+        X-Origin: Harris-S
+        X-FileName: SHARRIS1 (Non-Privileged).pst
+
+
+
+        COPY ANY DVD MOVIE!!
+        With our revolutionary software you can copy virtually
+        any DVD Movie using your existing equipment!
+        Conventional DVD copying equipment can cost thousands of $$$
+         Our revolutionary software cost less than the price of 3 DVD Movies!  CLICK HERE FOR MORE INFO
+         If you wish to be removed simply  Click Here
+
+-   extracted_information:
+        recipients:
+        -   email: marie.heard@enron.com
+            name: Marie Heard
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: harlan.murphy@enron.com
+            name: Harlan E. Murphy
+            organization: Enron Corp.
+            phone_number: (713) 345-2679
+        subject: BNP MNA
+        date: 27.11.2001
+    raw_email: |-
+        Message-ID: <12521300.1075861924995.JavaMail.evans@thyme>
+        Date: Tue, 27 Nov 2001 08:07:55 -0800 (PST)
+        From: harlan.murphy@enron.com
+        To: marie.heard@enron.com
+        Subject: BNP MNA
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Murphy, Harlan </O=ENRON/OU=NA/CN=RECIPIENTS/CN=HMURPHY2>
+        X-To: Heard, Marie </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mheard>
+        X-cc:
+        X-bcc:
+        X-Folder: \MHEARD (Non-Privileged)\Heard, Marie\Inbox
+        X-Origin: Heard-M
+        X-FileName: MHEARD (Non-Privileged).pst
+
+        Please add (and redline) the applicable signature blocks for all of the entities in the attached and send it back to me.  Also, please clean up the identifier and page number and put one of our identifiers in the agreement.
+
+        Thanks,
+
+
+
+        Harlan E. Murphy
+        Enron Wholesale Services - Legal
+        1400 Smith Street, EB 3811
+        Houston, Texas 77002
+        Tel: 713.345.2679
+        Fax: 713.646.3490
+        E-mail: Harlan.Murphy@Enron.com
+
+            name: Fred Lagrasta
+            name: Georgeanne Hodges
+            name: Jay Webb
+            name: Jenny Rub
+            name: John Arnold
+            name: John Zufferli
+            name: Leslie Reeves
+            name: Lloyd Will
+            name: Mitch Robinson
+            name: Peggy Hedstrom
+            name: Rita Wynne
+            name: Robert Superty
+            name: Sally Beck
+            name: Scott Neal
+            name: Stacey W. White
+            name: Thomas Myers
+            name: Tim Belden
+            name: Tim Heizenrader
+            name: Wes Colwell
+
+-   extracted_information:
+        recipients:
+        -   email: a..martin@enron.com
+            name: Thomas A. Martin
+            organization: Enron Corp.
+            type: to
+        -   email: a..roberts@enron.com
+            name: Mike A. Roberts
+            organization: Enron Corp.
+            type: to
+        -   email: barry.tycholiz@enron.com
+            name: Barry Tycholiz
+            organization: Enron Corp.
+            type: to
+        -   email: brian.redmond@enron.com
+            name: Brian Redmond
+            organization: Enron Corp.
+            type: to
+        -   email: c..aucoin@enron.com
+            name: Berney C. Aucoin
+            organization: Enron Corp.
+            type: to
+        -   email: c..gossett@enron.com
+            name: Jeffrey C. Gossett
+            organization: Enron Corp.
+            type: to
+        -   email: chris.gaskill@enron.com
+            name: Chris Gaskill
+            organization: Enron Corp.
+            type: to
+        -   email: d..steffes@enron.com
+            name: James D. Steffes
+            organization: Enron Corp.
+            type: to
+        -   email: david.duran@enron.com
+            name: W. David Duran
+            organization: Enron Corp.
+            type: to
+        -   email: david.forster@enron.com
+            name: David Forster
+            organization: Enron Corp.
+            type: to
+        -   email: david.oxley@enron.com
+            name: David Oxley
+            organization: Enron Corp.
+            type: to
+        -   email: e..haedicke@enron.com
+            name: Mark E. Haedicke
+            organization: Enron Corp.
+            type: to
+        -   email: f..calger@enron.com
+            name: Christopher F. Calger
+            organization: Enron Corp.
+            type: to
+        -   email: frank.vickers@enron.com
+            name: Frank Vickers
+            organization: Enron Corp.
+            type: to
+        -   email: fred.lagrasta@enron.com
+            name: Fred Lagrasta
+            organization: Enron Corp.
+            type: to
+        -   email: georgeanne.hodges@enron.com
+            name: Georgeanne Hodges
+            organization: Enron Corp.
+            type: to
+        -   email: jay.webb@enron.com
+            name: Jay Webb
+            organization: Enron Corp.
+            type: to
+        -   email: jenny.rub@enron.com
+            name: Jenny Rub
+            organization: Enron Corp.
+            type: to
+        -   email: john.arnold@enron.com
+            name: John Arnold
+            organization: Enron Corp.
+            type: to
+        -   email: john.lavorato@enron.com
+            name: John Lavorato
+            organization: Enron Corp.
+            type: cc
+        -   email: john.lavorato@enron.com
+            name: John Lavorato
+            organization: Enron Corp.
+            type: bcc
+        -   email: john.zufferli@enron.com
+            name: John Zufferli
+            organization: Enron Corp.
+            type: to
+        -   email: k..allen@enron.com
+            name: Phillip K. Allen
+            organization: Enron Corp.
+            type: to
+        -   email: laura.luce@enron.com
+            name: Laura Luce
+            organization: Enron Corp.
+            type: to
+        -   email: leslie.reeves@enron.com
+            name: Leslie Reeves
+            organization: Enron Corp.
+            type: to
+        -   email: lloyd.will@enron.com
+            name: Lloyd Will
+            organization: Enron Corp.
+            type: to
+        -   email: louise.kitchen@enron.com
+            name: Louise Kitchen
+            organization: Enron Corp.
+            type: to
+        -   email: m..presto@enron.com
+            name: Kevin M. Presto
+            organization: Enron Corp.
+            type: to
+        -   email: m.hall@enron.com
+            name: Bob M Hall
+            organization: Enron Corp.
+            type: to
+        -   email: mike.curry@enron.com
+            name: Mike Curry
+            organization: Enron Corp.
+            type: to
+        -   email: mike.grigsby@enron.com
+            name: Mike Grigsby
+            organization: Enron Corp.
+            type: to
+        -   email: mitch.robinson@enron.com
+            name: Mitch Robinson
+            organization: Enron Corp.
+            type: to
+        -   email: peggy.hedstrom@enron.com
+            name: Peggy Hedstrom
+            organization: Enron Corp.
+            type: to
+        -   email: rick.buy@enron.com
+            name: Rick Buy
+            organization: Enron Corp.
+            type: to
+        -   email: rob.milnthorp@enron.com
+            name: Rob Milnthorp
+            organization: Enron Corp.
+            type: to
+        -   email: robert.superty@enron.com
+            name: Robert Superty
+            organization: Enron Corp.
+            type: to
+        -   email: s..bradford@enron.com
+            name: William S. Bradford
+            organization: Enron Corp.
+            type: to
+        -   email: s..shively@enron.com
+            name: Hunter S. Shively
+            organization: Enron Corp.
+            type: to
+        -   email: sally.beck@enron.com
+            name: Sally Beck
+            organization: Enron Corp.
+            type: to
+        -   email: scott.neal@enron.com
+            name: Scott Neal
+            organization: Enron Corp.
+            type: to
+        -   email: tammie.schoppe@enron.com
+            name: Tammie Schoppe
+            organization: Enron Corp.
+            type: cc
+        -   email: tammie.schoppe@enron.com
+            name: Tammie Schoppe
+            organization: Enron Corp.
+            type: bcc
+        -   email: thomas.myers@enron.com
+            name: Thomas Myers
+            organization: Enron Corp.
+            type: to
+        -   email: tim.belden@enron.com
+            name: Tim Belden
+            organization: Enron Corp.
+            type: to
+        -   email: tim.heizenrader@enron.com
+            name: Tim Heizenrader
+            organization: Enron Corp.
+            type: to
+        -   email: wes.colwell@enron.com
+            name: Wes Colwell
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: louise.kitchen@enron.com
+            name: Louise Kitchen
+            organization: Enron Corp.
+        subject: 'RE: NETCO'
+        date: 02.01.2002
+    raw_email: |-
+        Message-ID: <15511278.1075859255768.JavaMail.evans@thyme>
+        Date: Wed, 2 Jan 2002 16:43:49 -0800 (PST)
+        From: louise.kitchen@enron.com
+        To: louise.kitchen@enron.com, wes.colwell@enron.com,
+         georgeanne.hodges@enron.com,     rob.milnthorp@enron.com,
+         john.zufferli@enron.com,     peggy.hedstrom@enron.com, thomas.myers@enron.com,
+             s..bradford@enron.com, lloyd.will@enron.com, sally.beck@enron.com,
+             m.hall@enron.com, m..presto@enron.com, david.forster@enron.com,
+             leslie.reeves@enron.com, chris.gaskill@enron.com,     robert.superty@enron.com,
+         fred.lagrasta@enron.com,     laura.luce@enron.com, barry.tycholiz@enron.com,
+             brian.redmond@enron.com, frank.vickers@enron.com,     c..gossett@enron.com,
+         john.arnold@enron.com, mike.grigsby@enron.com,     k..allen@enron.com,
+         scott.neal@enron.com, a..martin@enron.com,     s..shively@enron.com,
+         jenny.rub@enron.com, jay.webb@enron.com,     e..haedicke@enron.com,
+         rick.buy@enron.com, f..calger@enron.com,     david.duran@enron.com,
+         mitch.robinson@enron.com,     mike.curry@enron.com, tim.heizenrader@enron.com,
+             tim.belden@enron.com, d..steffes@enron.com, c..aucoin@enron.com,
+             a..roberts@enron.com, david.oxley@enron.com
+        Subject: RE: NETCO
+        Cc: john.lavorato@enron.com, tammie.schoppe@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: john.lavorato@enron.com, tammie.schoppe@enron.com
+        X-From: Kitchen, Louise </O=ENRON/OU=NA/CN=RECIPIENTS/CN=LKITCHEN>
+        X-To: Kitchen, Louise </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lkitchen>, Colwell, Wes
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=WCOLWEL>, Hodges, Georgeanne
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Ghodges>, Milnthorp, Rob
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rmilnth>, Zufferli, John
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jzuffer>, Hedstrom, Peggy
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Phedstr>, Myers, Thomas
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tmyers>, Bradford, William S.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Wbradfo>, Will, Lloyd
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lwill>, Beck, Sally
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Sbeck>, Hall, Bob M
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rhall3>, Presto, Kevin M.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Kpresto>, Forster, David
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=DFORSTER>, Reeves, Leslie
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lreeves>, Gaskill, Chris
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Cgaskill>, Superty, Robert
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rsupert>, Lagrasta, Fred
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Flagras>, Luce, Laura
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Lluce>, Tycholiz, Barry
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Btychol>, Redmond, Brian
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Bredmon>, Vickers, Frank
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Fvicker>, Gossett, Jeffrey C.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jgosset>, Arnold, John
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jarnold>, Grigsby, Mike
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mgrigsb>, Allen, Phillip K.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Pallen>, Neal, Scott
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Sneal>, Martin, Thomas A.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tmartin>, Shively, Hunter S.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Hshivel>, Rub, Jenny
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jrub>, Webb, Jay
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jwebb>, Haedicke, Mark E.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mhaedic>, Buy, Rick
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Rbuy>, Calger, Christopher F.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Ccalger>, Duran, W. David
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Dduran>, Robinson, Mitch
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mrobins>, Curry, Mike
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mcurry>, Heizenrader, Tim
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Theizen>, Belden, Tim
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tbelden>, Steffes, James D.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Jsteffe>, Aucoin, Berney C.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Baucoin>, Roberts, Mike A.
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Mrobert>, Oxley, David
+         </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Doxley>
+        X-cc: Lavorato, John </O=ENRON/OU=NA/CN=RECIPIENTS/CN=JLAVORA>, Schoppe,
+         Tammie </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tstaggs>
+        X-bcc:
+        X-Folder: \Kevin_Presto_Jan2002\Presto, Kevin M.\Inbox
+        X-Origin: Presto-K
+        X-FileName: kpresto (Non-Privileged).pst
+
+        Organisational Charts have been requested by one of the potential Buyers.  Please send to Tammie by close of play tomorrow.
+
+        Thanks
+
+         -----Original Message-----
+        From:     Kitchen, Louise
+        Sent:    Monday, December 31, 2001 12:54 PM
+        To:    Colwell, Wes; Hodges, Georgeanne; Milnthorp, Rob; Zufferli, John; Hedstrom, Peggy; Myers, Thomas; Bradford, William S.; Will, Lloyd; Beck, Sally; Hall, Bob M; Presto, Kevin M.; Forster, David; Reeves, Leslie; Gaskill, Chris; Superty, Robert; Lagrasta, Fred; Luce, Laura; Tycholiz, Barry; Redmond, Brian; Vickers, Frank; Gossett, Jeffrey C.; Arnold, John; Grigsby, Mike; Allen, Phillip K.; Neal, Scott; Martin, Thomas A.; Shively, Hunter S.; Wynne, Rita; Rub, Jenny; Webb, Jay; Haedicke, Mark E.; Buy, Rick; Calger, Christopher F.; Duran, W. David; Robinson, Mitch; Curry, Mike; Heizenrader, Tim; Belden, Tim; White, Stacey W.; Steffes, James D.; Aucoin, Berney C. ; Roberts, Mike A.; Oxley, David
+        Cc:    Lavorato, John
+        Subject:    NETCO
+
+        The New Year has arrived and we really to finalize a lot of the work with regards to moving into NETCO.  Obviously we still do not have a deal but the deadline is approaching and preparations need to be finalized.
+
+        The main areas to focus on over the next week are:-
+
+        (i)     Re-start/Integration Plans (due on Jan 7)                To be forwarded to Louise
+            These plans need to be detailed and show clear detailed timelines and detailed responsibilities for getting us up and running as soon as possible.
+            The current restart date is January 21, 2001 but may be pushed forward to January 14, 2002.
+        (ii)    Budget (due Jan 3, 2002)                        To be forwarded to Faith Killen
+            First year budget to include all start up costs (some of which can be amortized)
+        (iii)    Seating Plans                                Tammy Shepperd to co-ordinate
+            We need to start the planning process for seating as we will be living on floors 5 & 6 of the Enron South building.
+            I have asked Tammy Shepperd to commence the seating plan and we would look to start the moves as soon as possible but with a large number occuring around January 11,2002.
+        (iv)    Due Diligence
+            We continue the process with two new companies this week (Wednesday and Thursday). Andy Zipper is taking the lead for the company arriving on Wednesday, please help him with his requirements.
+
+        I would ask that both John and I are notified of any changes to the Netco personnel list on a timely fashion and that the list is maintained on a continual basis.  Please forward all alterations to Jeanie Slone who has responsibility for the master list.
+
+        Communication - I believe that the New Year combined with a internal communication issues may be a good time to review what we want to say on Netco and what our policies are.  I am asking David Oxley to co-ordinate with all of you on this.  I know a lot of you believe that we need to only communicate once we have retention programme in place for the estate which may be a good idea but we we need to make sure that we lose as few people as possible.
+
+        If you are unavailable this week, please ensure you delegate this work out.
+
+        Happy New Year
+
+        Louise
+
+-   extracted_information:
+        recipients:
+        -   email: james.steffes@enron.com
+            name: James D. Steffes
+            organization: Enron Corp.
+            type: cc
+        -   email: james.steffes@enron.com
+            name: James D. Steffes
+            organization: Enron Corp.
+            type: bcc
+        -   email: jeff.dasovich@enron.com
+            name: Jeff Dasovich
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: jennifer.thome@enron.com
+            name: Jennifer Thome
+            organization: Enron Corp.
+        subject: CERA/UCLA Anderson report
+        date: 11.07.2001
+    raw_email: |-
+        Message-ID: <4494502.1075849408651.JavaMail.evans@thyme>
+        Date: Wed, 11 Jul 2001 09:00:00 -0700 (PDT)
+        From: jennifer.thome@enron.com
+        To: jeff.dasovich@enron.com
+        Subject: CERA/UCLA Anderson report
+        Cc: james.steffes@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: james.steffes@enron.com
+        X-From: Jennifer Thome
+        X-To: Jeff Dasovich
+        X-cc: James D Steffes
+        X-bcc:
+        X-Folder: \Jeff_Dasovich_Oct2001\Notes Folders\Notes inbox
+        X-Origin: DASOVICH-J
+        X-FileName: jdasovic.nsf
+
+        Jeff:
+
+        CERA just informed me that as a CERA member, we will receive one copy of this
+        report.  He will forward me a copy in the next day or so.  I know you are
+        interested in it, and will get you a copy as soon as I receive it.
+
+        Jennifer
+
+-   extracted_information:
+        recipients:
+        -   email: all.employees@enron.com
+            name: All Enron Wholesale Services Employees
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: enron.announcements@enron.com
+            name: Enron Announcements
+            organization: Enron Corp.
+        subject: Enron Wholesale Services Legal Department
+        date: 04.12.2000
+    raw_email: |-
+        Message-ID: <32058611.1075857292588.JavaMail.evans@thyme>
+        Date: Mon, 4 Dec 2000 02:36:00 -0800 (PST)
+        From: enron.announcements@enron.com
+        To: all.employees@enron.com
+        Subject: Enron Wholesale Services Legal Department
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Enron Announcements
+        X-To: All Enron Wholesale Services Employees
+        X-cc:
+        X-bcc:
+        X-Folder: \Bradley_McKay_Dec2000\Notes Folders\Notes inbox
+        X-Origin: McKay-B
+        X-FileName: bmckay.nsf
+
+         As a follow-up to the recent Enron Corp. memorandum forming Enron Wholesale
+        Services (EWS), effective today, we have reorganized the Wholesale Services
+        Legal Department.
+
+         The goals in reorganizing the department are as follows:  (i) align the
+        legal department as closely as possible with the business units, (ii) speed
+        the flow of legal technology across the business units, and (iii) achieve
+        greater efficiency and consistency across the organization.
+
+         To this end, a legal policy group will be formed for EWS Legal, which will
+        include Lance Schuler, Enron Americas; Mark Evans, Enron Europe; Mark Taylor,
+        Enron Net Works; Alan Aronowitz, Enron Global Markets; Julia Murray, Enron
+        Industrial Markets; and Bruce Lundstrom, Enron Global Assets.
+
+         The organization chart for the EWS Legal Department is attached.  More
+        comprehensive organization charts will follow for each group.
+
+        Mark Frevert and Mark Haedicke
+
+-   extracted_information:
+        recipients:
+        -   email: martin.cuilla@enron.com
+            name: Martin Cuilla
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: support@imagestation.com
+            name: ImageStation Customer Support
+            organization: Sony Electronics Inc.
+        subject: Welcome to Sony's ImageStation!
+        date: 15.11.2000
+    raw_email: |-
+        Message-ID: <2346151.1075858078353.JavaMail.evans@thyme>
+        Date: Wed, 15 Nov 2000 03:19:00 -0800 (PST)
+        From: support@imagestation.com
+        To: martin.cuilla@enron.com
+        Subject: Welcome to Sony's ImageStation!
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: ImageStation Customer Support <support@imagestation.com>
+        X-To: mcuilla <martin.cuilla@enron.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \Martin_Cuilla_Dec2000\Notes Folders\Notes inbox
+        X-Origin: Cuilla-M
+        X-FileName: mcuilla.nsf
+
+        Hi mcuilla,
+
+        Welcome, and thank you for joining ImageStation, Sony's online
+        service for sharing pictures and video clips.
+
+        There are no charges to join, to create online albums, to store
+        pictures (no matter how many!), to upload and download images,
+        or to use many of our services. You can easily share picture
+        and video greeting cards, created from your images or ours.
+
+        As a thank you for joining ImageStation, we're giving you 10 free
+        prints each month for 5 months - an Introductory Offer of 50 Free
+        Prints - redeemable in the ImageStation store. There will be a
+        charge for shipping and handling. See site for details.
+
+        We want you to enjoy all the benefits that digital photography
+        has to offer, and this is an easy way to sample the great quality
+        of ImageStation prints. Accept them with our compliments and
+        enjoy the convenience of photo-quality prints from your digital
+        pictures.
+
+        To redeem your online coupon just follow these easy steps:
+
+        1. First, you need to upload your pictures to ImageStation. Click
+        the "upload images" link on the Welcome page to do this.
+
+        2. Next, you need to move your images from your Inbox, into an
+        album. To do this, click on the "Create Albums" tab at the top of
+        the page, and follow instructions.
+
+        3. Once you have created your album, click on the "Order Prints"
+        link at the top of the page.
+
+        4. Click the Continue button at the bottom of the "Prints" page.
+
+        5. See the site for additional details about completing your order.
+
+        6. Enter your custom "Coupon Code" in the box on the Shopping Cart
+        page and hit "submit".
+
+        Your Coupon Code is: IS28CT32
+
+        Coupon must be used by November 30, 2000 and is only valid for up to
+        ten 4"x6" prints.
+
+        That's it! When you complete your transaction your discount
+        will be deducted from your final print total.
+
+        Thanks again for joining ImageStation, Sony's online service for
+        sharing pictures and video clips.
+
+        Regards,
+
+        Your Friends at ImageStation
+        support@imagestation.com
+
+        * Quality prints by Ofoto
+        Ranked #1 in print quality in a recent InfoTrends Research Group study
+
+        -------------------------------------------------------------
+        http://www.imagestation.com
+        ------------------------------------------------------------
+
+        ImageStation is a service mark of Sony Electronics Inc.
+        Ofoto is a trademark of Ofoto, Inc.
+        (c) 2000 Sony Electronics Inc. All Rights Reserved.
+        -------------------------------------------------------------
+
+-   extracted_information:
+        recipients:
+        -   email: isas@wscc.com
+            organization: Interchange Scheduling & Accounting Subcommittee (ISAS)
+            type: to
+        sender:
+            email: bharsh@puget.com
+            name: Robert Harshbarger
+            organization: Puget Sound Energy
+            role: OASIS Trading Manager
+            phone_number: (206) 604-3251
+        subject: 'RE: ISAS Meeting Agenda 2/14&15/2002'
+        date: 04.02.2002
+    raw_email: |-
+        Message-ID: <31175293.1075840021419.JavaMail.evans@thyme>
+        Date: Mon, 4 Feb 2002 13:18:26 -0800 (PST)
+        From: bharsh@puget.com
+        To: isas@wscc.com
+        Subject: RE: ISAS Meeting Agenda 2/14&15/2002
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Harshbarger, Robert <bharsh@puget.com>
+        X-To: Interchange Scheduling & Accounting Subcommittee (ISAS) <isas@wscc.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \ExMerge - Scholtes, Diana\Inbox
+        X-Origin: SCHOLTES-D
+        X-FileName:
+
+        Ray and ISAS -
+
+        Just going through the past four days of email, so please excuse this
+        response if it has been already addressed.
+
+        What was said at the Jan 17th meeting of the ESWG was, I (Bob Harshbarger)
+        was not prepared to address the issues surrounding voting, membership, etc.
+        at that meeting.
+
+        ESWG will have to adopt some form of structure if we are to proceed as
+        quickly as the ESC.  The ESWG was formed at the direction of the Joint
+        Guidance Committee.  We have been asked to consider formalized or structure
+        membership based on the same guidelines that ISAS has been given.  The
+        intent is not to leave anyone out but to ensure we can address issues in a
+        timely manner.
+
+        There is no perfect solution.  A weighted sector voting structure does
+        appear to give broader voice to the masses, yet even within a single sector
+        the participants can opposing view points and still feel under represented.
+        What the ESWG adopts is to be seen.
+
+        Robert Harshbarger
+        Puget Sound Energy
+        OASIS Trading Manager
+        425.462.3348 (desk)
+        206.604.3251 (cell)
+        mailto:bharsh@puget.com
+
+        cc: ESWG
+
+        > ----------
+        > From:     Grinberg, Ray[SMTP:Ray.Grinberg@PacifiCorp.com]
+        > Sent:     Thursday, January 31, 2002 6:57 AM
+        > To:     Interchange Scheduling & Accounting Subcommittee (ISAS)
+        > Subject:     RE: ISAS Meeting Agenda 2/14&15/2002
+        >
+        > Steve;
+        >
+        > I share Bob Winn's concerns regarding the administration and governance of
+        > the ISAS committee.   I've attended numerous meetings of the ISAS on
+        > behalf of Pinnacle West and now, PacifiCorp Power Marketing.   I never
+        > knew there was a formal requirement for membership.  If anything I thought
+        > that only Transmission providers were the actual voting members.  I
+        > believe this was how it was explained by mark hackney during one of last
+        > year's meetings.  As a marketer, and now a generation owner too, this was
+        > never and issue for me.  However your membership list (which I don't know
+        > where it came from) belies my understanding.  What exactly are the
+        > requirements to be a voting member of ISAS?
+        >
+        > If I am going to be excluded from active participation, I request that
+        > PacifiCorp Power Marketing  (PPMI) be added as a member of the ISAS and I
+        > as its representative.  PPMI is a separate legal entity from PacifiCorp
+        > the utility.  I don't want to get bogged down in the governance issues
+        > that dominated the ESC meeting in Las Vegas but I agree with Bob that
+        > there needs to be some "known" rules about membership and participation.
+        > But something along the ESC's membership requirements and voting structure
+        > may be appropriate.  Especially if the OC is concerned about the
+        > effectiveness of the ISAS committee.  I understand the OC's desire for the
+        > ISAS to be more effective, but it shouldn't come at the cost of denying
+        > participation to interested and affected parties.
+        >
+        > I request that we add this issue to the February Meeting Agenda.  I
+        > realize this could take up quite a bit of time, but I think its worth an
+        > hours discussion.
+        >
+        > I think you should be aware that at the meeting of the EWG at the Las
+        > Vegas Airport on Jan 17, the group decided to operate without a formal
+        > membership requirement and to allow all parties to participate and vote.
+        >
+        > Thanks for listening,
+        >
+        > Ray Grinberg
+        > PacifCorp Power Marketing, Inc.
+        > 650 NE Holladay, Suite 700
+        > Portland, OR  97232
+        > 503-813-5712
+        >
+        >
+        >     -----Original Message-----
+        >     From: sccobb@srpnet.com [mailto:sccobb@srpnet.com]
+        >     Sent: Wednesday, January 30, 2002 9:05 PM
+        >     To: RWINN@pnm.com
+        >     Cc: ISAS@wscc.com; ISASCOR@wscc.com; dmillam@utilicorp.com;
+        > Demetrios.Fotiou@powerex.com; Dianeg@ncpa.com; ECHANG@wapa.gov;
+        > jmcintosh@caiso.com; MMEYER@wapa.gov; Mons.Ellingson@pinnaclewest.com;
+        > Ray.Grinberg@PacifiCorp.com
+        >     Subject: RE: ISAS Meeting Agenda 2/14&15/2002
+        >
+        >
+        >     Bob,
+        >
+        >     I appreciate your input.
+        >
+        >     The OC Steering Committee has asked us to become more effective. We
+        > need to do our best to satisfy their request.
+        >
+        >     Our goal is to ensure we get the best product in the most efficient
+        > manner we can. ISAS has always had voting members. These members have
+        > determined the outcome of issues that the group is responsible for. I
+        > believe the current voting structure of ISAS is typical of the Operations
+        > Committee and the Sub-committees reporting to the OC. An OC member has the
+        > ability to appoint one representative from his/her company. In at least
+        > one case in the WSCC, an individual company has two OC members. One member
+        > represents the transmission/reliability side and one member represents the
+        > merchant side.
+        >
+        >     Diverse opinions often lead to the best decisions. The intent of
+        > focusing on the voting members is to make the most of the limited time we
+        > have to make decisions. Non-voting members will still have the ability to
+        > take the floor to voice their views. However, the discussion will be
+        > limited so that we can complete our business. I suggest that we see how
+        > the February meeting goes. We can discuss proposed changes to the format
+        > prior to the next meeting. However, these changes must still comply with
+        > WSCC guidelines and OC direction.
+        >
+        >     The Joint Guidance Committee is currently revising the "Guidelines
+        > For Administering the Membership of WSCC Subcommittees, Work Groups And
+        > Task Forces."
+        >     The proposed revision is attached.
+        >
+        >     Thanks.
+        >
+        >
+        >
+        >
+        >     -----Original Message-----
+        >     From: Winn, Robert [mailto:RWINN@pnm.com]
+        >     Sent: Wednesday, January 30, 2002 1:03 PM
+        >     To: 'sccobb@srpnet.com'; ISAS Correspondents
+        >     Subject: RE: ISAS Meeting Agenda 2/14&15/2002
+        >
+        >
+        >
+        >         Steve,
+        >
+        >
+        >         We have some concerns regarding the format you suggest for
+        > the upcoming ISAS meeting which consists of the agenda and discussion
+        > being driven primarily by the voting member.  As you know in PNM's case
+        > (and others) we have only one WSCC membership. Our Merchant and
+        > Reliability functions are still under the same company as required by
+        > current laws and regulations.  We do however operate as totally
+        > independent shops thus having different tasks, issues, insights and etc.
+        > Neither shop is able to sufficiently represent the issues of the other.
+        >
+        >         We are concerned that by limiting discussions to only "the
+        > voting member" much insight will be lost.   We would be interested in
+        > hearing from both sides of a company on issues.  I would suggest this
+        > committee consider structuring discussion and voting privileges along the
+        > lines of those being set up in other industry forums {ESC, GISB, NAERO,
+        > NAESB and etc.} where a company represented in WSCC would have
+        > voting/discussion privileges for representatives from each business
+        > sector.  In WSCC that should include at least a Reliability and/or a
+        > Merchant rep.(if applicable) even if the company holds only one WSCC
+        > membership.
+        >
+        >         I do understand and support the need to control the size of
+        > this meeting and would not want to see decisions made strictly from votes
+        > by those in attendance. We feel it very important to have fair
+        > representation in the subcommittee of all concerned entities.
+        >
+        >         I have been trying to find someone at WSCC who is involved
+        > with revision of the document titled "Guidelines For Administering the
+        > Membership of WSCC Subcommittees, Work Groups And Task Forces" which you
+        > indicated was being revised.  I have not been able to find out who this
+        > person is and am unable to find anything about it on the WSCC web
+        > site...could you provide a name?  As you know, this document has not been
+        > modified since 1991.  We would like to make sure the revisions reflect the
+        > needs of all the industry as we know it today.  We have some thoughts and
+        > concerns which we would like considered in the revision process.
+        >
+        >         Thanks,
+        >         Bob Winn
+        >         PNM
+        >         -----Original Message-----
+        >         From: sccobb@srpnet.com [ mailto:sccobb@srpnet.com]
+        >         Sent: Friday, January 25, 2002 8:18 PM
+        >         To: ISAS Correspondents
+        >         Subject: ISAS Meeting Agenda 2/14&15/2002
+        >
+        >
+        >         ISAS Members and Guests,
+        >
+        >         Attached is the agenda package for the February meeting. The
+        > hotel has
+        >         extended the room availability through 2/1/02.
+        >
+        >         Thanks.
+        >
+        >          <<WSCC Meeting 2-14-02.pdf>>  <<ISAS February 2002 Meeting
+        > >>
+        >
+        > ==========================================================================
+        > ==
+        >
+        > This email is confidential and may be legally privileged.
+        >
+        > It is intended solely for the addressee. Access to this email by anyone
+        > else, unless expressly approved by the sender or an authorized addressee,
+        > is unauthorized.
+        >
+        > If you are not the intended recipient, any disclosure, copying,
+        > distribution or any action omitted or taken in reliance on it, is
+        > prohibited and may be unlawful. If you believe that you have received this
+        > email in error, please contact the sender, delete this e-mail and destroy
+        > all copies.
+        >
+        >
+        > ==========================================================================
+        > ====
+        >
+        >
+        >
+
+-   extracted_information:
+        recipients:
+        -   email: kevin.montagne@enron.com
+            name: Kevin Montagne
+            organization: Enron Corp.
+            type: to
+        -   email: stephanie.panus@enron.com
+            name: Stephanie Panus
+            organization: Enron Corp.
+            type: cc
+        -   email: stephanie.panus@enron.com
+            name: Stephanie Panus
+            organization: Enron Corp.
+            type: bcc
+        sender:
+            email: mark.greenberg@enron.com
+            name: Mark Greenberg
+            organization: Enron Corp.
+        subject: 3PARdata
+        date: 26.11.2001
+    raw_email: |-
+        Message-ID: <5264786.1075863217058.JavaMail.evans@thyme>
+        Date: Mon, 26 Nov 2001 10:51:19 -0800 (PST)
+        From: mark.greenberg@enron.com
+        To: kevin.montagne@enron.com
+        Subject: 3PARdata
+        Cc: stephanie.panus@enron.com
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        Bcc: stephanie.panus@enron.com
+        X-From: Greenberg, Mark </O=ENRON/OU=NA/CN=RECIPIENTS/CN=MGREENBE>
+        X-To: Montagne, Kevin </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Kmontag>
+        X-cc: Panus, Stephanie </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Spanus>
+        X-bcc:
+        X-Folder: \SPANUS (Non-Privileged)\Panus, Stephanie\Inbox
+        X-Origin: Panus-S
+        X-FileName: SPANUS (Non-Privileged).pst
+
+        Kevin -
+
+        Attached below is a version of the 3PARdata Beta Agreement which I have marked to reflect the appropriate Enron comments.
+
+        Please forward this to your contact at 3PARdata, together with my name and number or, alternatively, provide me with your contact's information and I will work with him/her directly.
+
+        Mark
+
+-   extracted_information:
+        recipients:
+        -   email: kenneth.lay@enron.com
+            name: Kenneth L. Lay
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: hall-b@msn.com
+            name: Bruce Hall
+            role: Vice President & COO
+            organization: Arctic Resources Company
+        subject: 'FW: Governor Knowles Correspondence'
+        date: 15.11.2000
+    raw_email: |-
+        Message-ID: <25791378.1075840273105.JavaMail.evans@thyme>
+        Date: Wed, 15 Nov 2000 01:09:00 -0800 (PST)
+        From: hall-b@msn.com
+        To: kenneth.lay@enron.com
+        Subject: FW: Governor Knowles Correspondence
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=ANSI_X3.4-1968
+        Content-Transfer-Encoding: quoted-printable
+        X-From: "Bruce Hall" <hall-b@msn.com>
+        X-To: <kenneth.lay@enron.com>
+        X-cc:
+        X-bcc:
+        X-Folder: \Kenneth_Lay_Dec2000\Notes Folders\Notes inbox
+        X-Origin: LAY-K
+        X-FileName: klay.nsf
+
+        ?
+
+        ?
+
+        -----Original Message-----
+        From: Bruce Hall [mailto:hall-b@msn.com]
+        Sent: Friday, November 10, 2000 10:43 AM
+        To: Kenneth L. Lay
+        Subject: Governor Knowles Correspondence
+        Importance: High
+        Sensitivity: Confidential
+
+        ?
+
+        Forrest thought you might be interested in the attached letter, which he se=
+        nt=20
+        to Governor Tony Knowles regarding the timing issues affecting a North Slop=
+        e=20
+        natural gas pipeline.
+
+        ?
+
+        Best regards,
+
+        ?
+
+        ?
+
+        ?
+
+        Dr. Bruce Hall, P.E., M.Sc., MBA
+
+        ?
+
+        Vice President & COO???????????????????????????????????????????????????????=
+        =20
+        President & COO
+
+        Arctic Resources Company????????????????????????????? ArctiGas Resources=20
+        Corporation
+
+        Three Riverway????????????????????????????????????????????????? 540 =01) 5t=
+        h=20
+        Avenue S.W.
+
+        Suite 1375???????????????????????????????????????????????????????? Suite 18=
+        00
+
+        Houston, Texas???????????????????????????????????????????????? Calgary,=20
+        Alberta
+
+        USA 77056??????????????????????????????????????????????????????? Canada T2P=
+        =20
+        0M2
+
+        ?
+         - Knowles110900.doc
+    
+-   extracted_information:
+        recipients:
+        -   email: a..martin@enron.com
+            name: Thomas A. Martin
+            organization: Enron Corp.
+            type: to
+        sender:
+            email: david.baumbach@enron.com
+            name: David Baumbach
+            organization: Enron Corp.
+        subject: 'FW:'
+        date: 23.10.2001
+    raw_email: |-
+        Message-ID: <30141825.1075859019099.JavaMail.evans@thyme>
+        Date: Tue, 23 Oct 2001 14:05:05 -0700 (PDT)
+        From: david.baumbach@enron.com
+        To: a..martin@enron.com
+        Subject: FW:
+        Mime-Version: 1.0
+        Content-Type: text/plain; charset=us-ascii
+        Content-Transfer-Encoding: 7bit
+        X-From: Baumbach, David </O=ENRON/OU=NA/CN=RECIPIENTS/CN=DBAUMBA>
+        X-To: Martin, Thomas A. </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Tmartin>
+        X-cc:
+        X-bcc:
+        X-Folder: \TMARTIN (Non-Privileged)\Inbox
+        X-Origin: Martin-T
+        X-FileName: TMARTIN (Non-Privileged).pst
+
+        From part of our discussion the other night ...
+
+         -----Original Message-----
+        From:     Graham, Toni
+        Sent:    Tuesday, October 23, 2001 11:26 AM
+        To:    Baumbach, David
+        Subject:    RE:
+
+        It's more than just my understanding.   All employees hired in 2001 will receive 20% of base in stock options granted on last business day of year.  Strike price is price of stock at close of market on last bus. day of year.
+        see ya,
+
+        Toni
+
+         -----Original Message-----
+        From:     Baumbach, David
+        Sent:    Tuesday, October 23, 2001 10:44 AM
+        To:    Graham, Toni
+        Subject:
+
+        From your understanding ... do the people that are hired this year receive a stock option grant of 20% of their salary at Dec 2001 year end stock price?
+
+        Dave
