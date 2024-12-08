@@ -1,7 +1,9 @@
 ---
 title: "Posts"
 listing:
-  contents: "**/*.qmd"
+  contents:
+  - "**/*.qmd"
+  - "**/*.ipynb"
   sort: "date desc"
   type: default
   categories: true
