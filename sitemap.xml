@@ -2,26 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/control-series/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.694Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.069Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.698Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/llm-email-information-extaction/index.html</loc>
+    <lastmod>2024-12-11T20:37:47.069Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.694Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.073Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.694Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.069Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.694Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.073Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
-    <lastmod>2024-12-08T19:38:13.694Z</lastmod>
+    <lastmod>2024-12-11T20:37:47.069Z</lastmod>
   </url>
 </urlset>
