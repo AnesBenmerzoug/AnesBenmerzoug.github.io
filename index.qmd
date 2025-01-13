@@ -70,7 +70,7 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 ## Projects
 
 * [pyDVL](https://github.com/aai-institute/pyDVL)
-  An open-source library of stable implementations of algorithms for data valuation and influence function computation 
+  An open-source library of stable implementations of algorithms for data valuation and influence function computation. 
 
 * [Langsfer](https://github.com/AnesBenmerzoug/langsfer)
   An open-source library for language transfer methods and algorithms. 
@@ -100,7 +100,6 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 * **Containerization**: Docker
 * **Orchestration**: Kubernetes
 * **Experiments**: MLflow
-* **RDBMS**: PostgreSQL
-* **NoSQL DB**: ElasticSearch
+* **Database Systems**: PostgreSQL, ElasticSearch
 * **Backend**: FastAPI, Django
 * **Cloud**: AWS, Azure
