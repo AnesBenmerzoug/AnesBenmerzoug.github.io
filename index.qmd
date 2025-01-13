@@ -36,7 +36,6 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 * **appliedAI Initiative GmbH** / Munich, Germany / July 2023 - Present
   - Senior Artificial Intelligence Engineer
 
-
 * **appliedAI - UnternehmerTUM** / Munich, Germany / June 2021 - July 2023
   - Artificial Intelligence Engineer
 
@@ -63,9 +62,8 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 ### Languages
 
 * Python
+* Rust
 * SQL
-* Go
-* C
 
 ### AI
 
@@ -73,13 +71,15 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 * Deep Learning
 * Large Language Models (LLMs)
 * Retrieval Augmented Generation (RAG)
+* Natural Language Processing (NLP)
 * Data Valuation
 * Explainability (XAI)
 
-### Technologies
+### Technologies and Services
 
-* Docker
-* Kubernetes
-* PostgreSQL
-* FastAPI
-* AWS, Azure
+* Containerization: Docker
+* Orchestration: Kubernetes
+* Experiments: MLflow
+* RDMBs: PostgreSQL
+* Backend: FastAPI, Django
+* Cloud: AWS, Azure
