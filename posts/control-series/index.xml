@@ -10,6 +10,38 @@
 <atom:link href="https://AnesBenmerzoug.github.io/posts/control-series/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Mon, 13 Jan 2025 21:21:36 GMT</lastBuildDate>
+<lastBuildDate>Fri, 13 Sep 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Introduction</title>
+  <dc:creator>Anes Benmerzoug</dc:creator>
+  <link>https://AnesBenmerzoug.github.io/posts/control-series/01-introduction/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>In this first post of the Control series, we will introduce the system that we want to control as well as the different control objectives. I am writing this series because I miss working on Control problems.</p>
+<p>The aim of this series is to apply as many methods to model, control and observe the chosen system as possible in order for me to get back some of the knowledge I lost while away from control engineering as well as gain some new knowledge.</p>
+<section id="ball-and-plate-system" class="level1">
+<h1>Ball and Plate System</h1>
+<p>The ball and plate (also called ball on plate) system is a benchmark system in control engineering used to evaluate new control and observation algorithms. It is also a widespread educational system used in universities to teach students about non-linear control.</p>
+<p>It consists of a ball that moves freely along the x and y axes on top of plate that can rotate freely along x and y axes.</p>
+<div id="video-ball-plate">
+<p>{{ video https://youtu.be/F8R91bAOHSU?si=RlQaEWpiFJpsIQXR }}</p>
+<p>Ball and plate balancing with PID controller</p>
+</div>
+<p>In <span class="citation" data-cites="video-ball-plate">@video-ball-plate</span>, we can see an example of a real ball and plate system whose goal is to bring the ball back to the center of the plate.</p>
+<p>Controlling this type of system is something I tried to do together with my classmates during my first Master’s studies. We did the best we could with our limited budget and resources.</p>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <guid>https://AnesBenmerzoug.github.io/posts/control-series/01-introduction/</guid>
+  <pubDate>Fri, 13 Sep 2024 00:00:00 GMT</pubDate>
+</item>
 </channel>
 </rss>
