@@ -130,21 +130,28 @@
     "href": "index.html#professional-experience",
     "title": "About Me",
     "section": "Professional Experience",
-    "text": "Professional Experience\n\nappliedAI Initiative GmbH / Munich, Germany / July 2023 - Present\n\nSenior Artificial Intelligence Engineer\n\nappliedAI - UnternehmerTUM / Munich, Germany / June 2021 - July 2023\n\nArtificial Intelligence Engineer\n\nAvira / Tettnang, Germany / October 2018 - May 2021\n\nSpecialist Artificial Intelligence Researcher\n\nFraunhofer ITWM / Kaiserslautern, Germany / July 2018 - September 2018\n\nResearch Assistant (HiWi)"
+    "text": "Professional Experience\n\nappliedAI Initiative GmbH\n\nSenior Artificial Intelligence Engineer\nJuly 2023 - Present\nMunich, Germany\n\nappliedAI - UnternehmerTUM\n\nArtificial Intelligence Engineer\nJune 2021 - July 2023\nMunich, Germany\n\nAvira\n\nSpecialist Artificial Intelligence Researcher\nOctober 2018 - May 2021\nTettnang, Germany\n\nFraunhofer ITWM\n\nResearch Assistant (HiWi)\nJuly 2018 - September 2018\nKaiserslautern, Germany"
   },
   {
     "objectID": "index.html#education",
     "href": "index.html#education",
     "title": "About Me",
     "section": "Education",
-    "text": "Education\n\nM.Sc. in Embedded Systems / September 2016 - October 2018\n\nTechnical University of Kaiserslautern\n\nM.Sc. in Automation and Control Systems / September 2013 - July 2016\n\nEcole Nationale Polytechnique Algiers"
+    "text": "Education\n\nM.Sc. in Embedded Systems\n\nTechnical University of Kaiserslautern\nSeptember 2016 - October 2018\n\nM.Sc. in Automation and Control Systems\n\nEcole Nationale Polytechnique Algiers\nSeptember 2013 - July 2016"
+  },
+  {
+    "objectID": "index.html#projects",
+    "href": "index.html#projects",
+    "title": "About Me",
+    "section": "Projects",
+    "text": "Projects\n\npyDVL An open-source library of stable implementations of algorithms for data valuation and influence function computation\nLangsfer An open-source library for language transfer methods and algorithms."
   },
   {
     "objectID": "index.html#skills",
     "href": "index.html#skills",
     "title": "About Me",
     "section": "Skills",
-    "text": "Skills\n\nLanguages\n\nPython\nRust\nSQL\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nNatural Language Processing (NLP)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies and Services\n\nContainerization: Docker\nOrchestration: Kubernetes\nExperiments: MLflow\nRDMBs: PostgreSQL\nBackend: FastAPI, Django\nCloud: AWS, Azure"
+    "text": "Skills\n\nLanguages\n\nPython\nRust\nSQL\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nNatural Language Processing (NLP)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies and Services\n\nContainerization: Docker\nOrchestration: Kubernetes\nExperiments: MLflow\nRDBMS: PostgreSQL\nNoSQL DB: ElasticSearch\nBackend: FastAPI, Django\nCloud: AWS, Azure"
   },
   {
     "objectID": "posts/poetry-and-python-versions/index.html",
