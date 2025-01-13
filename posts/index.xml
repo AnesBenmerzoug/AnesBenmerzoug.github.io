@@ -9,7 +9,7 @@
 <link>https://AnesBenmerzoug.github.io/posts/</link>
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
-<generator>quarto-1.6.39</generator>
+<generator>quarto-1.6.40</generator>
 <lastBuildDate>Wed, 11 Dec 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Using an LLM for information extraction</title>
@@ -5565,7 +5565,7 @@ No matching items
 </div>
 </div> ]]></description>
   <guid>https://AnesBenmerzoug.github.io/posts/control-series/</guid>
-  <pubDate>Wed, 11 Dec 2024 20:38:03 GMT</pubDate>
+  <pubDate>Mon, 13 Jan 2025 21:14:45 GMT</pubDate>
 </item>
 </channel>
 </rss>

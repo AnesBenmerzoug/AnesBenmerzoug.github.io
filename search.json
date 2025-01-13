@@ -144,7 +144,7 @@
     "href": "index.html#skills",
     "title": "About Me",
     "section": "Skills",
-    "text": "Skills\n\nLanguages\n\nPython\nSQL\nGo\nC\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies\n\nDocker\nKubernetes\nPostgreSQL\nFastAPI\nAWS, Azure"
+    "text": "Skills\n\nLanguages\n\nPython\nRust\nSQL\n\n\n\nAI\n\nMachine Learning\nDeep Learning\nLarge Language Models (LLMs)\nRetrieval Augmented Generation (RAG)\nNatural Language Processing (NLP)\nData Valuation\nExplainability (XAI)\n\n\n\nTechnologies and Services\n\nContainerization: Docker\nOrchestration: Kubernetes\nExperiments: MLflow\nRDMBs: PostgreSQL\nBackend: FastAPI, Django\nCloud: AWS, Azure"
   },
   {
     "objectID": "posts/poetry-and-python-versions/index.html",
