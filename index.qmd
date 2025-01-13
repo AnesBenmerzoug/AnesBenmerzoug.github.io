@@ -33,27 +33,47 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
 ## Professional Experience
 
-* **appliedAI Initiative GmbH** / Munich, Germany / July 2023 - Present
+* **appliedAI Initiative GmbH**
   - Senior Artificial Intelligence Engineer
+  - July 2023 - Present
+  - Munich, Germany
 
-* **appliedAI - UnternehmerTUM** / Munich, Germany / June 2021 - July 2023
+* **appliedAI - UnternehmerTUM**
   - Artificial Intelligence Engineer
+  - June 2021 - July 2023
+  - Munich, Germany
 
-* **Avira** / Tettnang, Germany / October 2018 - May 2021
+* **Avira**
   - Specialist Artificial Intelligence Researcher
+  - October 2018 - May 2021
+  - Tettnang, Germany
     
-* **Fraunhofer ITWM** / Kaiserslautern, Germany / July 2018 - September 2018
+* **Fraunhofer ITWM**
   - Research Assistant (HiWi)
+  - July 2018 - September 2018
+  - Kaiserslautern, Germany
 
 ---
 
 ## Education
 
-* **M.Sc. in Embedded Systems** / September 2016 - October 2018
+* **M.Sc. in Embedded Systems**
   - Technical University of Kaiserslautern
+  - September 2016 - October 2018
 
-* **M.Sc. in Automation and Control Systems** / September 2013 - July 2016
+* **M.Sc. in Automation and Control Systems**
   - Ecole Nationale Polytechnique Algiers
+  - September 2013 - July 2016
+
+---
+
+## Projects
+
+* [pyDVL](https://github.com/aai-institute/pyDVL)
+  An open-source library of stable implementations of algorithms for data valuation and influence function computation 
+
+* [Langsfer](https://github.com/AnesBenmerzoug/langsfer)
+  An open-source library for language transfer methods and algorithms. 
 
 ---
 
@@ -77,9 +97,10 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
 ### Technologies and Services
 
-* Containerization: Docker
-* Orchestration: Kubernetes
-* Experiments: MLflow
-* RDMBs: PostgreSQL
-* Backend: FastAPI, Django
-* Cloud: AWS, Azure
+* **Containerization**: Docker
+* **Orchestration**: Kubernetes
+* **Experiments**: MLflow
+* **RDBMS**: PostgreSQL
+* **NoSQL DB**: ElasticSearch
+* **Backend**: FastAPI, Django
+* **Cloud**: AWS, Azure
