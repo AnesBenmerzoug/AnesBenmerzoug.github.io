@@ -3,11 +3,12 @@ date: 2024-09-13
 title: "Introduction"
 keywords: [
     "Ball and Plate",
-    "Control", 
+    "Control",
     "System",
 ]
 license: "CC BY"
 link-citations: true
+draft: true
 ---
 
 In this first post of the Control series, we will introduce the system that we want to control as well as the different control
@@ -15,7 +16,7 @@ objectives. I am writing this series because I miss working on Control problems.
 
 The aim of this series is to apply as many methods to model, control and observe the chosen system as possible
 in order for me to get back some of the knowledge I lost while away from control engineering as well as gain
-some new knowledge. 
+some new knowledge.
 
 # Ball and Plate System
 
@@ -40,4 +41,3 @@ Controlling this type of system is something I tried to do together with my clas
 Master's studies. We did the best we could with our limited budget and resources.
 
 ## Modeling
-

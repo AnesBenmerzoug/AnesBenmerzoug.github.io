@@ -13,10 +13,3 @@ listing:
 page-layout: full
 title-block-banner: false
 ---
-
-# Series
-
-### [Control Series](control-series/index.qmd)
-
-This series contains blog plots about different ways to control
-a specific system.
