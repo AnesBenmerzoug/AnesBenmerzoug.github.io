@@ -24,5 +24,8 @@ website:
 
 format:
   html:
-    theme: simplex
+    theme:
+      light: cosmo
+      dark: [solar, static/styles/custom-dark.scss]
     toc: true
+    respect-user-color-scheme: true
