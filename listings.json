@@ -2,18 +2,15 @@
   {
     "listing": "/posts/index.html",
     "items": [
-      "/posts/control-series/index.html",
+      "/posts/rpi-tfluna-lidar/index.html",
       "/posts/llm-email-information-extaction/index.html",
       "/posts/poetry-and-python-versions/index.html",
-      "/posts/control-series/01-introduction/index.html",
       "/posts/when-ecr-lifecycle-policies-are-not-enough/index.html",
       "/posts/model-versioning-with-mlflow/index.html"
     ]
   },
   {
     "listing": "/posts/control-series/index.html",
-    "items": [
-      "/posts/control-series/01-introduction/index.html"
-    ]
+    "items": []
   }
 ]

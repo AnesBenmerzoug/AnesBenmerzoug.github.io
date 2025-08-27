@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anes Benmerzoug">
-<meta name="dcterms.date" content="2020-07-08">
-<meta name="keywords" content="MLflow, Model-Versioning, McNemar’s-Test, Machine-Learning">
+<meta name="dcterms.date" content="2025-08-27">
+<meta name="keywords" content="Raspberry Pi, TF-Luna, LiDAR, Time of Flight, Rust, Rerun">
 
-<title>Model Versioning with MLflow – Personal Blog</title>
+<title>Measuring distance with a TF-Luna LiDAR and a Raspberry Pi – Personal Blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -109,9 +109,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -368,21 +365,21 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#mlflow" id="toc-mlflow" class="nav-link active" data-scroll-target="#mlflow">MLFlow</a></li>
-  <li><a href="#mcnemars-test" id="toc-mcnemars-test" class="nav-link" data-scroll-target="#mcnemars-test">McNemar’s test</a></li>
-  <li><a href="#model-versioning-flow" id="toc-model-versioning-flow" class="nav-link" data-scroll-target="#model-versioning-flow">Model Versioning Flow</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#tf-luna-and-distance-measurements-with-lidars" id="toc-tf-luna-and-distance-measurements-with-lidars" class="nav-link active" data-scroll-target="#tf-luna-and-distance-measurements-with-lidars">TF-Luna and distance measurements with LiDARS</a></li>
+  <li><a href="#raspberry-pi-and-tf-luna" id="toc-raspberry-pi-and-tf-luna" class="nav-link" data-scroll-target="#raspberry-pi-and-tf-luna">Raspberry Pi and TF-Luna</a></li>
+  <li><a href="#raspberry-pi-and-rust" id="toc-raspberry-pi-and-rust" class="nav-link" data-scroll-target="#raspberry-pi-and-rust">Raspberry Pi and Rust</a></li>
+  <li><a href="#data-collection-and-visualization" id="toc-data-collection-and-visualization" class="nav-link" data-scroll-target="#data-collection-and-visualization">Data Collection and Visualization</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Model Versioning with MLflow</h1>
+<h1 class="title">Measuring distance with a TF-Luna LiDAR and a Raspberry Pi</h1>
 </div>
 
 
@@ -399,7 +396,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 8, 2020</p>
+      <p class="date">August 27, 2025</p>
     </div>
   </div>
   
@@ -410,319 +407,304 @@ window.Quarto = {
 <div>
   <div class="keywords">
     <div class="block-title">Keywords</div>
-    <p>MLflow, Model-Versioning, McNemar’s-Test, Machine-Learning</p>
+    <p>Raspberry Pi, TF-Luna, LiDAR, Time of Flight, Rust, Rerun</p>
   </div>
 </div>
 
 </header>
 
 
-<p>In this very first post we will talk about machine learning model versioning and more specifically machine learning classifier versioning.</p>
-<p>Of course, one could simply compare accuracies ( or whichever metric you’re using ) on a separate test set and promote whichever classifier has a better value but that does not offer us the same guarantees as statistical tests.</p>
-<p>For example, one may train two different classifiers on the same dataset and get the following results on a separate test set:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>True Label</th>
-<th>Model 1 Prediction</th>
-<th>Model 2 Prediction</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A</td>
-<td>A</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>A</td>
-<td>A</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>B</td>
-<td>A</td>
-<td>A</td>
-</tr>
-<tr class="even">
-<td>A</td>
-<td>A</td>
-<td>B</td>
-</tr>
-<tr class="odd">
-<td>A</td>
-<td>B</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td>B</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>B</td>
-<td>B</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td>A</td>
-<td>B</td>
-</tr>
-<tr class="odd">
-<td>A</td>
-<td>A</td>
-<td>A</td>
-</tr>
-<tr class="even">
-<td>A</td>
-<td>B</td>
-<td>A</td>
-</tr>
-</tbody>
-</table>
-<p>We can see that the first classifier has an accuracy of 60% and the second classifier an accuracy of 50%. If we were to stop here we would just say that the first classifier is better than the second one and that could be true, but can this result be trusted?</p>
-<p>To verify that we construct the following <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a>:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th>Model 2 Correct</th>
-<th>Model 2 Wrong</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Model 1 Correct</td>
-<td>3</td>
-<td>3</td>
-</tr>
-<tr class="even">
-<td>Model 1 Wrong</td>
-<td>2</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>By comparing the off-diagonal elements, we can intuitively know that there isn’t much of a difference between the two classifiers. To make that more precise we can use statistical tests instead of just comparing numbers.</p>
-<p>One such test is <a href="https://en.wikipedia.org/wiki/McNemar%27s_test">McNemar’s Test</a>.</p>
-<p>Before explaining McNemar’s Test and the different steps used to compare two machine learning classifiers, let’s first talk about <a href="https://mlflow.org/">MLflow</a>.</p>
-<section id="mlflow" class="level2">
-<h2 class="anchored" data-anchor-id="mlflow">MLFlow</h2>
-<p><a href="https://mlflow.org/">MLflow</a> is an open source platform for the machine learning life-cycle. It is currently composed of four components:</p>
-<ul>
-<li><a href="https://www.mlflow.org/docs/latest/tracking.html">MLflow Tracking</a>: Used to record and query experiments: code, data, config, and results</li>
-<li><a href="https://www.mlflow.org/docs/latest/projects.html">MLflow Projects</a>: Used to package data science code in a format to reproduce runs on any platform</li>
-<li><a href="https://www.mlflow.org/docs/latest/models.html">MLflow Models</a>: Used to deploy machine learning models in diverse serving environments</li>
-<li><a href="https://www.mlflow.org/docs/latest/model-registry.html">MLflow Model Registry</a>: Used to store, annotate, discover, and manage models in a central repository</li>
-</ul>
-<p>It uses a classic client server architecture as depicted in the following diagram:</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    subgraph MLflow
-        database[(Database)] &lt;--&gt; server(Server)
-        storage[(Storage)] &lt;--&gt; server
-    end
-
-    server &lt;--&gt; client(Client)
-</pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p></p></figure><p></p>
+<div class="callout-title-container flex-fill">
+Note
 </div>
 </div>
-</div>
-<p>The Client, user, interacts directly with the Server and the Server in turn interacts with the Database (MySQL, MSSQL, SQLITE, or POSTGRESQL) and the Storage backend (Local or Cloud).</p>
-<p>In this post we’re only interested in the last component: the <a href="https://www.mlflow.org/docs/latest/model-registry.html"><strong>Model Registry</strong></a>.</p>
-<p>It is a centralized model store, set of APIs, and UI, to collaboratively manage the full life-cycle of an MLflow Model. It provides model lineage (which MLflow experiment and run produced the model), model versioning, stage transitions (such as from staging to production), and annotations.</p>
-<p>A registered model can be in any one of the following stages: - <strong>None</strong> - <strong>Staging</strong> - <strong>Production</strong> - <strong>Archived</strong></p>
-<p>As can be seen in the following flowchart, a model starts, when first logged or registered, in the <strong>None</strong> stage and then transitions to the <strong>Staging</strong> stage, then to the <strong>Production</strong> stage and finally end its life-cycle in the <strong>Archived</strong> stage.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-    none(None)
-    staging(Staging)
-    production(Production)
-    archived(Archived)
-
-    none --&gt; staging
-    staging --&gt; production
-    production --&gt; archived
-</pre>
-</div>
-<p></p></figure><p></p>
+<div class="callout-body-container callout-body">
+<p>The full code for this project/experiment can be found in the following repository: <a href="https://github.com/AnesBenmerzoug/rpi-tfluna-lidar">rpi-tfluna-lidar</a></p>
 </div>
 </div>
-</div>
-<p>For simplicity’s sake we won’t consider other possible transitions (e.g.&nbsp;<strong>Staging</strong> -&gt; <strong>Archived</strong>).</p>
-<p>What the Model Registry does not take care of is automatically transition a given model to the appropriate stage and that is understandable because the conditions needed to do that depend on the actual application.</p>
-</section>
-<section id="mcnemars-test" class="level2">
-<h2 class="anchored" data-anchor-id="mcnemars-test">McNemar’s test</h2>
-<p>McNemar’s test is a non-parametric statistical test that can be used to compare two classification models by constructing a 2x2 contingency table, or confusion matrix, like the following:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th>Model 2 Correct</th>
-<th>Model 2 Wrong</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Model 1 Correct</td>
-<td>a</td>
-<td>b</td>
-</tr>
-<tr class="even">
-<td>Model 1 Wrong</td>
-<td>c</td>
-<td>d</td>
-</tr>
-</tbody>
-</table>
-<p>In order to test if there is a significant difference between the two models, we use only the off-diagonal elements, b and c, since the other elements tell us nothing about whether one model is better than the other or not.</p>
-<p>McNemar’s test statistic is:</p>
-<p><span class="math display">\[
-Q = \frac{(b - c)}{b + c}
-\]</span></p>
-<p>Which, for large values of b and c, follows a chi-squared distribution with 1 degree of freedom <span class="math inline">\(\chi_{1}^{2}\)</span>.</p>
-<p>To more closely approximate the chi-squared distribution we can use the following definition instead which contains a continuity correction:</p>
-<p><span class="math display">\[
-Q = \frac{(|b - c| - 1)}{b + c}
-\]</span></p>
-<p>If the result is significant, i.e.&nbsp;greater than a pre-defined significance level, usually set to 0.05 but can be changed depending on the use case, then we can conclude that the two models are significantly different from each other.</p>
-<p>But it does not end there, we still have to determine which one of the two is better than the other one. For that, we can use one or a combination of the usual metrics: Accuracy, F-Score, False Positive Rate, etc.</p>
-<p>If we apply the continuity corrected version of the test on our previous example we get as result <em>1.0</em> and can confidently say that there is no significant difference between the two classifiers.</p>
-</section>
-<section id="model-versioning-flow" class="level2">
-<h2 class="anchored" data-anchor-id="model-versioning-flow">Model Versioning Flow</h2>
-<p>Now that we have defined and explained all the required parts of the flow. We can assemble them into the following chart that shows the different steps taken to compare two different classification models:</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
-    End--&gt;title["Model Versioning Flow Chart"]
-    style title fill:#FFF,stroke:#FFF
-    linkStyle 0 stroke:#FFF,stroke-width:0;
-    Start((Start)) --&gt; A
-    A(McNemar's Test) --&gt; B{"P-value &lt; &amp;alpha;"}
-    B --&gt;|No| End((End))
-    B --&gt;|Yes| C(Compute&lt;br&gt;Accuracies)
-    C --&gt; D{Model1 Accuracy&lt;br&gt;&lt;&lt;br&gt;Model2 Accuracy}
-    D --&gt;|No| End
-    D --&gt;|Yes| E(Deploy Model2)
-    E --&gt; End
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>Here we use accuracy, but it could be replaced by other metrics such as False Positive Rate, False Negative Rate, etc.</p>
-</section>
-<section id="example" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="example">Example</h2>
-<p>In <a href="https://github.com/AnesBenmerzoug/mlflow_model_versioning">this repository</a> you can find example code in Python that shows how to use the previous flow to do model versioning for machine learning classifiers with MLflow.</p>
-<p>One important thing that should always be done is to pin the random seed to ensure the experiment’s repeatability.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>random_seed <span class="op">=</span> <span class="dv">16</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(random_seed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the example, we start off by generating artificial classification data using scikit-learn’s <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html">make_classification</a> helper function and then splitting it into a training and a testing set:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_classification(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        n_samples<span class="op">=</span><span class="dv">10000</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        n_classes<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        n_features<span class="op">=</span><span class="dv">20</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        n_informative<span class="op">=</span><span class="dv">9</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span>random_seed,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    X, y, train_size<span class="op">=</span><span class="fl">0.8</span>, test_size<span class="op">=</span><span class="fl">0.2</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>After that, we fit a Logistic Regression classifier, then register and log it into MLflow and finally move it to the <strong>Production</strong> phase:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> mlflow.start_run():</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    lr_model <span class="op">=</span> LogisticRegression()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    lr_model.fit(X_train, y_train)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> lr_model.predict(X_test)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    mlflow.log_metric(<span class="st">"accuracy"</span>, accuracy)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    mlflow.sklearn.log_model(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        lr_model, artifact_path<span class="op">=</span><span class="st">"model"</span>, registered_model_name<span class="op">=</span><span class="st">"Logistic Regression"</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>mlflow_client.transition_model_version_stage(</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"Logistic Regression"</span>, version<span class="op">=</span><span class="dv">1</span>, stage<span class="op">=</span><span class="st">"Production"</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then, we fit a Random Forest classifier, then register and log it into MLflow and finally move it to the <strong>Staging</strong> phase:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> mlflow.start_run():</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    rf_model <span class="op">=</span> RandomForestClassifier()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    rf_model.fit(X_train, y_train)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> rf_model.predict(X_test)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    mlflow.log_metric(<span class="st">"accuracy"</span>, accuracy)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    mlflow.sklearn.log_model(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        rf_model, artifact_path<span class="op">=</span><span class="st">"model"</span>, registered_model_name<span class="op">=</span><span class="st">"Random Forest"</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>mlflow_client.transition_model_version_stage(</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"Random Forest"</span>, version<span class="op">=</span><span class="dv">1</span>, stage<span class="op">=</span><span class="st">"Staging"</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To simulate the fact that the model comparison may happen in another script we delete both trained model instances and load them back from MLflow:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> lr_model</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> rf_model</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>lr_model_download_uri <span class="op">=</span> mlflow_client.get_model_version_download_uri(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"Logistic Regression"</span>, version<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>rf_model_download_uri <span class="op">=</span> mlflow_client.get_model_version_download_uri(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"Random Forest"</span>, version<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>lr_model <span class="op">=</span> mlflow.sklearn.load_model(lr_model_download_uri)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> mlflow.sklearn.load_model(rf_model_download_uri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As a next step, we use both models to generate predictions on the test set. We use these predictions to compute each model’s accuracy and to create a contingency table that is finally used in a corrected version of McNemar’s Test to return a P-value:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y_pred_lr <span class="op">=</span> lr_model.predict(X_test)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf_model.predict(X_test)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>accuracy_lr <span class="op">=</span> accuracy_score(y_test, y_pred_lr)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>accuracy_rf <span class="op">=</span> accuracy_score(y_test, y_pred_rf)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>contingency_table <span class="op">=</span> mcnemar_table(y_test, y_pred_lr, y_pred_rf)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>_, p_value <span class="op">=</span> mcnemar(contingency_table, corrected<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally we use the obtained P-value and the accuracies to decide whether we should deploy the Random Forest classifier to Production and archive the Logistic Regression classifier or not:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> p_value <span class="op">&lt;</span> significance <span class="kw">and</span> accuracy_lr <span class="op">&lt;</span> accuracy_rf:</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    mlflow_client.transition_model_version_stage(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"Logistic Regression"</span>, version<span class="op">=</span><span class="dv">1</span>, stage<span class="op">=</span><span class="st">"Archived"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    mlflow_client.transition_model_version_stage(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"Random Forest"</span>, version<span class="op">=</span><span class="dv">1</span>, stage<span class="op">=</span><span class="st">"Production"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can then access the MLflow server’s dashboard and see that the Random Forest classifier’s version 1 is in Production and the Logistic Regression classifier’s version 1 was archived:</p>
-<div class="page-columns page-full">
-<div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full">
-<p class="page-columns page-full"><img src="mlflow_model_versioning_screenshot.png" class="img-fluid figure-img column-screen"></p>
-<figcaption>MLflow Model Versioning Screenshot</figcaption>
+<p>I recently learned Rust and was looking to put it into practice by working on some cool side-projects. Since I work as an AI Engineer and have developed my fair share of chatbots, I first developed <a href="https://github.com/AnesBenmerzoug/pincer-chat">PincerChat</a> a few months ago, a desktop GUI for interacting with local LLMs served with Ollama. Looking back at it, I realize that I tried to chew more than I could swallow but nevertheless I learned a lot making it.</p>
+<p>I then decided to try something simpler and at the same time get back into embedded systems and micro-controller development. During my master’s studies for Control Engineering in Algeria, a group of friends and I had our own team, called <em>OTO</em> which is a homonym for <em>Auto.</em> an abbreviation for <em>Automatique</em> (Automation in French), that built many different embedded projects like <a href="https://en.wikipedia.org/wiki/Ball_and_beam">a ball and beam system</a>, a ball and plate system and a <a href="https://en.wikipedia.org/wiki/Persistence_of_vision">persistence of vision</a> (PoV) display.</p>
+<p>Before starting, I had to get some hardware. Luckily for me, I had a <a href="https://www.raspberrypi.com/products/raspberry-pi-3-model-b/">Raspberry Pi 3 model B</a> laying around that I was using as a Pi-Hole before moving into my current apartment and while browsing through AliExpress I stumbled upon the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna LiDAR</a>, a low cost LiDAR sensor and thought that I could use it to make a mobile robot that maps and navigates autonomously.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="raspberry_pi_with_tfluna.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Picture of TF-Luna connected to the Raspberry Pi</figcaption>
 </figure>
 </div>
+<p>Unfortunately for me, once I received the TF-Luna and read its <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">instruction manual</a> I quickly realized that it is 1D LiDAR, i.e.&nbsp;that it only measures the distance to a single point, instead of being a 2D (distance and angle) or 3D (3D distance) LiDAR.</p>
+<p>This is fine for a start, especially since I’m getting back into embedded systems after a long time but I will hopefully buy a better sensor in the future.</p>
+<section id="tf-luna-and-distance-measurements-with-lidars" class="level1">
+<h1>TF-Luna and distance measurements with LiDARS</h1>
+<p>The <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna</a> is a low-cost LiDAR distance sensor made by <a href="https://en.benewake.com/index.html">Benewake</a>, a LiDAR manufacturer based in Beijing, China.</p>
+<p>LiDAR is an acronym of “Light Detection And Ranging”. It is a method for determining distances by targeting an object or a surface with a laser and measuring the time for the reflected light to return to the receiver. It is commonly used for creating detailed 3D maps and is effective in various applications, including autonomous vehicles and environmental monitoring.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="time_of_flight_wikipedia.svg" class="img-fluid figure-img"></p>
+<figcaption>Basic time-of-flight principles applied to laser range-finding - <a href="https://en.wikipedia.org/wiki/Lidar">Wikipedia</a></figcaption>
+</figure>
 </div>
-<p>All that’s left now is to run this or similar code either on a schedule or as part of a training workflow each time a new classifier is trained and logged.</p>
+<p>A LiDAR determines the distance of an object or a surface with the formula:</p>
+<p><span class="math display">\[
+D = \frac{c \cdot t}{2}
+\]</span></p>
+<p>where <strong>D</strong> is the distance between the sensor and the object or surface being measured, <strong>c</strong> is the speed of light, and <strong>t</strong> is the time spent for the laser light to travel to the object or surface being detected, then travel back to the sensor.</p>
+<p>The TF-Luna however does not send a single pulse at a time, but rather periodically emits near infrared modulated waves and calculates the time by measuring the phase difference between the original wave and the reflected wave and uses that time to compute the relative distance of the object at which it is pointed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="time_of_flight_tfluna.svg" class="img-fluid figure-img"></p>
+<figcaption>Schematics of ToF Principle - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a></figcaption>
+</figure>
+</div>
+<p><span class="math display">\[
+D = \frac{c}{2} \cdot \frac{1}{2\pi f} \cdot \Delta\varphi
+\]</span></p>
+<p>where <strong>D</strong> is the distance between the sensor and the object or surface being measured, <strong>c</strong> is the speed of light, and <strong>f</strong> is the frequency of the emitted signal, and <span class="math inline">\(\Delta\varphi\)</span> is the phase difference between emitted and received signal.</p>
+<p>The device’s specifications can be seen in <a href="#tbl-tfluna-parameters" class="quarto-xref">Table&nbsp;1</a>.</p>
+<div id="tbl-tfluna-parameters" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Parameters specification of TF-Luna - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a>
+</figcaption>
+<div aria-describedby="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Description</th>
+<th style="text-align: left;">Parameter value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Operating range</td>
+<td style="text-align: left;">0.2 ~ 8m<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
+</tr>
+<tr class="even">
+<td>Accuracy</td>
+<td style="text-align: left;"><ul>
+<li>±6cm@ (0.2-3m)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>±2%@ (3m-8m)</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>Measurement unit</td>
+<td style="text-align: left;">cm (Default)</td>
+</tr>
+<tr class="even">
+<td>Range resolution</td>
+<td style="text-align: left;">1cm</td>
+</tr>
+<tr class="odd">
+<td>Field of View (FOV)</td>
+<td style="text-align: left;">0.2°<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></td>
+</tr>
+<tr class="even">
+<td>Framerate</td>
+<td style="text-align: left;">1~250Hz<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> (100Hz default)</td>
+</tr>
+<tr class="odd">
+<td>Weight</td>
+<td style="text-align: left;">≤ 5g<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></td>
+</tr>
+<tr class="even">
+<td>Power</td>
+<td style="text-align: left;">≤ 0.35W<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></td>
+</tr>
+<tr class="odd">
+<td>Dimensions</td>
+<td style="text-align: left;">35mm x 21.25mm x 13.5mm<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></td>
+</tr>
+<tr class="even">
+<td>Communication</td>
+<td style="text-align: left;">I2C and UART<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>We have seen that thanks to the Model Registry component of MLflow we can have a pretty simple automated model versioning flow for classifiers. This flow can be and should be extended and made more complete, depending on the use case. For example, by using a second metric for when a tie happens in the first one.</p>
-<p>I hope that you have learned at a thing or two from this post. If there are any mistakes or if you have questions please do not hesitate to reach out to me.</p>
+<section id="raspberry-pi-and-tf-luna" class="level1">
+<h1>Raspberry Pi and TF-Luna</h1>
+<p>I wired the TF-Luna to the Raspberry Pi as shown in <a href="#fig-wiring" class="quarto-xref">Figure&nbsp;1</a> and <a href="#tbl-wiring" class="quarto-xref">Table&nbsp;2</a>.</p>
+<div id="fig-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="wiring_diagram.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Wiring diagram made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
+</figcaption>
+</figure>
+</div>
+<div id="tbl-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Raspberry Pi and TF-Luna Pin Wiring
+</figcaption>
+<div aria-describedby="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">TF-Luna Pin</th>
+<th style="text-align: left;">Raspberry Pi Pin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pin 1 (+3.7-5.2V)</td>
+<td style="text-align: left;">Pin 2 (5V)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pin 2 (RXD/SDA)</td>
+<td style="text-align: left;">Pin 3 (GPIO 2 / SDA)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pin 3 (TXD/SCL)</td>
+<td style="text-align: left;">Pin 5 (GPIO 3 / SCL)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pin 4 (Gnd)</td>
+<td style="text-align: left;">Pin 6 (Gnd)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pin 5 (I2C Enable)</td>
+<td style="text-align: left;">Pin 9 (Gnd)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pin 6 (Data Signal)</td>
+<td style="text-align: left;">Not connected / used</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The TF-Luna supports both Serial (<a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART</a>) and <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> for communication. I decided to use I2C because I am planning to use more sensors and it allows multiplexing whereas UART is just used for point-to-point communication.</p>
+<p>In order to enable I2C mode, we need to connect the TF-Luna’s 5th pin (I2C Enable) to ground.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’re interested in using UART, please read this post instead <a href="https://makersportal.com/blog/distance-detection-with-the-tf-luna-lidar-and-raspberry-pi">Distance Detection with the TF-Luna LiDAR and Raspberry Pi - MakerPortal</a>.</p>
+</div>
+</div>
+<p>Since there was, as of writing this post, no existing crate on <a href="https://crates.io">crates.io</a> for interacting with the TF-Luna, I had to write the code for that myself. Luckily for me, it turned out to be pretty straightforward thanks to the <a href="https://docs.rs/rppal/latest/rppal/">rppal</a> crate as well as these two sources:</p>
+<ul>
+<li>The <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a>.</li>
+<li>The <a href="https://github.com/budryerson/TFLuna-I2C">TFLuna-I2C</a> Arduino library by budryerson.</li>
+</ul>
+<p>Once the wiring was done and the rppal crate added, all I had to do was figure out the correct register addresses from the instruction manual for reading the sensor measurements. This task should have been easy but it was made hard by the structure of the manual itself. Most of the pages are about the UART protocol and the different output format and only a few are about I2C and the registers.</p>
+<p>I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did. The reason turned out to be a mistake in the instruction manual (see <a href="#fig-instruction-manual-error" class="quarto-xref">Figure&nbsp;2</a>). Unlike what’s written in it, to <strong>enable</strong> (respectively <strong>disable</strong>) the lidar sensor you have to set the <strong>0x25</strong> register to <strong>1</strong> (respectively <strong>0</strong>) instead of <strong>0</strong> (respectively <strong>1</strong>). I will try to reach out to the manufacturer to inform them of this error, even though I doubt I am the first person to stumble upon it.</p>
+<div id="fig-instruction-manual-error" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-instruction-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tfluna_instruction_manual_error.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-instruction-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Excerpt from page 30 of TF-Luna Instruction Manual showing error and correction
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="raspberry-pi-and-rust" class="level1">
+<h1>Raspberry Pi and Rust</h1>
+<p>The Raspberry Pi 3 model B is not the most powerful computer there is and compiling the code on it could actually take too long, that’s why we cross-compile it on a separate, more powerful computer and then transfer the binary to it.</p>
+<p>If you want to learn more about cross-compilation in general or specifically about cross-compilation for the Raspberry Pi, you should refer to the following links:</p>
+<ul>
+<li><a href="https://rustprojectprimer.com/building/cross.html">Cross-Compiling chapter from Rust Project Primer book</a></li>
+<li><a href="https://rustmeup.com/using-rust-with-raspberry-pi">Using Rust with Raspberry Pi - RustMeUp</a></li>
+</ul>
+<p>The gist of it is to:</p>
+<ul>
+<li><p>Install the rustup target for the Raspberry Pi 3:</p>
+<pre class="shell"><code>rustup target add aarch64-unknown-linux-gnu</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The target may be different if you have a different Raspberry Pi model.</p>
+</div>
+</div></li>
+<li><p>Install the cross-compiler (on Ubuntu, in this case):</p>
+<pre class="shell"><code>sudo apt-get install gcc-multilib-arm-linux-gnueabihf</code></pre></li>
+<li><p>Compile the code with the new install target:</p>
+<pre class="shell"><code>cargo build --target aarch64-unknown-linux-gnu</code></pre>
+<p>For the sake of simplicity, you should define this configuration inside <code>.cargo/config.toml</code> to avoid having to constantly pass the argument:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[target.aarch64-unknown-linux-gnu]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">linker</span> <span class="op">=</span> <span class="st">"aarch64-linux-gnu-gcc"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[build]</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">target</span> <span class="op">=</span> <span class="st">"aarch64-unknown-linux-gnu"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p>Once that’s done, then we have to copy the binary over to the Raspberry Pi and then execute it.</p>
+<pre class="shell"><code>scp target/aarch64-unknown-linux-gnu/release/main raspberrypi:~Projects/main</code></pre>
+<pre class="shell"><code>ssh raspberrypi ~/Projects/main</code></pre>
+<p>In my repository, all of this can be done by simply calling <code>cargo run</code>.</p>
+</section>
+<section id="data-collection-and-visualization" class="level1">
+<h1>Data Collection and Visualization</h1>
+<p>For the data collection and visualization, we will use <a href="https://rerun.io/">rerun</a> which is an open-source log handling and visualization for spatial and embodied AI. The demos shown on their website definitely seem interesting.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="rerun_aria_dataset_explorer.png" class="img-fluid figure-img"></p>
+<figcaption>Example screenshot of Aria Dataset Explorer using Rerun for visualization - <a href="https://rerun.io/">rerun.io</a></figcaption>
+</figure>
+</div>
+<p>To use it we first start by adding the rerun crate as a dependency:</p>
+<pre class="shell"><code>cargo add rerun</code></pre>
+<p>It has quite a lot of features and will increase the size of the final binary, but I didn’t bother for now to go through them and determine which ones are absolutely necessary and which ones are not.</p>
+<pre class="shell"><code>rerun</code></pre>
+<pre class="shell"><code>cargo run --release</code></pre>
+<p>I put the TF-Luna LiDAR on a table and pointed it at the ceiling, so the initial measurements are of the distance from the table to the ceiling which is about 2 meters (~200 cm).</p>
+<p>I then moved my hand, relatively quickly, in front of it 4 times and that can be seen as the 4 shorts dips to a distance of about 21 centimeters. After that, I put my hand in front of it and left it there for a few seconds. I finally moved my hand away.</p>
+<p>A 10Hz sampling frequency is not enough to detect fast movements, but it is more than enough for indoor autonomous navigation.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="rerun_screenshot.png" class="img-fluid figure-img"></p>
+<figcaption>Screenshot of Rerun viewer showing recorded data</figcaption>
+</figure>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Thanks to this projects, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents. It felt nice getting back into making projects like this after such a long time. It only took me a few days to get it working. It actually took me more time to write this post than to write the code itself.</p>
+<p>As a next step, I would like to mount the TF-Luna on something that can be rotated with a servo or stepper motor in order to change the angle and be able to generate a 2D point cloud.</p>
+<p>I have also decided to make a crate for interacting with the TF-Luna sensor (ideally with both async and embedded-hal support) hoping that it will be useful to others as well.</p>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Operating range measured indoor based on a standard whiteboard with 90% reflectivity.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is the theoretical value, the real value may be different.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>This is the theoretical value, the real value may be different.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>100Hz is the default value and only any factor (500/n, n can be any integer in [2, 500] e.g.&nbsp;250Hz, 125Hz) of 500Hz are available.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>The choice between the two is made based on how the 5th pin is connected. Ground for I2C and 3.3V for UART.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
