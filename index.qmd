@@ -14,18 +14,19 @@ about:
 
 ---
 
-I'm a Senior AI Engineer at [appliedAI Initiative](https://www.appliedai.de/), Europe's largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe's innovative power in AI. 
+I'm a Senior AI Engineer at [appliedAI Initiative](https://www.appliedai.de/), Europe's largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe's innovative power in AI.
 
-I'm passionate about machine learning, software engineering, and open-source development. 
+I'm passionate about machine learning, robotics, software engineering, and open-source development.
 
-I am currently working on LLM and NLP, more specifically RAG (Retrieval-Augmented Generation), projects for different clients.
+I am currently working on LLM and Agent projects for different clients.
+
 When I'm not staffed on client projects, I work on internal projects,
 contribute to open-source projects such as [pyDVL](https://github.com/aai-institute/pyDVL)
 and help with [TransferLab](https://transferlab.ai/authors/anes-benmerzoug)'s research projects
 such as the [replication](https://github.com/ReScience/MLRC/blob/main/2022/32/article.pdf) of
 the [If You Like Shapley Then You'll Love the Core](http://procaccia.info/wp-content/uploads/2020/12/core.pdf) paper.
 
-I hold a M.Sc. in Embedded Systems from the [Technical University 
+I hold a M.Sc. in Embedded Systems from the [Technical University
 of Kaiserslautern](https://www.uni-kl.de/en/home/) and a M.Sc. in Control and Automation from
 the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
@@ -47,7 +48,7 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
   - Specialist Artificial Intelligence Researcher
   - October 2018 - May 2021
   - Tettnang, Germany
-    
+
 * **Fraunhofer ITWM**
   - Research Assistant (HiWi)
   - July 2018 - September 2018
@@ -70,36 +71,45 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 ## Projects
 
 * [pyDVL](https://github.com/aai-institute/pyDVL)
-  An open-source library of stable implementations of algorithms for data valuation and influence function computation. 
+  An open-source library of stable implementations of algorithms for data valuation and influence function computation.
 
 * [Langsfer](https://github.com/AnesBenmerzoug/langsfer)
-  An open-source library for language transfer methods and algorithms. 
+  An open-source library for language transfer methods and algorithms.
+
+* [FreeCAD-Assembly2MuJoCo](https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo)
+  An open-source FreeCAD workbench for exporting a FreeCAD Assembly to MuJoCo for physics simulation.
 
 ---
 
 ## Skills
 
-### Languages
+### Software Development
 
-* Python
-* Rust
-* SQL
+* **Languages**: Python, Rust, SQL
+* **Backend Engineering**: FastAPI, Django, microservices architecture
+* **Database Systems**: PostgreSQL, ElasticSearch
+* **Embedded Development**: Raspberry Pi, ESP32, Arduino
 
-### AI
+### AI & Machine Learning
 
-* Machine Learning
-* Deep Learning
-* Large Language Models (LLMs)
-* Retrieval Augmented Generation (RAG)
-* Natural Language Processing (NLP)
-* Data Valuation
-* Explainability (XAI)
+* **Computer Vision**: Image processing, object detection
+* **Sensor Fusion**: Multi-modal data processing, SLAM, localization
+* **Large Language Models (LLMs)**: Fine-tuning, deployment, optimization
+* **Retrieval Augmented Generation (RAG)**: Vector databases, semantic search
+* **Natural Language Processing (NLP)**: Text processing, language understanding
+* **Explainability (XAI)**: Model interpretability, debugging
+* **Data Valuation**: Game-theoretic approaches (e.g. Shapley Values)
 
-### Technologies and Services
+### AI & Language Models
+
+* **Large Language Models (LLMs)**: Fine-tuning, deployment, optimization
+* **Retrieval Augmented Generation (RAG)**: Vector databases, semantic search
+* **Natural Language Processing (NLP)**: Text processing, language understanding
+* **Explainability (XAI)**: Model interpretability, debugging
+
+### DevOps & Infrastructure
 
 * **Containerization**: Docker
 * **Orchestration**: Kubernetes
-* **Experiments**: MLflow
-* **Database Systems**: PostgreSQL, ElasticSearch
-* **Backend**: FastAPI, Django
-* **Cloud**: AWS, Azure
+* **Cloud Platforms**: AWS, Azure
+* **Experimentation**: MLflow, Tensorboard, Optuna
