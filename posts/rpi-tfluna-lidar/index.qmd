@@ -1,5 +1,5 @@
 ---
-date: 2025-08-26
+date: 2025-08-27
 title: "Measuring distance with a TF-Luna LiDAR and a Raspberry Pi"
 keywords: [
     "Raspberry Pi",
@@ -10,7 +10,6 @@ keywords: [
     "Rerun",
 ]
 license: "CC BY"
-link-citations: true
 ---
 
 ::: {.callout-note}
@@ -22,7 +21,7 @@ I recently learned Rust and was looking to put it into practice by working on so
 Since I work as an AI Engineer and have developed my fair share of chatbots, I first developed [PincerChat](https://github.com/AnesBenmerzoug/pincer-chat) a few months ago, a desktop GUI for interacting with local LLMs served with Ollama. Looking back at it, I realize that I tried to chew more than I could swallow but nevertheless I learned a lot making it.
 
 I then decided to try something simpler and at the same time get back into embedded systems and micro-controller development. During my master's studies for Control Engineering in Algeria, a group of friends and I had our own
-team, called *OTO* which is a homonym for *Auto.* an abbreviation for *Automatique*, that built many different embedded projects like [a ball and beam system](https://en.wikipedia.org/wiki/Ball_and_beam), a ball and plate system and a [persistence of vision](https://en.wikipedia.org/wiki/Persistence_of_vision) (PoV) display.
+team, called *OTO* which is a homonym for *Auto.* an abbreviation for *Automatique* (Automation in French), that built many different embedded projects like [a ball and beam system](https://en.wikipedia.org/wiki/Ball_and_beam), a ball and plate system and a [persistence of vision](https://en.wikipedia.org/wiki/Persistence_of_vision) (PoV) display.
 
 Before starting, I had to get some hardware. Luckily for me, I had a [Raspberry Pi 3 model B](https://www.raspberrypi.com/products/raspberry-pi-3-model-b/)
 laying around that I was using as a Pi-Hole before moving into
@@ -36,7 +35,7 @@ to a single point, instead of being a 2D (distance and angle) or 3D (3D distance
 This is fine for a start, especially since I'm getting back into embedded systems after a long time but I will hopefully
 buy a better sensor in the future.
 
-# TF-Luna
+# TF-Luna and distance measurements with LiDARS
 
 The [TF-Luna](https://en.benewake.com/TFLuna/index.html) is a low-cost LiDAR distance sensor
 made by [Benewake](https://en.benewake.com/index.html), a LiDAR manufacturer based in Beijing, China.
@@ -138,7 +137,8 @@ by the structure of the manual itself. Most of the pages are about the UART prot
 are about I2C and the registers. 
 
 I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did.
-The reason turned out to be a mistake in the instruction manual (see @fig-instruction-manual-error). Unlike what's written in it, to **enable** (respectively **disable**) the lidar sensor you have to set the **0x25** register to **1** (respectively **0**) instead of **0** (respectively **1**).
+The reason turned out to be a mistake in the instruction manual (see @fig-instruction-manual-error). Unlike what's written in it, to **enable** (respectively **disable**) the lidar sensor you have to set the **0x25** register to **1** (respectively **0**) instead of **0** (respectively **1**). I will try to reach out to the manufacturer to inform them of this error, even though I doubt I am the first
+person to stumble upon it.
 
 ![Excerpt from page 30 of TF-Luna Instruction Manual showing error and correction](tfluna_instruction_manual_error.svg){#fig-instruction-manual-error}
 
@@ -217,9 +217,8 @@ To use it we first start by adding the rerun crate as a dependency:
 cargo add rerun
 ```
 
-It has quite a lot of features and will increase the size of the final binary, but I didn't have
-the motivation to go through them and determine which ones are absolutely necessary and which ones are not.
-
+It has quite a lot of features and will increase the size of the final binary, but I didn't bother for now 
+to go through them and determine which ones are absolutely necessary and which ones are not.
 
 
 ```shell
