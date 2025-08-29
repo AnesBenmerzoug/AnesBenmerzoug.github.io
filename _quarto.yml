@@ -25,7 +25,7 @@ website:
 format:
   html:
     theme:
-      light: cosmo
-      dark: [solar, static/styles/custom-dark.scss]
+      light: [cosmo, static/styles/fonts.scss]
+      dark: [solar, static/styles/custom-dark.scss, static/styles/fonts.scss]
     toc: true
     respect-user-color-scheme: true

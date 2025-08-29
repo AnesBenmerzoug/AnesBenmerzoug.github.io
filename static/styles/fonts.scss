@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+
+$font-family-sans-serif: "Atkinson Hyperlegible Next";
+$font-family-monospace: "Atkinson Hyperlegible Next";
+$bs-body-font-family: "Atkinson Hyperlegible Next";
+$web-font-path: "";
+
+/*-- scss:rules --*/
+
+@font-face {
+    font-family: "Atkinson Hyperlegible Next";
+    src: url("static/fonts/atkinson/AtkinsonHyperlegibleNextVF-Variable.woff2") format("woff2");
+    font-display: block;
+    font-weight: 200 800;
+}
+
+@font-face {
+    font-family: "Atkinson Hyperlegible Mono";
+    src: url("static/fonts/atkinson/AtkinsonHyperlegibleMonoVF-Variable.woff2") format("woff2");
+    font-display: block;
+    font-weight: 200 800;
+}
