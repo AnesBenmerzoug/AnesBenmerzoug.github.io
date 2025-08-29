@@ -1,9 +1,13 @@
 # options specified here will apply to all posts in this folder
 
-author: Anes Benmerzoug
+author: 
+- name: Anes Benmerzoug
+  orcid: 0000-0002-0270-8446
 
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: true
 
 title-block-banner: false
+
+license: "CC BY"
