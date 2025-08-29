@@ -21,6 +21,20 @@
 
 
 
+<div class="callout callout-style-default callout-note callout-titled" title="EDIT 2025-08-29">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+EDIT 2025-08-29
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After publishing the original version of the post, I realized that the user manual I was using was out-of-date and that there was a <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">newer one available</a> on the Benewake website.</p>
+<p>I have updated the post to reflect this.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -43,7 +57,7 @@ Note
 <figcaption>Picture of TF-Luna connected to the Raspberry Pi</figcaption>
 </figure>
 </div>
-<p>Unfortunately for me, once I received the TF-Luna and read its <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">instruction manual</a> I quickly realized that it is 1D LiDAR, i.e.&nbsp;that it only measures the distance to a single point, instead of being a 2D (distance and angle) or 3D (3D distance) LiDAR.</p>
+<p>Unfortunately for me, once I received the TF-Luna and read its <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">user manual</a> I quickly realized that it is 1D LiDAR, i.e.&nbsp;that it only measures the distance to a single point, instead of being a 2D (distance and angle) or 3D (3D distance) LiDAR.</p>
 <p>This is fine for a start, especially since I’m getting back into embedded systems after a long time but I will hopefully buy a better sensor in the future.</p>
 <section id="tf-luna-and-distance-measurements-with-lidars" class="level1">
 <h1>TF-Luna and distance measurements with LiDARS</h1>
@@ -62,7 +76,7 @@ Note
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://AnesBenmerzoug.github.io/posts/rpi-tfluna-lidar/time_of_flight_tfluna.svg" class="img-fluid figure-img"></p>
-<figcaption>Schematics of ToF Principle - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a></figcaption>
+<figcaption>Schematics of ToF Principle - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna user manual</a></figcaption>
 </figure>
 </div>
 <p><img src="https://latex.codecogs.com/png.latex?%0AD%20=%20%5Cfrac%7Bc%7D%7B2%7D%20%5Ccdot%20%5Cfrac%7B1%7D%7B2%5Cpi%20f%7D%20%5Ccdot%20%5CDelta%5Cvarphi%0A"></p>
@@ -71,7 +85,7 @@ Note
 <div id="tbl-tfluna-parameters" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Parameters specification of TF-Luna - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a>
+Table&nbsp;1: Parameters specification of TF-Luna - <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">TF-Luna user manual</a>
 </figcaption>
 <div aria-describedby="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -204,18 +218,19 @@ Note
 </div>
 <p>Since there was, as of writing this post, no existing crate on <a href="https://crates.io">crates.io</a> for interacting with the TF-Luna, I had to write the code for that myself. Luckily for me, it turned out to be pretty straightforward thanks to the <a href="https://docs.rs/rppal/latest/rppal/">rppal</a> crate as well as these two sources:</p>
 <ul>
-<li>The <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna Instruction Manual</a>.</li>
+<li>The <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna user manual</a>.</li>
 <li>The <a href="https://github.com/budryerson/TFLuna-I2C">TFLuna-I2C</a> Arduino library by budryerson.</li>
 </ul>
-<p>Once the wiring was done and the rppal crate added, all I had to do was figure out the correct register addresses from the instruction manual for reading the sensor measurements. This task should have been easy but it was made hard by the structure of the manual itself. Most of the pages are about the UART protocol and the different output format and only a few are about I2C and the registers.</p>
-<p>I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did. The reason turned out to be a mistake in the instruction manual (see Figure&nbsp;2). Unlike what’s written in it, to <strong>enable</strong> (respectively <strong>disable</strong>) the lidar sensor you have to set the <strong>0x25</strong> register to <strong>1</strong> (respectively <strong>0</strong>) instead of <strong>0</strong> (respectively <strong>1</strong>). I will try to reach out to the manufacturer to inform them of this error, even though I doubt I am the first person to stumble upon it.</p>
-<div id="fig-instruction-manual-error" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Once the wiring was done and the rppal crate added, all I had to do was figure out the correct register addresses from the user manual for reading the sensor measurements. This task should have been easy but it was made hard by the structure of the manual itself. Most of the pages are about the UART protocol and the different output format and only a few are about I2C and the registers.</p>
+<p>I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did ever I wrote <strong>0</strong> to the <strong>0x25</strong> register to enable it. It only worked after I decided randomly to try writing <strong>1</strong> instead. After investigating for a bit, I realized that I was using an <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">older version</a> of the user manual (<code>A03</code> from 2020.3.15) instead of the newer version (<code>A05</code> from 2020.7.23).</p>
+<p>In this newer version, the definition of I2C register <strong>0x25</strong> was changed so that to <strong>enable</strong> (respectively <strong>disable</strong>) the LiDAR sensor we have to set the <strong>0x25</strong> register to <strong>1</strong> (respectively <strong>0</strong>) instead of <strong>0</strong> (respectively <strong>1</strong>), see Figure&nbsp;2.</p>
+<div id="fig-user-manual-error" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-instruction-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://AnesBenmerzoug.github.io/posts/rpi-tfluna-lidar/tfluna_instruction_manual_error.svg" class="img-fluid figure-img">
+<div aria-describedby="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://AnesBenmerzoug.github.io/posts/rpi-tfluna-lidar/tfluna_user_manual_error.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-instruction-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Excerpt from page 30 of TF-Luna Instruction Manual showing error and correction
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Excerpt from page 30 of TF-Luna user manual version <code>A03</code> showing values that were changed in version <code>A05</code>
 </figcaption>
 </figure>
 </div>

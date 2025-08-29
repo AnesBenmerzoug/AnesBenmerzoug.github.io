@@ -33,7 +33,7 @@
 
 /* other quarto variables */
 :root {
-  --quarto-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --quarto-font-monospace: "Atkinson Hyperlegible Next";
 }
 
 /* syntax highlight based on Pandoc's rules */
@@ -233,4 +233,4 @@ code span.wa {
   content: "</";
 }
 
-/*# sourceMappingURL=538754cbb4183396a2435bcb80637e05.css.map */
+/*# sourceMappingURL=6dd5346cdc3a9501a89f0bb5472d7c94.css.map */
