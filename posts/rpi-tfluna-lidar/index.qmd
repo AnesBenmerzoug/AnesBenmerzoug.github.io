@@ -9,8 +9,14 @@ keywords: [
     "Rust",
     "Rerun",
 ]
-license: "CC BY"
 ---
+
+::: {.callout-note title="EDIT 2025-08-29"}
+After publishing the original version of the post, I realized that the user manual 
+I was using was out-of-date and that there was a [newer one available](https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html) on the Benewake website.
+
+I have updated the post to reflect this.
+:::
 
 ::: {.callout-note}
 The full code for this project/experiment can be found in the following repository:
@@ -29,7 +35,7 @@ my current apartment and while browsing through AliExpress I stumbled upon the [
 
 ![Picture of TF-Luna connected to the Raspberry Pi](raspberry_pi_with_tfluna.jpg){width=80%}
 
-Unfortunately for me, once I received the TF-Luna and read its [instruction manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf) I quickly realized that it is 1D LiDAR, i.e. that it only measures the distance
+Unfortunately for me, once I received the TF-Luna and read its [user manual](https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html) I quickly realized that it is 1D LiDAR, i.e. that it only measures the distance
 to a single point, instead of being a 2D (distance and angle) or 3D (3D distance) LiDAR.
 
 This is fine for a start, especially since I'm getting back into embedded systems after a long time but I will hopefully
@@ -57,7 +63,7 @@ The TF-Luna however does not send a single pulse at a time, but rather periodica
 and calculates the time by measuring the phase difference between the original wave
 and the reflected wave and uses that time to compute the relative distance of the object at which it is pointed.
 
-![Schematics of ToF Principle - [TF-Luna Instruction Manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf)](time_of_flight_tfluna.svg)
+![Schematics of ToF Principle - [TF-Luna user manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf)](time_of_flight_tfluna.svg)
 
 $$
 D = \frac{c}{2} \cdot \frac{1}{2\pi f} \cdot \Delta\varphi
@@ -93,7 +99,7 @@ The device's specifications can be seen in @tbl-tfluna-parameters.
 | Communication       | I2C and UART[^5]
 +---------------------+-----------------------------+
 
-: Parameters specification of TF-Luna - [TF-Luna Instruction Manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf) {#tbl-tfluna-parameters}
+: Parameters specification of TF-Luna - [TF-Luna user manual](https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html) {#tbl-tfluna-parameters}
 
 [^1]: Operating range measured indoor based on a standard whiteboard with 90% reflectivity.
 [^2]: This is the theoretical value, the real value may be different.
@@ -128,19 +134,24 @@ If you're interested in using UART, please read this post instead [Distance Dete
 
 Since there was, as of writing this post, no existing crate on [crates.io](https://crates.io) for interacting with the TF-Luna, I had to write the code for that myself. Luckily for me, it turned out to be pretty straightforward thanks to the [rppal](https://docs.rs/rppal/latest/rppal/) crate as well as these two sources:
 
-- The [TF-Luna Instruction Manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf).
+- The [TF-Luna user manual](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf).
 - The [TFLuna-I2C](https://github.com/budryerson/TFLuna-I2C) Arduino library by budryerson.
 
 Once the wiring was done and the rppal crate added, all I had to do was figure out the correct register addresses
-from the instruction manual for reading the sensor measurements. This task should have been easy but it was made hard
+from the user manual for reading the sensor measurements. This task should have been easy but it was made hard
 by the structure of the manual itself. Most of the pages are about the UART protocol and the different output format and only a few
 are about I2C and the registers. 
 
-I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did.
-The reason turned out to be a mistake in the instruction manual (see @fig-instruction-manual-error). Unlike what's written in it, to **enable** (respectively **disable**) the lidar sensor you have to set the **0x25** register to **1** (respectively **0**) instead of **0** (respectively **1**). I will try to reach out to the manufacturer to inform them of this error, even though I doubt I am the first
-person to stumble upon it.
+I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did
+ever I wrote **0** to the **0x25** register to enable it. It only worked after I decided randomly to try
+writing **1** instead. After investigating for a bit, I realized that I was using an
+[older version](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf)
+of the user manual (`A03` from 2020.3.15) instead of the newer version (`A05` from 2020.7.23).
 
-![Excerpt from page 30 of TF-Luna Instruction Manual showing error and correction](tfluna_instruction_manual_error.svg){#fig-instruction-manual-error}
+In this newer version, the definition of I2C register **0x25** was changed so that to **enable** (respectively **disable**)
+the LiDAR sensor we have to set the **0x25** register to **1** (respectively **0**) instead of **0** (respectively **1**), see @fig-user-manual-error.
+
+![Excerpt from page 30 of TF-Luna user manual version `A03` showing values that were changed in version `A05`](tfluna_user_manual_error.svg){#fig-user-manual-error}
 
 # Raspberry Pi and Rust
 
