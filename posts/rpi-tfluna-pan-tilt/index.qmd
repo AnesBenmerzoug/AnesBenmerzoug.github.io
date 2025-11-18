@@ -1,0 +1,56 @@
+---
+date: 2025-10-08
+title: "Creating a point cloud with a TF-Luna LiDAR and a pan-tilt assembly"
+keywords: [
+    "Raspberry Pi",
+    "TF-Luna",
+    "LiDAR",
+    "Pan-Tilt",
+    "Rust",
+    "Rerun",
+]
+---
+
+::: {.callout-note}
+The full code for this project/experiment can be found in the following repository:
+[rpi-tfluna-lidar](https://github.com/AnesBenmerzoug/rpi-tfluna-lidar)
+:::
+
+In [the previous TF-Luna post](../rpi-tfluna-lidar/), we saw what the TF-Luna LiDAR distance sensor is
+and how to use it with a Raspberry Pi.
+
+In the meantime, I developed and published the [embedded-tfluna](https://crates.io/crates/embedded-tfluna) crate
+specifically for the sensor. It is platform agnostic and works in no-std environments.
+
+In this post, we will create a point cloud by mounting the sensor on a pan-tilt assembly with two servo motors
+and taking a measurement at each position of the assembly.
+
+A point cloud is a discrete set of data points in space. The points may represent a 3D shape or object.
+Each point position has its set of Cartesian coordinates (X, Y, Z).
+Points may contain data other than position such as RGB colors, normals, timestamps and others.
+Point clouds are generally produced by 3D scanners or by photogrammetry software, which measure many points on the external surfaces of objects around them. 
+
+Point clouds are used for many purposes, including to create 3D computer-aided design (CAD) or geographic information systems (GIS) models for manufactured parts, for metrology and quality inspection, and for a multitude of visualizing, animating, rendering, and mass customization applications. 
+
+![Picture of the TF-Luna mounted on the pan-tilt assembly and connected to the Raspberry Pi](raspberry_pi_with_tfluna_and_pan_tilt.jpg){width=80%}
+
+
+## Pan-Tilt Mechanism
+
+For the pan-tilt mechanism, I first started by ordering a cheap pan-tilt mechanism from aliexpress.
+
+The two micro servos that came with it were unfortunately either broken or defect and wouldn't hold their position.
+They instead kept rotating continuously.
+
+After that, I gave up on it and decided to order a better mechanism instead which I did.
+
+That one unfortunately also came with a continuous rotation servo which I couldn't use.
+
+I ended up using two other servos that I had laying ordered and was planning to use in another project.
+
+## Point Cloud
+
+
+## Conclusion
+
+We could take this to the limit and see how quickly we can create the point cloud.

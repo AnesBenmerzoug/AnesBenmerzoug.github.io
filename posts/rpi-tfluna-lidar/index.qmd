@@ -254,7 +254,7 @@ for indoor autonomous navigation.
 
 # Conclusion
 
-Thanks to this projects, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents.
+Thanks to this project, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents.
 It felt nice getting back into making projects like this after such a long time. It only took me a few days to get it working.
 It actually took me more time to write this post than to write the code itself. 
 
