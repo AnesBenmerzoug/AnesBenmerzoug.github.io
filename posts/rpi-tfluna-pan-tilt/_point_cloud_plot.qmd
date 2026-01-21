@@ -1,0 +1,297 @@
+```{ojs}
+d3 = require("d3@7")
+```
+
+```{ojs}
+point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed: true })
+```
+
+::: {.panel-tabset}
+
+## Plot
+
+```{ojs}
+{
+  // Make canvas responsive
+  const container = this ?? document.body;
+  const width = Math.min(800, container.clientWidth || 800);
+  const height = Math.min(680, width * 0.85);
+
+  // Create wrapper div for canvas and button
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
+  wrapper.style.width = "100%";
+  
+  // Create canvas
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = "100%";
+  canvas.style.height = "auto";
+  canvas.style.cursor = "grab";
+  canvas.style.display = "block";
+  const ctx = canvas.getContext("2d");
+
+  // Get Quarto CSS variables
+  const getComputedCSSStyle = (varName) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  };
+
+  // Get all CSS variables
+  const getStyle = () => {
+    return {
+      canvasFillColor: getComputedCSSStyle('--quarto-body-bg'),
+      bgColor: '#ffffff01',
+      textColor: getComputedCSSStyle('--quarto-body-color'),
+      mutedColor: getComputedCSSStyle('--quarto-text-muted'),
+      borderColor: getComputedCSSStyle('--quarto-border-color'),
+      fontFamily: getComputedCSSStyle('--bs-body-font-family'),
+      fontSize: getComputedCSSStyle('--bs-body-font-size'),
+    }
+  }
+  const style = getStyle();
+
+  // Default starting angles
+  const defaultAngleX = 2.0;
+  const defaultAngleY = 0.03;
+  const defaultAngleZ = 0.0;
+
+  // Create reset button
+  const resetBtn = document.createElement("button");
+  resetBtn.textContent = "Reset View";
+  resetBtn.style.position = "absolute";
+  resetBtn.style.bottom = "30px";
+  resetBtn.style.left = "8px";
+  resetBtn.style.padding = "6px 12px";
+  resetBtn.style.fontSize = "12px";
+  resetBtn.style.cursor = "pointer";
+  resetBtn.style.backgroundColor = style.bgColor;
+  resetBtn.style.color = style.textColor;
+  resetBtn.style.border = `1px solid ${style.borderColor}`;
+  resetBtn.style.borderRadius = "4px";
+  resetBtn.style.zIndex = "10";
+  
+  // Button hover effect
+  resetBtn.addEventListener("mouseenter", () => {
+    const style = getStyle();
+    resetBtn.style.backgroundColor = style.borderColor;
+  });
+  resetBtn.addEventListener("mouseleave", () => {
+    const style = getStyle();
+    resetBtn.style.backgroundColor = style.bgColor;
+  });
+  
+  // Reset functionality
+  resetBtn.addEventListener("click", () => {
+    angleX = defaultAngleX;
+    angleY = defaultAngleY;
+    angleZ = defaultAngleZ;
+    render();
+  });
+
+  // 3D rotation state
+  let angleX = 2.0;
+  let angleY = 0.03;
+  let angleZ = 0.0;
+  let isDragging = false;
+
+  // Scales - adjust ranges based on canvas size
+  const scale = Math.min(width, height) / 3;
+  const xScale = d3.scaleLinear()
+    .domain(d3.extent(point_cloud_data2, d => d.x))
+    .range([-scale * 0.8, scale * 0.8]);
+  const yScale = d3.scaleLinear()
+    .domain(d3.extent(point_cloud_data2, d => d.y))
+    .range([-scale * 0.7, scale * 0.7]);
+  const zScale = d3.scaleLinear()
+    .domain(d3.extent(point_cloud_data2, d => d.z))
+    .range([-scale * 0.7, scale * 0.7]);
+
+  // Color scale
+  const colorScale = d3.scaleSequential(d3.interpolateCool)
+    .domain(d3.extent(point_cloud_data2, d => d.distance));
+
+  // 3D projection with perspective
+  const project = (x, y, z) => {
+    // Rotate around Z axis
+    const cosZ = Math.cos(angleZ);
+    const sinZ = Math.sin(angleZ);
+    const x1 = x * cosZ + y * sinZ;
+    const y1 = - x * sinZ + y * cosZ;
+    const z1 = z;
+
+    // Rotate around Y axis
+    const cosY = Math.cos(angleY);
+    const sinY = Math.sin(angleY);
+    const x2 = x1 * cosY - z1 * sinY;
+    const y2 = y1;
+    const z2 = x1 * sinY + z1 * cosY;
+    
+    // Rotate around X axis
+    const cosX = Math.cos(angleX);
+    const sinX = Math.sin(angleX);
+    const x3 = x2;
+    const y3 = y2 * cosX - z2 * sinX;
+    const z3 = y2 * sinX + z2 * cosX;
+    
+    // Perspective
+    const perspective = 1000;
+    const scale = perspective / (perspective + z3);
+    
+    return {
+      x: x3 * scale + width / 2,
+      y: y3 * scale + height / 2,
+      z: z3,
+      scale: scale
+    };
+  };
+
+  // Draw color legend
+  const drawLegend = () => {
+    const style = getStyle();
+    const legendWidth = 20;
+    const legendHeight = 200;
+    const legendX = width - 60;
+    const legendY = 50;
+    
+    // Draw gradient
+    const gradient = ctx.createLinearGradient(0, legendY, 0, legendY + legendHeight);
+    const steps = 10;
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const value = d3.min(point_cloud_data2, d => d.distance) + 
+                   t * (d3.max(point_cloud_data2, d => d.distance) - d3.min(point_cloud_data2, d => d.distance));
+      gradient.addColorStop(1 - t, colorScale(value));
+    }
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(legendX, legendY, legendWidth, legendHeight);
+    
+    // Draw border using Quarto border color
+    ctx.strokeStyle = style.borderColor;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(legendX, legendY, legendWidth, legendHeight);
+    
+    // Draw labels using Quarto muted color
+    ctx.fillStyle = style.mutedColor;
+    ctx.font = `${style.fontSize} ${style.fontFamily}`;
+    ctx.textAlign = "left";
+    
+    const maxVal = d3.max(point_cloud_data2, d => d.distance);
+    const minVal = d3.min(point_cloud_data2, d => d.distance);
+    
+    ctx.fillText(maxVal.toFixed(0), legendX + legendWidth + 5, legendY + 5);
+    ctx.fillText(minVal.toFixed(0), legendX + legendWidth + 5, legendY + legendHeight + 5);
+    
+    // Title in regular text color
+    ctx.fillStyle = style.textColor;
+    ctx.fillText("Distance", legendX - 5, legendY - 20);
+  };
+
+  const render = () => {
+    const style = getStyle();
+    // Clear canvas
+    ctx.fillStyle = style.canvasFillColor;
+    ctx.fillRect(0, 0, width, height);
+    
+    // Project and sort by depth
+    const projected = point_cloud_data2.map(d => {
+      const proj = project(xScale(d.x), yScale(d.y), zScale(d.z));
+      return {
+        ...d,
+        ...proj
+      };
+    }).sort((a, b) => a.z - b.z); // Draw far to near
+    
+    // Draw points
+    projected.forEach(d => {
+      const radius = 2.5 * d.scale; // Size based on depth
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = colorScale(d.distance);
+      ctx.fill();
+      ctx.strokeStyle = style.mutedColor;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+
+    // Draw legend
+    drawLegend();
+    
+    // Draw axes labels
+    ctx.fillStyle = style.mutedColor;
+    ctx.font = `${style.fontSize} ${style.fontFamily}`;
+    ctx.textAlign = "left";
+    ctx.fillText("Drag to rotate", 10, 20);
+  };
+
+  // Update button colors when theme changes
+  const updateButtonColors = () => {
+    const style = getStyle();
+    resetBtn.style.backgroundColor = style.bgColor;
+    resetBtn.style.color = style.textColor;
+    resetBtn.style.border = `1px solid ${style.borderColor}`;
+  };
+  
+  render();
+
+  // Mouse interaction
+  let lastX, lastY;
+  
+  canvas.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    canvas.style.cursor = "grabbing";
+  });
+  
+  canvas.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    
+    angleZ += dx * 0.005;
+    angleX += dy * 0.005;
+    
+    lastX = e.clientX;
+    lastY = e.clientY;
+    
+    render();
+  });
+  
+  canvas.addEventListener("mouseup", () => {
+    isDragging = false;
+    canvas.style.cursor = "grab";
+  });
+  
+  canvas.addEventListener("mouseleave", () => {
+    isDragging = false;
+    canvas.style.cursor = "grab";
+  });
+  
+  // Watch for theme changes
+  const observer = new MutationObserver(() => {
+    updateButtonColors();
+    render();
+  });
+  observer.observe(document.body, { 
+    attributes: true, 
+    attributeFilter: ['class'] 
+  });
+
+  // Assemble wrapper
+  wrapper.appendChild(canvas);
+  wrapper.appendChild(resetBtn);
+  
+  return wrapper;
+}
+```
+
+## Data
+
+```{ojs}
+Inputs.table(point_cloud_data2)
+```
+
+:::

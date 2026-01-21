@@ -1,14 +1,18 @@
 ---
-date: 2025-10-08
-title: "Creating a point cloud with a TF-Luna LiDAR and a pan-tilt assembly"
+date: 2026-01-09
+title: "Creating a point cloud with a TF-Luna LiDAR"
 keywords: [
     "Raspberry Pi",
     "TF-Luna",
     "LiDAR",
     "Pan-Tilt",
+    "FreeCAD",
     "Rust",
     "Rerun",
 ]
+format:
+    html:
+        echo: false
 ---
 
 ::: {.callout-note}
@@ -16,41 +20,165 @@ The full code for this project/experiment can be found in the following reposito
 [rpi-tfluna-lidar](https://github.com/AnesBenmerzoug/rpi-tfluna-lidar)
 :::
 
-In [the previous TF-Luna post](../rpi-tfluna-lidar/), we saw what the TF-Luna LiDAR distance sensor is
-and how to use it with a Raspberry Pi.
+In [my previous post about the TF-Luna LiDAR distance sensor](../rpi-tfluna-lidar/), I showed what it is and how to use it with a Raspberry Pi.
 
-In the meantime, I developed and published the [embedded-tfluna](https://crates.io/crates/embedded-tfluna) crate
-specifically for the sensor. It is platform agnostic and works in no-std environments.
+After publishing that post, I took some time to develop and publish the [embedded-tfluna](https://crates.io/crates/embedded-tfluna) crate
+specifically for it. It is platform agnostic and works in no-std environments.
+However it only supports I2C communication for now.
 
-In this post, we will create a point cloud by mounting the sensor on a pan-tilt assembly with two servo motors
-and taking a measurement at each position of the assembly.
+I wanted to play around with the sensor a bit more, so I created I designed and printed a pan-tilt mechanism that uses 2 servo motors in order to move the sensor around and capture the distance of different points in order to create a point cloud.
 
-A point cloud is a discrete set of data points in space. The points may represent a 3D shape or object.
-Each point position has its set of Cartesian coordinates (X, Y, Z).
-Points may contain data other than position such as RGB colors, normals, timestamps and others.
-Point clouds are generally produced by 3D scanners or by photogrammetry software, which measure many points on the external surfaces of objects around them. 
-
-Point clouds are used for many purposes, including to create 3D computer-aided design (CAD) or geographic information systems (GIS) models for manufactured parts, for metrology and quality inspection, and for a multitude of visualizing, animating, rendering, and mass customization applications. 
-
-![Picture of the TF-Luna mounted on the pan-tilt assembly and connected to the Raspberry Pi](raspberry_pi_with_tfluna_and_pan_tilt.jpg){width=80%}
-
+![Picture of the TF-Luna mounted on the pan-tilt mechanism and connected to a Raspberry PI](tfluna_pan_tilt_with_raspberry_pi.jpg){#fig-tfluna-pan-tilt-raspberrypi width=80%}
 
 ## Pan-Tilt Mechanism
 
-For the pan-tilt mechanism, I first started by ordering a cheap pan-tilt mechanism from aliexpress.
+Before I talk about the design and printing of the pan-tilt mechanism, I would like to first describe what I tried before arriving to the final solution.
 
-The two micro servos that came with it were unfortunately either broken or defect and wouldn't hold their position.
-They instead kept rotating continuously.
+I first started by ordering a cheap pan-tilt mechanism from AliExpress (@fig-cheap-pan-tilt) hoping that it would be enough given that the sensor itself is very light. Unfortunately, the two micro servos that came with it were either broken or defect and wouldn't hold their position. They instead kept rotating continuously. On top of that, the pan-tilt mechanism was pretty flimsy.
 
-After that, I gave up on it and decided to order a better mechanism instead which I did.
+![Example cheap AliExpress Pan-Tilt Mechanism with servo motors](cheap_aliexpress_pan_tilt_servos.avif){#fig-cheap-pan-tilt width=80%}
 
-That one unfortunately also came with a continuous rotation servo which I couldn't use.
+So I gave up on that and decided to look for a better mechanism with better servo motors. I ordered a second that I found on a website whose name I forgot. That one unfortunately came with a continuous rotation servo which I couldn't use.
 
-I ended up using two other servos that I had laying ordered and was planning to use in another project.
+In the end, I gave up and decided to make my own mechanism and use 2 servo motors that I had ordered for another project. 
+
+This project took so long that I learned to use FreeCAD and bought a 3D printer (a Centauri Carbon, for those that are curious) and ended up modeling the pan-tilt mechanism myself (@fig-tfluna-pan-tilt-freecad-design) (I actually reused an assembly that I created for another project of mine [FreeCAD-Assembly2MuJoCo](https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo) about which I will write a blog post hopefully after this one).
+
+![TFLuna Pan Tilt Mechanism in FreeCAD](tfluna_pan_tilt_freecad.png){#fig-tfluna-pan-tilt-freecad-design width=80%}
+
+I printed it with Galaxy Blue PLA and it came out looking great (@fig-tfluna-pan-tilt-printed).
+
+![Picture of the TF-Luna mounted on the pan-tilt mechanism](tfluna_pan_tilt_printed.jpg){#fig-tfluna-pan-tilt-printed width=80%}
+
+Once that was done, I connected the 2 servos to a [PCA9685](https://www.nxp.com/docs/en/data-sheet/PCA9685.pdf) module in order to control them using I2C just like for the TFLuna sensor.
+
+![Wiring diagram of TFLuna, servo motors and Raspberry Pi made with [Cirkit Designer](https://app.cirkitdesigner.com)](tfluna_pan_tilt_wiring_diagram.svg){#fig-tfluna-pan-tilt-wiring-diagram width=80%}
+
+Just like for my previous post, I wrote the code in Rust, and used Rerun to store the data. I cross-compiled it on my laptop and copied and ran it on a Raspberry Pi using SSH.
 
 ## Point Cloud
 
+A point cloud is a discrete set of data points in space. The points may represent a 3D shape or object.
+Each point position has its set of Cartesian coordinates (X, Y, Z).
+
+Points may contain data other than position such as RGB colors, normals, timestamps and others.
+Point clouds are generally produced by 3D scanners or by photogrammetry software, which measure many points on the external surfaces of objects around them.
+
+Point clouds are used for many purposes, including to create 3D computer-aided design (CAD) or geographic information systems (GIS) models for manufactured parts, for metrology and quality inspection, and for a multitude of visualizing, animating, rendering, and mass customization applications.
+
+Given the yaw ($\theta$) and pitch ($\phi$) angles (bottom and top servo motor, respectively) and the measured distance ($d$), we can calculate the position of the measured point in cartesian coordinates as:
+
+$$
+\left[ \begin{matrix}x \\ y \\ z \end{matrix}\right] =
+\left[ \begin{matrix}
+d * \cos(\phi) * \sin(\theta) \\
+d * \cos(\phi) * \cos(\theta) \\
+d * \sin(\phi)
+\end{matrix}\right]
+$$
+
+
+## Testing
+
+Before using the mechanism to create point clouds, 
+I wanted to see how fast and accurate it can be. For that, I put the mechanism on a table and pointed it at a wall at a distance of 20 centimeters and limited the yaw angle (left and right movement) to the range $[-30^\circ, 30^\circ]$ inclusive and the pitch angle (up and down movement) to the range $[0^\circ, 30^\circ]$ inclusive. The pitch angle only goes down to $0^\circ$ because otherwise it would measure the distance to the table on which it was put.
+
+I tried different combinations of parameters:
+- angle step size: by how much we move the mechanism each time before taking a distance measurement.
+- servo motor delay: how much time, in milliseconds, do we wait after sending a move command before taking a measurement.
+
+Since I know that the wall is flat and that it is a distance of 20 centimeters from the device, we can represent it as a plane in 3D space with the equation:
+
+$$
+y = 20
+$$
+
+I am assuming that the y-axis is going from the mechanism to the wall, the z-axis is going from the mechanism to the ceiling and finally the x-axis is going to the right of the mechanism.
+
+The general form of a plane equation in 3D is given by: 
+$$
+ax + by + cz + d = 0
+$$
+
+Where $a, b, c, d \in \mathbb{R}$ are the coefficients that define the plane and $x, y, y \in \mathbb{R}$ are the coordinates of points in 3D space.
+
+To avoid the degenerate solution $a = 0, b = 0, c = 0, d = 0$ and since we know that $d \neq 0$, we divide everything by $d$ to get new coefficients:
+
+$$
+a^\prime = \frac{a}{d}, 
+b^\prime = \frac{b}{d},
+c^\prime = \frac{c}{d}
+$$
+
+And the equation becomes:
+
+$$
+a^\prime x + b^\prime y + c^\prime z + 1 = 0
+$$
+
+$$
+A\Theta=b
+$$
+
+Where $A = \left[ \begin{matrix}
+x_1 & y_1 & z_1\\
+x_2 & y_2 & z_2\\
+& \dots\\
+x_n & y_n & z_n
+\end{matrix} \right]$,
+$b = \left[ \begin{matrix}
+-1\\
+-1\\
+\dots\\
+-1
+\end{matrix} \right]$,
+$\Theta = \left[ \begin{matrix}
+a^\prime\\
+b^\prime\\
+c^\prime
+\end{matrix} \right]$
+
+To solve this system of equations we use SVD (Singular Value Decomposition). We first decompose the matrix $A$ as:
+
+$$
+A = U \Sigma V^T
+$$
+
+Where:
+- $U$ is an $m x n$ orthogonal matrix.
+- $\Sigma$ is an $n x n$ diagonal matrix.
+- $V$ is an $n x n$ orthogonal matrix.
+
+The solution is then given:
+
+$$
+\Theta = V \Sigma^{+} U^T b
+$$
+
+### Implementation
+
+nalgebra, polars, plotly. 
+
+### Results
+
+I plotted the results:
+
+{{< include _metrics_plot.qmd >}}
+
+
+## Point Cloud
+
+After the testing was done, I pointed the mechanism at something more interesting: a bookshelf.
+
+I let it run with angle step size of 1 degree and servo motor delay of 50 ms, exported the data and then plotted the resulting point could.
+
+{{< include _point_cloud_plot.qmd >}}
+
+As we can see, there are some details that are captured by the mechanism and if it were faster it could be used as an alternative to LiDAR sensor.
 
 ## Conclusion
 
-We could take this to the limit and see how quickly we can create the point cloud.
+Unfortunately, the tfluna sensor does not measure fast enough for it to be used in any settings that requires speed.
+
+I may try again to push it to the limit and see if it can be useful. Perhaps limiting the movement to just rotations around
+the z-axis could be useful for a relatively slow robot.
