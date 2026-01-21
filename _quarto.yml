@@ -29,3 +29,4 @@ format:
       dark: [solar, static/styles/custom-dark.scss, static/styles/fonts.scss]
     toc: true
     respect-user-color-scheme: true
+    lightbox: true
