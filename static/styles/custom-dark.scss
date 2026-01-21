@@ -1,4 +1,13 @@
 /*-- scss:rules --*/
-img[src$=".svg"] {
+// Force white background on two specific images
+img[src*="^time_of_flight_tfluna.svg"],
+img[src*="^wiring_diagram.svg"] {
     background-color: white;
+}
+
+// Observable input panel
+.cell.panel-input.card.bg-light {
+    background-color: var(--quarto-bg-color) !important;
+    color: var(--quarto-body-color) !important;
+    border-color: var(--quarto-border-color) !important;
 }
