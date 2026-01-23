@@ -79,6 +79,9 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 * [FreeCAD-Assembly2MuJoCo](https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo)
   An open-source FreeCAD workbench for exporting a FreeCAD Assembly to MuJoCo for physics simulation.
 
+* [embedded-tfluna](https://github.com/AnesBenmerzoug/embedded-tfluna)
+  An open-source platform-agnostic Rust driver for the TF-Luna LiDAR distance sensor.
+
 ---
 
 ## Skills
