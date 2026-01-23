@@ -4,3 +4,5 @@ index-listing.json
 /.quarto/
 _site/
 docs/
+
+**/*.quarto_ipynb
