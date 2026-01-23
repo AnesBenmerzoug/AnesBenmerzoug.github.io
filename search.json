@@ -130,7 +130,7 @@
     "href": "index.html#projects",
     "title": "About Me",
     "section": "Projects",
-    "text": "Projects\n\npyDVL An open-source library of stable implementations of algorithms for data valuation and influence function computation.\nLangsfer An open-source library for language transfer methods and algorithms.\nFreeCAD-Assembly2MuJoCo An open-source FreeCAD workbench for exporting a FreeCAD Assembly to MuJoCo for physics simulation."
+    "text": "Projects\n\npyDVL An open-source library of stable implementations of algorithms for data valuation and influence function computation.\nLangsfer An open-source library for language transfer methods and algorithms.\nFreeCAD-Assembly2MuJoCo An open-source FreeCAD workbench for exporting a FreeCAD Assembly to MuJoCo for physics simulation.\nembedded-tfluna An open-source platform-agnostic Rust driver for the TF-Luna LiDAR distance sensor."
   },
   {
     "objectID": "index.html#skills",
