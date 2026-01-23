@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.095Z</lastmod>
-  </url>
-  <url>
     <loc>https://AnesBenmerzoug.github.io/posts/llm-email-information-extaction/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.096Z</lastmod>
-  </url>
-  <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.096Z</lastmod>
+    <lastmod>2026-01-23T21:56:11.816Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.114Z</lastmod>
+    <lastmod>2026-01-23T21:56:11.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/rpi-tfluna-pan-tilt/index.html</loc>
+    <lastmod>2026-01-23T21:56:11.834Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
+    <lastmod>2026-01-23T21:56:11.815Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
+    <lastmod>2026-01-23T21:56:11.814Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/rpi-tfluna-lidar/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.097Z</lastmod>
+    <lastmod>2026-01-23T21:56:11.818Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
+    <lastmod>2026-01-23T21:56:11.816Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
-    <lastmod>2025-08-29T14:05:57.096Z</lastmod>
+    <lastmod>2026-01-23T21:56:11.816Z</lastmod>
   </url>
 </urlset>

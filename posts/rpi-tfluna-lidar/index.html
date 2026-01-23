@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,18 +70,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8078a5a6b6f732661c12ec66de2dbe61.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-791c0d28aa91028eaa961a05e0c81601.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8078a5a6b6f732661c12ec66de2dbe61.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2dba9b82c5c06815e0215dcd166ee7b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb1b2f64d6d539bdec38829c76298e1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-e08e00f0ca00577a5a689b0fd6617016.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-dfb1b2f64d6d539bdec38829c76298e1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-df93f704a3347473f9fb43de7b298451.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2b073d7a017c38581df0a1cce2839e2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-df93f704a3347473f9fb43de7b298451.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -124,7 +128,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -420,7 +424,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-EDIT 2025-08-29
+<span class="screen-reader-only">Note</span>EDIT 2025-08-29
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -446,7 +450,7 @@ Note
 <p>Before starting, I had to get some hardware. Luckily for me, I had a <a href="https://www.raspberrypi.com/products/raspberry-pi-3-model-b/">Raspberry Pi 3 model B</a> laying around that I was using as a Pi-Hole before moving into my current apartment and while browsing through AliExpress I stumbled upon the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna LiDAR</a>, a low cost LiDAR sensor and thought that I could use it to make a mobile robot that maps and navigates autonomously.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="raspberry_pi_with_tfluna.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
+<p><a href="raspberry_pi_with_tfluna.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Picture of TF-Luna connected to the Raspberry Pi"><img src="raspberry_pi_with_tfluna.jpg" class="img-fluid figure-img" style="width:80.0%" alt="Picture of TF-Luna connected to the Raspberry Pi"></a></p>
 <figcaption>Picture of TF-Luna connected to the Raspberry Pi</figcaption>
 </figure>
 </div>
@@ -458,7 +462,7 @@ Note
 <p>LiDAR is an acronym of “Light Detection And Ranging”. It is a method for determining distances by targeting an object or a surface with a laser and measuring the time for the reflected light to return to the receiver. It is commonly used for creating detailed 3D maps and is effective in various applications, including autonomous vehicles and environmental monitoring.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="time_of_flight_wikipedia.svg" class="img-fluid figure-img"></p>
+<p><a href="time_of_flight_wikipedia.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Basic time-of-flight principles applied to laser range-finding - Wikipedia"><img src="time_of_flight_wikipedia.svg" class="img-fluid figure-img" alt="Basic time-of-flight principles applied to laser range-finding - Wikipedia"></a></p>
 <figcaption>Basic time-of-flight principles applied to laser range-finding - <a href="https://en.wikipedia.org/wiki/Lidar">Wikipedia</a></figcaption>
 </figure>
 </div>
@@ -470,7 +474,7 @@ D = \frac{c \cdot t}{2}
 <p>The TF-Luna however does not send a single pulse at a time, but rather periodically emits near infrared modulated waves and calculates the time by measuring the phase difference between the original wave and the reflected wave and uses that time to compute the relative distance of the object at which it is pointed.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="time_of_flight_tfluna.svg" class="img-fluid figure-img"></p>
+<p><a href="time_of_flight_tfluna.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Schematics of ToF Principle - TF-Luna user manual"><img src="time_of_flight_tfluna.svg" class="img-fluid figure-img" alt="Schematics of ToF Principle - TF-Luna user manual"></a></p>
 <figcaption>Schematics of ToF Principle - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna user manual</a></figcaption>
 </figure>
 </div>
@@ -548,7 +552,7 @@ Table&nbsp;1: Parameters specification of TF-Luna - <a href="https://en.benewake
 <div id="fig-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="wiring_diagram.svg" class="img-fluid figure-img">
+<a href="wiring_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;1: Wiring diagram made with Cirkit Designer"><img src="wiring_diagram.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Wiring diagram made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
@@ -624,7 +628,7 @@ Note
 <div id="fig-user-manual-error" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="tfluna_user_manual_error.svg" class="img-fluid figure-img">
+<a href="tfluna_user_manual_error.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;2: Excerpt from page 30 of TF-Luna user manual version A03 showing values that were changed in version A05"><img src="tfluna_user_manual_error.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Excerpt from page 30 of TF-Luna user manual version <code>A03</code> showing values that were changed in version <code>A05</code>
@@ -662,11 +666,11 @@ Note
 <li><p>Compile the code with the new install target:</p>
 <pre class="shell"><code>cargo build --target aarch64-unknown-linux-gnu</code></pre>
 <p>For the sake of simplicity, you should define this configuration inside <code>.cargo/config.toml</code> to avoid having to constantly pass the argument:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[target.aarch64-unknown-linux-gnu]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[target.aarch64-unknown-linux-gnu]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">linker</span> <span class="op">=</span> <span class="st">"aarch64-linux-gnu-gcc"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[build]</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">target</span> <span class="op">=</span> <span class="st">"aarch64-unknown-linux-gnu"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">target</span> <span class="op">=</span> <span class="st">"aarch64-unknown-linux-gnu"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 <p>Once that’s done, then we have to copy the binary over to the Raspberry Pi and then execute it.</p>
 <pre class="shell"><code>scp target/aarch64-unknown-linux-gnu/release/main raspberrypi:~Projects/main</code></pre>
@@ -678,7 +682,7 @@ Note
 <p>For the data collection and visualization, we will use <a href="https://rerun.io/">rerun</a> which is an open-source log handling and visualization for spatial and embodied AI. The demos shown on their website definitely seem interesting.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="rerun_aria_dataset_explorer.png" class="img-fluid figure-img"></p>
+<p><a href="rerun_aria_dataset_explorer.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Example screenshot of Aria Dataset Explorer using Rerun for visualization - rerun.io"><img src="rerun_aria_dataset_explorer.png" class="img-fluid figure-img" alt="Example screenshot of Aria Dataset Explorer using Rerun for visualization - rerun.io"></a></p>
 <figcaption>Example screenshot of Aria Dataset Explorer using Rerun for visualization - <a href="https://rerun.io/">rerun.io</a></figcaption>
 </figure>
 </div>
@@ -692,14 +696,14 @@ Note
 <p>A 10Hz sampling frequency is not enough to detect fast movements, but it is more than enough for indoor autonomous navigation.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="rerun_screenshot.png" class="img-fluid figure-img"></p>
+<p><a href="rerun_screenshot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Screenshot of Rerun viewer showing recorded data"><img src="rerun_screenshot.png" class="img-fluid figure-img" alt="Screenshot of Rerun viewer showing recorded data"></a></p>
 <figcaption>Screenshot of Rerun viewer showing recorded data</figcaption>
 </figure>
 </div>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>Thanks to this projects, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents. It felt nice getting back into making projects like this after such a long time. It only took me a few days to get it working. It actually took me more time to write this post than to write the code itself.</p>
+<p>Thanks to this project, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents. It felt nice getting back into making projects like this after such a long time. It only took me a few days to get it working. It actually took me more time to write this post than to write the code itself.</p>
 <p>As a next step, I would like to mount the TF-Luna on something that can be rotated with a servo or stepper motor in order to change the angle and be able to generate a 2D point cloud.</p>
 <p>I have also decided to make a crate for interacting with the TF-Luna sensor (ideally with both async and embedded-hal support) hoping that it will be useful to others as well.</p>
 
@@ -784,13 +788,14 @@ Note
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1133,6 +1138,38 @@ Note
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

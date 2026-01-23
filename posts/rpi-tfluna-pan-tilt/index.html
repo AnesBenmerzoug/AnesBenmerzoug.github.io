@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Anes Benmerzoug">
+<meta name="dcterms.date" content="2026-01-23">
+<meta name="keywords" content="Raspberry Pi, TF-Luna, LiDAR, Pan-Tilt, FreeCAD, Rust, Rerun">
+
+<title>Creating a point cloud with a TF-Luna LiDAR – Personal Blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2dba9b82c5c06815e0215dcd166ee7b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-df93f704a3347473f9fb43de7b298451.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2b073d7a017c38581df0a1cce2839e2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-df93f704a3347473f9fb43de7b298451.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Personal Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AnesBenmerzoug"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#pan-tilt-mechanism" id="toc-pan-tilt-mechanism" class="nav-link" data-scroll-target="#pan-tilt-mechanism">Pan-Tilt Mechanism</a></li>
+  <li><a href="#point-cloud-creation" id="toc-point-cloud-creation" class="nav-link" data-scroll-target="#point-cloud-creation">Point Cloud Creation</a></li>
+  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment">Experiment</a>
+  <ul class="collapse">
+  <li><a href="#experimental-setup" id="toc-experimental-setup" class="nav-link" data-scroll-target="#experimental-setup">Experimental Setup</a></li>
+  <li><a href="#plane-detection" id="toc-plane-detection" class="nav-link" data-scroll-target="#plane-detection">Plane Detection</a></li>
+  <li><a href="#optimization-and-results" id="toc-optimization-and-results" class="nav-link" data-scroll-target="#optimization-and-results">Optimization and Results</a></li>
+  </ul></li>
+  <li><a href="#example-point-cloud" id="toc-example-point-cloud" class="nav-link" data-scroll-target="#example-point-cloud">Example Point Cloud</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Creating a point cloud with a TF-Luna LiDAR</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Anes Benmerzoug <a href="https://orcid.org/0000-0002-0270-8446" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 23, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>Raspberry Pi, TF-Luna, LiDAR, Pan-Tilt, FreeCAD, Rust, Rerun</p>
+  </div>
+</div>
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The full code for this project/experiment can be found in the following repository: <a href="https://github.com/AnesBenmerzoug/rpi-tfluna-lidar">rpi-tfluna-lidar</a></p>
+</div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div id="fig-tfluna-pan-tilt-raspberrypi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tfluna-pan-tilt-raspberrypi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tfluna_pan_tilt_with_raspberry_pi.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Picture of the setup. A TF-Luna mounted on the pan-tilt mechanism and connected to a Raspberry PI"><img src="tfluna_pan_tilt_with_raspberry_pi.jpg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tfluna-pan-tilt-raspberrypi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Picture of the setup. A TF-Luna mounted on the pan-tilt mechanism and connected to a Raspberry PI
+</figcaption>
+</figure>
+</div>
+<p>In <a href="../rpi-tfluna-lidar/">my previous post</a> about the TF-Luna LiDAR distance sensor, I showed what it is and how to use it with a Raspberry Pi.</p>
+<p>After publishing it, I took some time to develop and publish the <a href="https://crates.io/crates/embedded-tfluna">embedded-tfluna</a> crate specifically for it. It is platform agnostic and works in no-std environments. However, it only supports I2C communication for now because that’s what I used.</p>
+<p>I still wanted to play around a bit more with the sensor, so I created, designed and printed a pan-tilt mechanism that uses 2 servo motors in order to rotate the sensor around and capture the distance of different points in space in order to create a point cloud (<a href="#fig-tfluna-pan-tilt-raspberrypi" class="quarto-xref">Figure&nbsp;1</a>).</p>
+<p>Before diving into the details, I would like to first describe what a point cloud is and why I would need one.</p>
+<p>A point cloud is a discrete set of data points in space. The points may represent a 3D shape or object. Each point position has its set of Cartesian coordinates (<span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, <span class="math inline">\(z\)</span>). Points may contain data other than position such as RGB colors, normals, timestamps and others. Point clouds are generally produced by 3D scanners or by photogrammetry software, which measure many points on the external surfaces of objects around them.</p>
+<p>They are used for many purposes; the one I care about personally is autonomous vehicles. I want to make a mobile robot that navigates autonomously around rooms with the use of a LiDAR sensor and SLAM (Simultaneous Localization And Mapping).</p>
+</section>
+<section id="pan-tilt-mechanism" class="level1">
+<h1>Pan-Tilt Mechanism</h1>
+<p>Getting to the final pan-til mechanism was not an easy task. I tried a few different solutions before comming up with the final one.</p>
+<p>I first started by ordering a cheap pan-tilt mechanism from AliExpress (<a href="#fig-cheap-pan-tilt" class="quarto-xref">Figure&nbsp;2</a>) hoping that it would be enough given that the sensor itself is very light. Unfortunately, the two micro servos that came with it were either broken or defect and wouldn’t hold their position. They instead kept rotating continuously. On top of that, the pan-tilt mechanism was pretty flimsy.</p>
+<div id="fig-cheap-pan-tilt" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cheap-pan-tilt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cheap_aliexpress_pan_tilt_servos.avif" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Example cheap AliExpress Pan-Tilt Mechanism with servo motors"><img src="cheap_aliexpress_pan_tilt_servos.avif" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cheap-pan-tilt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Example cheap AliExpress Pan-Tilt Mechanism with servo motors
+</figcaption>
+</figure>
+</div>
+<p>So I gave up on that and decided to look for a better mechanism with better servo motors. I ordered a second that I found on a website whose name I forgot. That one unfortunately came with a continuous rotation servo which I couldn’t use.</p>
+<p>In the end, I decided to build my own mechanism and used 2 servo motors that I had ordered for another project.</p>
+<p>It took so long to finalize this project that I learned to use FreeCAD, bought a 3D printer (a Centauri Carbon, for those that are curious) and ended up modeling the pan-tilt mechanism myself (<a href="#fig-tfluna-pan-tilt-freecad-design" class="quarto-xref">Figure&nbsp;3</a>) (I actually reused an assembly that I created for another project of mine <a href="https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo">FreeCAD-Assembly2MuJoCo</a> about which I will write a blog post hopefully after this one).</p>
+<div id="fig-tfluna-pan-tilt-freecad-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tfluna-pan-tilt-freecad-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tfluna_pan_tilt_freecad.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: TFLuna Pan Tilt Mechanism in FreeCAD"><img src="tfluna_pan_tilt_freecad.png" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tfluna-pan-tilt-freecad-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: TFLuna Pan Tilt Mechanism in FreeCAD
+</figcaption>
+</figure>
+</div>
+<p>I printed it with Elegoo’s Galaxy Blue PLA and it came out looking great (<a href="#fig-tfluna-pan-tilt-printed" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<div id="fig-tfluna-pan-tilt-printed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tfluna-pan-tilt-printed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tfluna_pan_tilt_printed.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Picture of the TF-Luna mounted on the pan-tilt mechanism"><img src="tfluna_pan_tilt_printed.jpg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tfluna-pan-tilt-printed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Picture of the TF-Luna mounted on the pan-tilt mechanism
+</figcaption>
+</figure>
+</div>
+<p>Once that was done, I connected the 2 servos to a <a href="https://www.nxp.com/docs/en/data-sheet/PCA9685.pdf">PCA9685</a> module in order to control them using I2C just like for the TF-Luna sensor.</p>
+<div id="fig-tfluna-pan-tilt-wiring-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tfluna-pan-tilt-wiring-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="tfluna_pan_tilt_wiring_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Wiring diagram of TFLuna, servo motors and Raspberry Pi made with Cirkit Designer"><img src="tfluna_pan_tilt_wiring_diagram.svg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tfluna-pan-tilt-wiring-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Wiring diagram of TFLuna, servo motors and Raspberry Pi made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
+</figcaption>
+</figure>
+</div>
+<p>Just like for my previous post, I wrote the code in Rust, and used Rerun to store the data. I cross-compiled it on my laptop and copied and ran it on a Raspberry Pi using SSH with a Rerun server running on my laptop.</p>
+</section>
+<section id="point-cloud-creation" class="level1">
+<h1>Point Cloud Creation</h1>
+<p>To create a point cloud, we have to rotate the sensor around, take distance measurements and convert each measurement into Cartesian coordinates.</p>
+<p>In this mechanism, we control the angles of both servo motors (yaw (<span class="math inline">\(\theta\)</span>) for the bottom one and pitch (<span class="math inline">\(\phi\)</span>) for the top one) and can measure distance (<span class="math inline">\(d\)</span>) to a specific point in space.</p>
+<div id="fig-point-position-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-point-position-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="point_position_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: Diagram representing the angles, distance measurement and point position"><img src="point_position_diagram.svg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-point-position-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Diagram representing the angles, distance measurement and point position
+</figcaption>
+</figure>
+</div>
+<p>In order to get a point’s position from these parameters and measurements, we use the following formulas:</p>
+<p><span class="math display">\[
+\left[ \begin{matrix}x \\ y \\ z \end{matrix}\right] =
+\left[ \begin{matrix}
+d * \cos(\phi) * \sin(\theta) \\
+d * \cos(\phi) * \cos(\theta) \\
+d * \sin(\phi)
+\end{matrix}\right]
+\]</span></p>
+<p>Where we consider the center of the coordinate system <span class="math inline">\((0, 0, 0)\)</span> to coincide with the position of the sensor.</p>
+</section>
+<section id="experiment" class="level1">
+<h1>Experiment</h1>
+<section id="experimental-setup" class="level2">
+<h2 class="anchored" data-anchor-id="experimental-setup">Experimental Setup</h2>
+<p>Before using the mechanism to create point clouds, I wanted to see how fast and accurate it can be. For that, I put the mechanism on a table and pointed it at a wall at a distance of 20 centimeters and limited the yaw angle (left and right movement) to the range <span class="math inline">\([-30^\circ, 30^\circ]\)</span> inclusive and the pitch angle (up and down movement) to the range <span class="math inline">\([0^\circ, 30^\circ]\)</span> inclusive. The pitch angle only goes down to <span class="math inline">\(0^\circ\)</span> because otherwise it would measure the distance to the table on which it was put.</p>
+<p>Since I know that the wall is flat and that it is at a distance of 20 centimeters from the sensor, we can represent it as a plane in 3D space with the equation:</p>
+<p><span class="math display">\[
+y = 20
+\]</span></p>
+<p>I am assuming that the y-axis runs from the mechanism to the wall, the z-axis runs from the mechanism to the ceiling and finally the x-axis runs from the mechanism to the right when facing the wall.</p>
+</section>
+<section id="plane-detection" class="level2">
+<h2 class="anchored" data-anchor-id="plane-detection">Plane Detection</h2>
+<p>The standard general form of a plane in 3D is given by the equation: <span class="math display">\[
+ax + by + cz + d = 0
+\]</span></p>
+<p>Where <span class="math inline">\(a, b, c, d \in \mathbb{R}\)</span> are the coefficients that define the plane and <span class="math inline">\(x, y, z \in \mathbb{R}\)</span> are the coordinates of points in 3D space.</p>
+<p>To avoid the degenerate solution <span class="math inline">\(a = 0, b = 0, c = 0, d = 0\)</span> and since we know that <span class="math inline">\(d \neq 0\)</span>, we divide everything by <span class="math inline">\(d\)</span> to get new coefficients:</p>
+<p><span class="math display">\[
+a^\prime = \frac{a}{d},
+b^\prime = \frac{b}{d},
+c^\prime = \frac{c}{d}
+\]</span></p>
+<p>The equation then becomes:</p>
+<p><span class="math display">\[
+a^\prime x + b^\prime y + c^\prime z + 1 = 0
+\]</span></p>
+<p>If we take multiple measurements of different points, we obtain a system of equations that can be represented as:</p>
+<p><span class="math display">\[
+A\Theta=b
+\]</span></p>
+<p>Where <span class="math inline">\(A = \left[ \begin{matrix}
+x_1 &amp; y_1 &amp; z_1\\
+x_2 &amp; y_2 &amp; z_2\\
+&amp; \dots\\
+x_n &amp; y_n &amp; z_n
+\end{matrix} \right]\)</span>, <span class="math inline">\(b = \left[ \begin{matrix}
+-1\\
+-1\\
+\dots\\
+-1
+\end{matrix} \right]\)</span>, <span class="math inline">\(\Theta = \left[ \begin{matrix}
+a^\prime\\
+b^\prime\\
+c^\prime
+\end{matrix} \right]\)</span></p>
+<p>To solve this system of equations we use SVD (Singular Value Decomposition). We first decompose the matrix <span class="math inline">\(A\)</span> as:</p>
+<p><span class="math display">\[
+A = U \Sigma V^T
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(U\)</span> is an <span class="math inline">\(m \times n\)</span> orthogonal matrix.</li>
+<li><span class="math inline">\(\Sigma\)</span> is an <span class="math inline">\(n \times n\)</span> diagonal matrix.</li>
+<li><span class="math inline">\(V\)</span> is an <span class="math inline">\(n \times n\)</span> orthogonal matrix.</li>
+</ul>
+<p>The solution is then given:</p>
+<p><span class="math display">\[
+\Theta = V \Sigma^{+} U^T b
+\]</span></p>
+<p>Where <span class="math inline">\(\Sigma^{+}\)</span> represents the pseudo-inverse (Moore-Penrose inverse).</p>
+</section>
+<section id="optimization-and-results" class="level2">
+<h2 class="anchored" data-anchor-id="optimization-and-results">Optimization and Results</h2>
+<p>There are two main parameters that determine the speed of measurements:</p>
+<ul>
+<li><strong>angle step size</strong>: The step size in degrees of the rotation of each servo motor.</li>
+<li><strong>servo motor delay</strong>: The delay in milliseconds to wait after issuing a servo motor movement command before taking a measurement.</li>
+</ul>
+<p>I tried different combinations of these parameters, collected the data, computed the parameters and a few metrics and plotted the results:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="0" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb1-0"><a href="#cb1-0" aria-hidden="true" tabindex="-1"></a>metrics_data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"metrics.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>unique_angle_step <span class="op">=</span> [<span class="op">...</span><span class="kw">new</span> <span class="bu">Set</span>(metrics_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">angle_step</span>))]<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>unique_servo_delay <span class="op">=</span> [<span class="op">...</span><span class="kw">new</span> <span class="bu">Set</span>(metrics_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">servo_motor_delay</span>))]<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>filtered_metrics_data <span class="op">=</span> metrics_data<span class="op">.</span><span class="fu">filter</span>(<span class="kw">function</span>(row) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        servo_delays<span class="op">.</span><span class="fu">includes</span>(row<span class="op">.</span><span class="at">servo_motor_delay</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;&amp;</span> angle_steps<span class="op">.</span><span class="fu">includes</span>(row<span class="op">.</span><span class="at">angle_step</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell panel-input card bg-light p-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="1" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>viewof angle_steps <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    unique_angle_step<span class="op">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">value</span><span class="op">:</span> unique_angle_step<span class="op">,</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">label</span><span class="op">:</span> <span class="st">"Angle Step:"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>viewof servo_delays <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    unique_servo_delay<span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">value</span><span class="op">:</span> unique_servo_delay<span class="op">,</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">label</span><span class="op">:</span> <span class="st">"Servo Motor Delay:"</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="0" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -1;"><span id="cb3-0"><a href="#cb3-0" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Plot } <span class="im">from</span> <span class="st">"@observablehq/plot"</span><span class="op">;</span></span>
+<span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> plot <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">width</span><span class="op">:</span> <span class="dv">800</span><span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">height</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            <span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span><span class="op">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="dt">label</span><span class="op">:</span> <span class="st">"Mean Y-Intercept Error (mm)"</span><span class="op">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="dt">type</span><span class="op">:</span> <span class="st">"log"</span><span class="op">,</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">label</span><span class="op">:</span> <span class="st">"Mean Angle Error (deg)"</span><span class="op">,</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">type</span><span class="op">:</span> <span class="st">"log"</span><span class="op">,</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>            <span class="dt">type</span><span class="op">:</span> <span class="st">"linear"</span><span class="op">,</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>            <span class="dt">scheme</span><span class="op">:</span> <span class="st">"Cool"</span><span class="op">,</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            <span class="dt">label</span><span class="op">:</span> <span class="st">"Total Time (s)"</span><span class="op">,</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            Plot<span class="op">.</span><span class="fu">dot</span>(filtered_metrics_data<span class="op">,</span> {</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                <span class="dt">x</span><span class="op">:</span> <span class="st">"y_intercept_error"</span><span class="op">,</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                <span class="dt">y</span><span class="op">:</span> <span class="st">"angle_error_deg"</span><span class="op">,</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                <span class="dt">fill</span><span class="op">:</span> <span class="st">"total_time_s"</span><span class="op">,</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                <span class="dt">title</span><span class="op">:</span> (d) <span class="kw">=&gt;</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                    <span class="vs">`Angle: </span><span class="sc">${</span>d<span class="op">.</span><span class="at">angle_step</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">deg</span><span class="sc">\n</span><span class="vs">Servo: </span><span class="sc">${</span>d<span class="op">.</span><span class="at">servo_motor_delay</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">ms</span><span class="sc">\n</span><span class="vs">Total Time: </span><span class="sc">${</span>d<span class="op">.</span><span class="at">total_time_s</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">s`</span><span class="op">,</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>            })<span class="op">,</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        ]<span class="op">,</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Fix the white background on the legend ramp</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> ramp <span class="op">=</span> plot<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">'svg[class*="-ramp"]'</span>)<span class="op">;</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (ramp) {</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> style <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"style"</span>)<span class="op">;</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        style<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="vs">`</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="vs">            svg[class*="-ramp"] {</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="vs">                background: transparent !important;</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="vs">            }</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="vs">        `</span><span class="op">;</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        plot<span class="op">.</span><span class="fu">appendChild</span>(style)<span class="op">;</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> plot<span class="op">;</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb4--1"><a href="#cb4--1" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(filtered_metrics_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>As we can see from the plot, the best compromise between speed and accuracy comes from the two combinations of parameters:</p>
+<ul>
+<li><strong>angle step size</strong>: 1 degree, <strong>servo motor delay</strong>: 50 milliseconds.</li>
+<li><strong>angle step size</strong>: 5 degrees, <strong>servo motor delay</strong>: 50 milliseconds.</li>
+</ul>
+</section>
+</section>
+<section id="example-point-cloud" class="level1">
+<h1>Example Point Cloud</h1>
+<p>After the experiment, I pointed the mechanism at something more interesting—specifically a bookshelf—and generated a point cloud. To ensure high detail, I maintained the settings from the best test case: an angle step size of 1 degree and a servo motor delay of 50 ms.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb5--1"><a href="#cb5--1" aria-hidden="true" tabindex="-1"></a>d3 <span class="op">=</span> <span class="pp">require</span>(<span class="st">"d3@7"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb6--1"><a href="#cb6--1" aria-hidden="true" tabindex="-1"></a>point_cloud_data2 <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"point_cloud_data_1deg_50ms.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Data</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb7--1"><a href="#cb7--1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb7-0"><a href="#cb7-0" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Make canvas responsive</span></span>
+<span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> container <span class="op">=</span> <span class="kw">this</span> <span class="op">??</span> <span class="bu">document</span><span class="op">.</span><span class="at">body</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> width <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">800</span><span class="op">,</span> container<span class="op">.</span><span class="at">clientWidth</span> <span class="op">||</span> <span class="dv">800</span>)<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> height <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">680</span><span class="op">,</span> width <span class="op">*</span> <span class="fl">0.85</span>)<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Create wrapper div for canvas and button</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrapper <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">position</span> <span class="op">=</span> <span class="st">"relative"</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="st">"100%"</span><span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Create canvas</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> canvas <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"canvas"</span>)<span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">width</span> <span class="op">=</span> width<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">height</span> <span class="op">=</span> height<span class="op">;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="st">"100%"</span><span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">height</span> <span class="op">=</span> <span class="st">"auto"</span><span class="op">;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">cursor</span> <span class="op">=</span> <span class="st">"grab"</span><span class="op">;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">display</span> <span class="op">=</span> <span class="st">"block"</span><span class="op">;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> ctx <span class="op">=</span> canvas<span class="op">.</span><span class="fu">getContext</span>(<span class="st">"2d"</span>)<span class="op">;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get Quarto CSS variables</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getComputedCSSStyle <span class="op">=</span> (varName) <span class="kw">=&gt;</span> {</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">documentElement</span>)<span class="op">.</span><span class="fu">getPropertyValue</span>(varName)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get all CSS variables</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> getStyle <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="dt">canvasFillColor</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--quarto-body-bg'</span>)<span class="op">,</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      <span class="dt">bgColor</span><span class="op">:</span> <span class="st">'#ffffff01'</span><span class="op">,</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">textColor</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--quarto-body-color'</span>)<span class="op">,</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mutedColor</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--quarto-text-muted'</span>)<span class="op">,</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      <span class="dt">borderColor</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--quarto-border-color'</span>)<span class="op">,</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontFamily</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--bs-body-font-family'</span>)<span class="op">,</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="fu">getComputedCSSStyle</span>(<span class="st">'--bs-body-font-size'</span>)<span class="op">,</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Default starting angles</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defaultAngleX <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defaultAngleY <span class="op">=</span> <span class="fl">0.03</span><span class="op">;</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> defaultAngleZ <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Create reset button</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> resetBtn <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"button"</span>)<span class="op">;</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"Reset View"</span><span class="op">;</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">position</span> <span class="op">=</span> <span class="st">"absolute"</span><span class="op">;</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">bottom</span> <span class="op">=</span> <span class="st">"30px"</span><span class="op">;</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">left</span> <span class="op">=</span> <span class="st">"8px"</span><span class="op">;</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">padding</span> <span class="op">=</span> <span class="st">"6px 12px"</span><span class="op">;</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">fontSize</span> <span class="op">=</span> <span class="st">"12px"</span><span class="op">;</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">cursor</span> <span class="op">=</span> <span class="st">"pointer"</span><span class="op">;</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">backgroundColor</span> <span class="op">=</span> style<span class="op">.</span><span class="at">bgColor</span><span class="op">;</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> style<span class="op">.</span><span class="at">textColor</span><span class="op">;</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">border</span> <span class="op">=</span> <span class="vs">`1px solid </span><span class="sc">${</span>style<span class="op">.</span><span class="at">borderColor</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">borderRadius</span> <span class="op">=</span> <span class="st">"4px"</span><span class="op">;</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">zIndex</span> <span class="op">=</span> <span class="st">"10"</span><span class="op">;</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Button hover effect</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mouseenter"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">backgroundColor</span> <span class="op">=</span> style<span class="op">.</span><span class="at">borderColor</span><span class="op">;</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mouseleave"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">backgroundColor</span> <span class="op">=</span> style<span class="op">.</span><span class="at">bgColor</span><span class="op">;</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Reset functionality</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  resetBtn<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>    angleX <span class="op">=</span> defaultAngleX<span class="op">;</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    angleY <span class="op">=</span> defaultAngleY<span class="op">;</span></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    angleZ <span class="op">=</span> defaultAngleZ<span class="op">;</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 3D rotation state</span></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> angleX <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> angleY <span class="op">=</span> <span class="fl">0.03</span><span class="op">;</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> angleZ <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> isDragging <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Scales - adjust ranges based on canvas size</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> scale <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> height) <span class="op">/</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">domain</span>(d3<span class="op">.</span><span class="fu">extent</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>))</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">range</span>([<span class="op">-</span>scale <span class="op">*</span> <span class="fl">0.8</span><span class="op">,</span> scale <span class="op">*</span> <span class="fl">0.8</span>])<span class="op">;</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> yScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">domain</span>(d3<span class="op">.</span><span class="fu">extent</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>))</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">range</span>([<span class="op">-</span>scale <span class="op">*</span> <span class="fl">0.7</span><span class="op">,</span> scale <span class="op">*</span> <span class="fl">0.7</span>])<span class="op">;</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> zScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleLinear</span>()</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">domain</span>(d3<span class="op">.</span><span class="fu">extent</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">z</span>))</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">range</span>([<span class="op">-</span>scale <span class="op">*</span> <span class="fl">0.7</span><span class="op">,</span> scale <span class="op">*</span> <span class="fl">0.7</span>])<span class="op">;</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Color scale</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> colorScale <span class="op">=</span> d3<span class="op">.</span><span class="fu">scaleSequential</span>(d3<span class="op">.</span><span class="at">interpolateCool</span>)</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">domain</span>(d3<span class="op">.</span><span class="fu">extent</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>))<span class="op">;</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 3D projection with perspective</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> project <span class="op">=</span> (x<span class="op">,</span> y<span class="op">,</span> z) <span class="kw">=&gt;</span> {</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Rotate around Z axis</span></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cosZ <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angleZ)<span class="op">;</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sinZ <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(angleZ)<span class="op">;</span></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x1 <span class="op">=</span> x <span class="op">*</span> cosZ <span class="op">+</span> y <span class="op">*</span> sinZ<span class="op">;</span></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> y1 <span class="op">=</span> <span class="op">-</span> x <span class="op">*</span> sinZ <span class="op">+</span> y <span class="op">*</span> cosZ<span class="op">;</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> z1 <span class="op">=</span> z<span class="op">;</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Rotate around Y axis</span></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cosY <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angleY)<span class="op">;</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sinY <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(angleY)<span class="op">;</span></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x2 <span class="op">=</span> x1 <span class="op">*</span> cosY <span class="op">-</span> z1 <span class="op">*</span> sinY<span class="op">;</span></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> y2 <span class="op">=</span> y1<span class="op">;</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> z2 <span class="op">=</span> x1 <span class="op">*</span> sinY <span class="op">+</span> z1 <span class="op">*</span> cosY<span class="op">;</span></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Rotate around X axis</span></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cosX <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(angleX)<span class="op">;</span></span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sinX <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(angleX)<span class="op">;</span></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x3 <span class="op">=</span> x2<span class="op">;</span></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> y3 <span class="op">=</span> y2 <span class="op">*</span> cosX <span class="op">-</span> z2 <span class="op">*</span> sinX<span class="op">;</span></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> z3 <span class="op">=</span> y2 <span class="op">*</span> sinX <span class="op">+</span> z2 <span class="op">*</span> cosX<span class="op">;</span></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Perspective</span></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> perspective <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> scale <span class="op">=</span> perspective <span class="op">/</span> (perspective <span class="op">+</span> z3)<span class="op">;</span></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> x3 <span class="op">*</span> scale <span class="op">+</span> width <span class="op">/</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> y3 <span class="op">*</span> scale <span class="op">+</span> height <span class="op">/</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>      <span class="dt">z</span><span class="op">:</span> z3<span class="op">,</span></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>      <span class="dt">scale</span><span class="op">:</span> scale</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Draw color legend</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> drawLegend <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> legendWidth <span class="op">=</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> legendHeight <span class="op">=</span> <span class="dv">200</span><span class="op">;</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> legendX <span class="op">=</span> width <span class="op">-</span> <span class="dv">60</span><span class="op">;</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> legendY <span class="op">=</span> <span class="dv">50</span><span class="op">;</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw gradient</span></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> gradient <span class="op">=</span> ctx<span class="op">.</span><span class="fu">createLinearGradient</span>(<span class="dv">0</span><span class="op">,</span> legendY<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> legendY <span class="op">+</span> legendHeight)<span class="op">;</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> steps <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> steps<span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> t <span class="op">=</span> i <span class="op">/</span> steps<span class="op">;</span></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> value <span class="op">=</span> d3<span class="op">.</span><span class="fu">min</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>) <span class="op">+</span> </span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>                   t <span class="op">*</span> (d3<span class="op">.</span><span class="fu">max</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>) <span class="op">-</span> d3<span class="op">.</span><span class="fu">min</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>))<span class="op">;</span></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>      gradient<span class="op">.</span><span class="fu">addColorStop</span>(<span class="dv">1</span> <span class="op">-</span> t<span class="op">,</span> <span class="fu">colorScale</span>(value))<span class="op">;</span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> gradient<span class="op">;</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillRect</span>(legendX<span class="op">,</span> legendY<span class="op">,</span> legendWidth<span class="op">,</span> legendHeight)<span class="op">;</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw border using Quarto border color</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">strokeStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">borderColor</span><span class="op">;</span></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">lineWidth</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">strokeRect</span>(legendX<span class="op">,</span> legendY<span class="op">,</span> legendWidth<span class="op">,</span> legendHeight)<span class="op">;</span></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw labels using Quarto muted color</span></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">mutedColor</span><span class="op">;</span></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">font</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>style<span class="op">.</span><span class="at">fontSize</span><span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>style<span class="op">.</span><span class="at">fontFamily</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">textAlign</span> <span class="op">=</span> <span class="st">"left"</span><span class="op">;</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> maxVal <span class="op">=</span> d3<span class="op">.</span><span class="fu">max</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>)<span class="op">;</span></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> minVal <span class="op">=</span> d3<span class="op">.</span><span class="fu">min</span>(point_cloud_data2<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">distance</span>)<span class="op">;</span></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillText</span>(maxVal<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="op">,</span> legendX <span class="op">+</span> legendWidth <span class="op">+</span> <span class="dv">5</span><span class="op">,</span> legendY <span class="op">+</span> <span class="dv">5</span>)<span class="op">;</span></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillText</span>(minVal<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="op">,</span> legendX <span class="op">+</span> legendWidth <span class="op">+</span> <span class="dv">5</span><span class="op">,</span> legendY <span class="op">+</span> legendHeight <span class="op">+</span> <span class="dv">5</span>)<span class="op">;</span></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Title in regular text color</span></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">textColor</span><span class="op">;</span></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillText</span>(<span class="st">"Distance"</span><span class="op">,</span> legendX <span class="op">-</span> <span class="dv">5</span><span class="op">,</span> legendY <span class="op">-</span> <span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> render <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Clear canvas</span></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">canvasFillColor</span><span class="op">;</span></span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillRect</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> width<span class="op">,</span> height)<span class="op">;</span></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Project and sort by depth</span></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> projected <span class="op">=</span> point_cloud_data2<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> proj <span class="op">=</span> <span class="fu">project</span>(<span class="fu">xScale</span>(d<span class="op">.</span><span class="at">x</span>)<span class="op">,</span> <span class="fu">yScale</span>(d<span class="op">.</span><span class="at">y</span>)<span class="op">,</span> <span class="fu">zScale</span>(d<span class="op">.</span><span class="at">z</span>))<span class="op">;</span></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> {</span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a>        <span class="op">...</span>d<span class="op">,</span></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>        <span class="op">...</span>proj</span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>      }<span class="op">;</span></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>    })<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">z</span> <span class="op">-</span> b<span class="op">.</span><span class="at">z</span>)<span class="op">;</span> <span class="co">// Draw far to near</span></span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw points</span></span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a>    projected<span class="op">.</span><span class="fu">forEach</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> radius <span class="op">=</span> <span class="fl">2.5</span> <span class="op">*</span> d<span class="op">.</span><span class="at">scale</span><span class="op">;</span> <span class="co">// Size based on depth</span></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="fu">beginPath</span>()<span class="op">;</span></span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="fu">arc</span>(d<span class="op">.</span><span class="at">x</span><span class="op">,</span> d<span class="op">.</span><span class="at">y</span><span class="op">,</span> radius<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span>)<span class="op">;</span></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> <span class="fu">colorScale</span>(d<span class="op">.</span><span class="at">distance</span>)<span class="op">;</span></span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="fu">fill</span>()<span class="op">;</span></span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="at">strokeStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">mutedColor</span><span class="op">;</span></span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="at">lineWidth</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a>      ctx<span class="op">.</span><span class="fu">stroke</span>()<span class="op">;</span></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw legend</span></span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drawLegend</span>()<span class="op">;</span></span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw axes labels</span></span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> style<span class="op">.</span><span class="at">mutedColor</span><span class="op">;</span></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">font</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>style<span class="op">.</span><span class="at">fontSize</span><span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>style<span class="op">.</span><span class="at">fontFamily</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">textAlign</span> <span class="op">=</span> <span class="st">"left"</span><span class="op">;</span></span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillText</span>(<span class="st">"Drag to rotate"</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Update button colors when theme changes</span></span>
+<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> updateButtonColors <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> style <span class="op">=</span> <span class="fu">getStyle</span>()<span class="op">;</span></span>
+<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a>    resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">backgroundColor</span> <span class="op">=</span> style<span class="op">.</span><span class="at">bgColor</span><span class="op">;</span></span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a>    resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">color</span> <span class="op">=</span> style<span class="op">.</span><span class="at">textColor</span><span class="op">;</span></span>
+<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a>    resetBtn<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">border</span> <span class="op">=</span> <span class="vs">`1px solid </span><span class="sc">${</span>style<span class="op">.</span><span class="at">borderColor</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-220"><a href="#cb7-220" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a>  <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb7-222"><a href="#cb7-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Mouse interaction</span></span>
+<span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> lastX<span class="op">,</span> lastY<span class="op">;</span></span>
+<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mousedown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a>    isDragging <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a>    lastX <span class="op">=</span> e<span class="op">.</span><span class="at">clientX</span><span class="op">;</span></span>
+<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a>    lastY <span class="op">=</span> e<span class="op">.</span><span class="at">clientY</span><span class="op">;</span></span>
+<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">cursor</span> <span class="op">=</span> <span class="st">"grabbing"</span><span class="op">;</span></span>
+<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mousemove"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>isDragging) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> dx <span class="op">=</span> e<span class="op">.</span><span class="at">clientX</span> <span class="op">-</span> lastX<span class="op">;</span></span>
+<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> dy <span class="op">=</span> e<span class="op">.</span><span class="at">clientY</span> <span class="op">-</span> lastY<span class="op">;</span></span>
+<span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a>    angleZ <span class="op">+=</span> dx <span class="op">*</span> <span class="fl">0.005</span><span class="op">;</span></span>
+<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a>    angleX <span class="op">+=</span> dy <span class="op">*</span> <span class="fl">0.005</span><span class="op">;</span></span>
+<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a>    lastX <span class="op">=</span> e<span class="op">.</span><span class="at">clientX</span><span class="op">;</span></span>
+<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a>    lastY <span class="op">=</span> e<span class="op">.</span><span class="at">clientY</span><span class="op">;</span></span>
+<span id="cb7-244"><a href="#cb7-244" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a>    <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mouseup"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a>    isDragging <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">cursor</span> <span class="op">=</span> <span class="st">"grab"</span><span class="op">;</span></span>
+<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-252"><a href="#cb7-252" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a>  canvas<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"mouseleave"</span><span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-254"><a href="#cb7-254" aria-hidden="true" tabindex="-1"></a>    isDragging <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a>    canvas<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">cursor</span> <span class="op">=</span> <span class="st">"grab"</span><span class="op">;</span></span>
+<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Watch for theme changes</span></span>
+<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> observer <span class="op">=</span> <span class="kw">new</span> <span class="bu">MutationObserver</span>(() <span class="kw">=&gt;</span> {</span>
+<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a>    <span class="fu">updateButtonColors</span>()<span class="op">;</span></span>
+<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a>    <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb7-262"><a href="#cb7-262" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a>  observer<span class="op">.</span><span class="fu">observe</span>(<span class="bu">document</span><span class="op">.</span><span class="at">body</span><span class="op">,</span> { </span>
+<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a>    <span class="dt">attributes</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> </span>
+<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a>    <span class="dt">attributeFilter</span><span class="op">:</span> [<span class="st">'class'</span>] </span>
+<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-268"><a href="#cb7-268" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Assemble wrapper</span></span>
+<span id="cb7-269"><a href="#cb7-269" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="fu">appendChild</span>(canvas)<span class="op">;</span></span>
+<span id="cb7-270"><a href="#cb7-270" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="fu">appendChild</span>(resetBtn)<span class="op">;</span></span>
+<span id="cb7-271"><a href="#cb7-271" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-272"><a href="#cb7-272" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrapper<span class="op">;</span></span>
+<span id="cb7-273"><a href="#cb7-273" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="-1" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line -2;"><span id="cb8--1"><a href="#cb8--1" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(point_cloud_data2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The resulting cloud successfully reconstructs the structure of the bookshelf and highlights how the mechanism captures some of the fine details. While it is slow, it has a sufficient resolution to distinguish between the bookshelf, its shelves and the wall.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>It is clear that the pan-tilt TF-Luna assembly has its limits when it comes to speed, which means it likely won’t be suitable for high-speed autonomous navigation. However, building this mechanism and creating the point clouds was a great learning experience for me in many aspects.</p>
+<p>I may try again to push the mechanism to its limits, perhaps by limiting the rotation to the z-axis to make it faster.</p>
+<p>For now, that concludes my exploration of the TF-Luna sensor. I will go back to some of the projects that I started or pick up a new one from my backlog.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1ldHJpY3NfZGF0YSA9IEZpbGVBdHRhY2htZW50KFwibWV0cmljcy5jc3ZcIikuY3N2KHsgdHlwZWQ6IHRydWUgfSlcblxudW5pcXVlX2FuZ2xlX3N0ZXAgPSBbLi4ubmV3IFNldChtZXRyaWNzX2RhdGEubWFwKGQgPT4gZC5hbmdsZV9zdGVwKSldO1xudW5pcXVlX3NlcnZvX2RlbGF5ID0gWy4uLm5ldyBTZXQobWV0cmljc19kYXRhLm1hcChkID0+IGQuc2Vydm9fbW90b3JfZGVsYXkpKV07XG5cbmZpbHRlcmVkX21ldHJpY3NfZGF0YSA9IG1ldHJpY3NfZGF0YS5maWx0ZXIoZnVuY3Rpb24ocm93KSB7XG4gICAgcmV0dXJuIChcbiAgICAgICAgc2Vydm9fZGVsYXlzLmluY2x1ZGVzKHJvdy5zZXJ2b19tb3Rvcl9kZWxheSlcbiAgICAgICAgJiYgYW5nbGVfc3RlcHMuaW5jbHVkZXMocm93LmFuZ2xlX3N0ZXApXG4gICAgKTtcbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgYW5nbGVfc3RlcHMgPSBJbnB1dHMuY2hlY2tib3goXG4gICAgdW5pcXVlX2FuZ2xlX3N0ZXAsXG4gICAge1xuICAgICAgICB2YWx1ZTogdW5pcXVlX2FuZ2xlX3N0ZXAsIFxuICAgICAgICBsYWJlbDogXCJBbmdsZSBTdGVwOlwiXG4gICAgfVxuKVxudmlld29mIHNlcnZvX2RlbGF5cyA9IElucHV0cy5jaGVja2JveChcbiAgICB1bmlxdWVfc2Vydm9fZGVsYXksXG4gICAge1xuICAgICAgICB2YWx1ZTogdW5pcXVlX3NlcnZvX2RlbGF5LCBcbiAgICAgICAgbGFiZWw6IFwiU2Vydm8gTW90b3IgRGVsYXk6XCJcbiAgICB9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJpbXBvcnQgeyBQbG90IH0gZnJvbSBcIkBvYnNlcnZhYmxlaHEvcGxvdFwiO1xuXG57XG4gICAgY29uc3QgcGxvdCA9IFBsb3QucGxvdCh7XG4gICAgICAgIHdpZHRoOiA4MDAsXG4gICAgICAgIGhlaWdodDogNjAwLFxuICAgICAgICBtYXJnaW5MZWZ0OiA2MCxcbiAgICAgICAgbWFyZ2luQm90dG9tOiA1MCxcbiAgICAgICAgc3R5bGU6IHtcbiAgICAgICAgICAgIGJhY2tncm91bmQ6IFwidHJhbnNwYXJlbnRcIixcbiAgICAgICAgfSxcbiAgICAgICAgeDoge1xuICAgICAgICAgICAgbGFiZWw6IFwiTWVhbiBZLUludGVyY2VwdCBFcnJvciAobW0pXCIsXG4gICAgICAgICAgICBncmlkOiB0cnVlLFxuICAgICAgICAgICAgdHlwZTogXCJsb2dcIixcbiAgICAgICAgfSxcbiAgICAgICAgeToge1xuICAgICAgICAgICAgbGFiZWw6IFwiTWVhbiBBbmdsZSBFcnJvciAoZGVnKVwiLFxuICAgICAgICAgICAgZ3JpZDogdHJ1ZSxcbiAgICAgICAgICAgIHR5cGU6IFwibG9nXCIsXG4gICAgICAgIH0sXG4gICAgICAgIGNvbG9yOiB7XG4gICAgICAgICAgICB0eXBlOiBcImxpbmVhclwiLFxuICAgICAgICAgICAgc2NoZW1lOiBcIkNvb2xcIixcbiAgICAgICAgICAgIGxlZ2VuZDogdHJ1ZSxcbiAgICAgICAgICAgIGxhYmVsOiBcIlRvdGFsIFRpbWUgKHMpXCIsXG4gICAgICAgIH0sXG4gICAgICAgIG1hcmtzOiBbXG4gICAgICAgICAgICBQbG90LmRvdChmaWx0ZXJlZF9tZXRyaWNzX2RhdGEsIHtcbiAgICAgICAgICAgICAgICB4OiBcInlfaW50ZXJjZXB0X2Vycm9yXCIsXG4gICAgICAgICAgICAgICAgeTogXCJhbmdsZV9lcnJvcl9kZWdcIixcbiAgICAgICAgICAgICAgICBmaWxsOiBcInRvdGFsX3RpbWVfc1wiLFxuICAgICAgICAgICAgICAgIHI6IDYsXG4gICAgICAgICAgICAgICAgdGl0bGU6IChkKSA9PlxuICAgICAgICAgICAgICAgICAgICBgQW5nbGU6ICR7ZC5hbmdsZV9zdGVwLnRvRml4ZWQoMil9ZGVnXFxuU2Vydm86ICR7ZC5zZXJ2b19tb3Rvcl9kZWxheS50b0ZpeGVkKDIpfW1zXFxuVG90YWwgVGltZTogJHtkLnRvdGFsX3RpbWVfcy50b0ZpeGVkKDIpfXNgLFxuICAgICAgICAgICAgfSksXG4gICAgICAgIF0sXG4gICAgfSk7XG5cbiAgICAvLyBGaXggdGhlIHdoaXRlIGJhY2tncm91bmQgb24gdGhlIGxlZ2VuZCByYW1wXG4gICAgY29uc3QgcmFtcCA9IHBsb3QucXVlcnlTZWxlY3Rvcignc3ZnW2NsYXNzKj1cIi1yYW1wXCJdJyk7XG4gICAgaWYgKHJhbXApIHtcbiAgICAgICAgY29uc3Qgc3R5bGUgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwic3R5bGVcIik7XG4gICAgICAgIHN0eWxlLnRleHRDb250ZW50ID0gYFxuICAgICAgICAgICAgc3ZnW2NsYXNzKj1cIi1yYW1wXCJdIHtcbiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudCAhaW1wb3J0YW50O1xuICAgICAgICAgICAgfVxuICAgICAgICBgO1xuICAgICAgICBwbG90LmFwcGVuZENoaWxkKHN0eWxlKTtcbiAgICB9XG5cbiAgICByZXR1cm4gcGxvdDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IklucHV0cy50YWJsZShmaWx0ZXJlZF9tZXRyaWNzX2RhdGEpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJkMyA9IHJlcXVpcmUoXCJkM0A3XCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJwb2ludF9jbG91ZF9kYXRhMiA9IEZpbGVBdHRhY2htZW50KFwicG9pbnRfY2xvdWRfZGF0YV8xZGVnXzUwbXMuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIC8vIE1ha2UgY2FudmFzIHJlc3BvbnNpdmVcbiAgY29uc3QgY29udGFpbmVyID0gdGhpcyA/PyBkb2N1bWVudC5ib2R5O1xuICBjb25zdCB3aWR0aCA9IE1hdGgubWluKDgwMCwgY29udGFpbmVyLmNsaWVudFdpZHRoIHx8IDgwMCk7XG4gIGNvbnN0IGhlaWdodCA9IE1hdGgubWluKDY4MCwgd2lkdGggKiAwLjg1KTtcblxuICAvLyBDcmVhdGUgd3JhcHBlciBkaXYgZm9yIGNhbnZhcyBhbmQgYnV0dG9uXG4gIGNvbnN0IHdyYXBwZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpO1xuICB3cmFwcGVyLnN0eWxlLnBvc2l0aW9uID0gXCJyZWxhdGl2ZVwiO1xuICB3cmFwcGVyLnN0eWxlLndpZHRoID0gXCIxMDAlXCI7XG4gIFxuICAvLyBDcmVhdGUgY2FudmFzXG4gIGNvbnN0IGNhbnZhcyA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJjYW52YXNcIik7XG4gIGNhbnZhcy53aWR0aCA9IHdpZHRoO1xuICBjYW52YXMuaGVpZ2h0ID0gaGVpZ2h0O1xuICBjYW52YXMuc3R5bGUud2lkdGggPSBcIjEwMCVcIjtcbiAgY2FudmFzLnN0eWxlLmhlaWdodCA9IFwiYXV0b1wiO1xuICBjYW52YXMuc3R5bGUuY3Vyc29yID0gXCJncmFiXCI7XG4gIGNhbnZhcy5zdHlsZS5kaXNwbGF5ID0gXCJibG9ja1wiO1xuICBjb25zdCBjdHggPSBjYW52YXMuZ2V0Q29udGV4dChcIjJkXCIpO1xuXG4gIC8vIEdldCBRdWFydG8gQ1NTIHZhcmlhYmxlc1xuICBjb25zdCBnZXRDb21wdXRlZENTU1N0eWxlID0gKHZhck5hbWUpID0+IHtcbiAgICByZXR1cm4gZ2V0Q29tcHV0ZWRTdHlsZShkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQpLmdldFByb3BlcnR5VmFsdWUodmFyTmFtZSkudHJpbSgpO1xuICB9O1xuXG4gIC8vIEdldCBhbGwgQ1NTIHZhcmlhYmxlc1xuICBjb25zdCBnZXRTdHlsZSA9ICgpID0+IHtcbiAgICByZXR1cm4ge1xuICAgICAgY2FudmFzRmlsbENvbG9yOiBnZXRDb21wdXRlZENTU1N0eWxlKCctLXF1YXJ0by1ib2R5LWJnJyksXG4gICAgICBiZ0NvbG9yOiAnI2ZmZmZmZjAxJyxcbiAgICAgIHRleHRDb2xvcjogZ2V0Q29tcHV0ZWRDU1NTdHlsZSgnLS1xdWFydG8tYm9keS1jb2xvcicpLFxuICAgICAgbXV0ZWRDb2xvcjogZ2V0Q29tcHV0ZWRDU1NTdHlsZSgnLS1xdWFydG8tdGV4dC1tdXRlZCcpLFxuICAgICAgYm9yZGVyQ29sb3I6IGdldENvbXB1dGVkQ1NTU3R5bGUoJy0tcXVhcnRvLWJvcmRlci1jb2xvcicpLFxuICAgICAgZm9udEZhbWlseTogZ2V0Q29tcHV0ZWRDU1NTdHlsZSgnLS1icy1ib2R5LWZvbnQtZmFtaWx5JyksXG4gICAgICBmb250U2l6ZTogZ2V0Q29tcHV0ZWRDU1NTdHlsZSgnLS1icy1ib2R5LWZvbnQtc2l6ZScpLFxuICAgIH1cbiAgfVxuICBjb25zdCBzdHlsZSA9IGdldFN0eWxlKCk7XG5cbiAgLy8gRGVmYXVsdCBzdGFydGluZyBhbmdsZXNcbiAgY29uc3QgZGVmYXVsdEFuZ2xlWCA9IDIuMDtcbiAgY29uc3QgZGVmYXVsdEFuZ2xlWSA9IDAuMDM7XG4gIGNvbnN0IGRlZmF1bHRBbmdsZVogPSAwLjA7XG5cbiAgLy8gQ3JlYXRlIHJlc2V0IGJ1dHRvblxuICBjb25zdCByZXNldEJ0biA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJidXR0b25cIik7XG4gIHJlc2V0QnRuLnRleHRDb250ZW50ID0gXCJSZXNldCBWaWV3XCI7XG4gIHJlc2V0QnRuLnN0eWxlLnBvc2l0aW9uID0gXCJhYnNvbHV0ZVwiO1xuICByZXNldEJ0bi5zdHlsZS5ib3R0b20gPSBcIjMwcHhcIjtcbiAgcmVzZXRCdG4uc3R5bGUubGVmdCA9IFwiOHB4XCI7XG4gIHJlc2V0QnRuLnN0eWxlLnBhZGRpbmcgPSBcIjZweCAxMnB4XCI7XG4gIHJlc2V0QnRuLnN0eWxlLmZvbnRTaXplID0gXCIxMnB4XCI7XG4gIHJlc2V0QnRuLnN0eWxlLmN1cnNvciA9IFwicG9pbnRlclwiO1xuICByZXNldEJ0bi5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBzdHlsZS5iZ0NvbG9yO1xuICByZXNldEJ0bi5zdHlsZS5jb2xvciA9IHN0eWxlLnRleHRDb2xvcjtcbiAgcmVzZXRCdG4uc3R5bGUuYm9yZGVyID0gYDFweCBzb2xpZCAke3N0eWxlLmJvcmRlckNvbG9yfWA7XG4gIHJlc2V0QnRuLnN0eWxlLmJvcmRlclJhZGl1cyA9IFwiNHB4XCI7XG4gIHJlc2V0QnRuLnN0eWxlLnpJbmRleCA9IFwiMTBcIjtcbiAgXG4gIC8vIEJ1dHRvbiBob3ZlciBlZmZlY3RcbiAgcmVzZXRCdG4uYWRkRXZlbnRMaXN0ZW5lcihcIm1vdXNlZW50ZXJcIiwgKCkgPT4ge1xuICAgIGNvbnN0IHN0eWxlID0gZ2V0U3R5bGUoKTtcbiAgICByZXNldEJ0bi5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBzdHlsZS5ib3JkZXJDb2xvcjtcbiAgfSk7XG4gIHJlc2V0QnRuLmFkZEV2ZW50TGlzdGVuZXIoXCJtb3VzZWxlYXZlXCIsICgpID0+IHtcbiAgICBjb25zdCBzdHlsZSA9IGdldFN0eWxlKCk7XG4gICAgcmVzZXRCdG4uc3R5bGUuYmFja2dyb3VuZENvbG9yID0gc3R5bGUuYmdDb2xvcjtcbiAgfSk7XG4gIFxuICAvLyBSZXNldCBmdW5jdGlvbmFsaXR5XG4gIHJlc2V0QnRuLmFkZEV2ZW50TGlzdGVuZXIoXCJjbGlja1wiLCAoKSA9PiB7XG4gICAgYW5nbGVYID0gZGVmYXVsdEFuZ2xlWDtcbiAgICBhbmdsZVkgPSBkZWZhdWx0QW5nbGVZO1xuICAgIGFuZ2xlWiA9IGRlZmF1bHRBbmdsZVo7XG4gICAgcmVuZGVyKCk7XG4gIH0pO1xuXG4gIC8vIDNEIHJvdGF0aW9uIHN0YXRlXG4gIGxldCBhbmdsZVggPSAyLjA7XG4gIGxldCBhbmdsZVkgPSAwLjAzO1xuICBsZXQgYW5nbGVaID0gMC4wO1xuICBsZXQgaXNEcmFnZ2luZyA9IGZhbHNlO1xuXG4gIC8vIFNjYWxlcyAtIGFkanVzdCByYW5nZXMgYmFzZWQgb24gY2FudmFzIHNpemVcbiAgY29uc3Qgc2NhbGUgPSBNYXRoLm1pbih3aWR0aCwgaGVpZ2h0KSAvIDM7XG4gIGNvbnN0IHhTY2FsZSA9IGQzLnNjYWxlTGluZWFyKClcbiAgICAuZG9tYWluKGQzLmV4dGVudChwb2ludF9jbG91ZF9kYXRhMiwgZCA9PiBkLngpKVxuICAgIC5yYW5nZShbLXNjYWxlICogMC44LCBzY2FsZSAqIDAuOF0pO1xuICBjb25zdCB5U2NhbGUgPSBkMy5zY2FsZUxpbmVhcigpXG4gICAgLmRvbWFpbihkMy5leHRlbnQocG9pbnRfY2xvdWRfZGF0YTIsIGQgPT4gZC55KSlcbiAgICAucmFuZ2UoWy1zY2FsZSAqIDAuNywgc2NhbGUgKiAwLjddKTtcbiAgY29uc3QgelNjYWxlID0gZDMuc2NhbGVMaW5lYXIoKVxuICAgIC5kb21haW4oZDMuZXh0ZW50KHBvaW50X2Nsb3VkX2RhdGEyLCBkID0+IGQueikpXG4gICAgLnJhbmdlKFstc2NhbGUgKiAwLjcsIHNjYWxlICogMC43XSk7XG5cbiAgLy8gQ29sb3Igc2NhbGVcbiAgY29uc3QgY29sb3JTY2FsZSA9IGQzLnNjYWxlU2VxdWVudGlhbChkMy5pbnRlcnBvbGF0ZUNvb2wpXG4gICAgLmRvbWFpbihkMy5leHRlbnQocG9pbnRfY2xvdWRfZGF0YTIsIGQgPT4gZC5kaXN0YW5jZSkpO1xuXG4gIC8vIDNEIHByb2plY3Rpb24gd2l0aCBwZXJzcGVjdGl2ZVxuICBjb25zdCBwcm9qZWN0ID0gKHgsIHksIHopID0+IHtcbiAgICAvLyBSb3RhdGUgYXJvdW5kIFogYXhpc1xuICAgIGNvbnN0IGNvc1ogPSBNYXRoLmNvcyhhbmdsZVopO1xuICAgIGNvbnN0IHNpblogPSBNYXRoLnNpbihhbmdsZVopO1xuICAgIGNvbnN0IHgxID0geCAqIGNvc1ogKyB5ICogc2luWjtcbiAgICBjb25zdCB5MSA9IC0geCAqIHNpblogKyB5ICogY29zWjtcbiAgICBjb25zdCB6MSA9IHo7XG5cbiAgICAvLyBSb3RhdGUgYXJvdW5kIFkgYXhpc1xuICAgIGNvbnN0IGNvc1kgPSBNYXRoLmNvcyhhbmdsZVkpO1xuICAgIGNvbnN0IHNpblkgPSBNYXRoLnNpbihhbmdsZVkpO1xuICAgIGNvbnN0IHgyID0geDEgKiBjb3NZIC0gejEgKiBzaW5ZO1xuICAgIGNvbnN0IHkyID0geTE7XG4gICAgY29uc3QgejIgPSB4MSAqIHNpblkgKyB6MSAqIGNvc1k7XG4gICAgXG4gICAgLy8gUm90YXRlIGFyb3VuZCBYIGF4aXNcbiAgICBjb25zdCBjb3NYID0gTWF0aC5jb3MoYW5nbGVYKTtcbiAgICBjb25zdCBzaW5YID0gTWF0aC5zaW4oYW5nbGVYKTtcbiAgICBjb25zdCB4MyA9IHgyO1xuICAgIGNvbnN0IHkzID0geTIgKiBjb3NYIC0gejIgKiBzaW5YO1xuICAgIGNvbnN0IHozID0geTIgKiBzaW5YICsgejIgKiBjb3NYO1xuICAgIFxuICAgIC8vIFBlcnNwZWN0aXZlXG4gICAgY29uc3QgcGVyc3BlY3RpdmUgPSAxMDAwO1xuICAgIGNvbnN0IHNjYWxlID0gcGVyc3BlY3RpdmUgLyAocGVyc3BlY3RpdmUgKyB6Myk7XG4gICAgXG4gICAgcmV0dXJuIHtcbiAgICAgIHg6IHgzICogc2NhbGUgKyB3aWR0aCAvIDIsXG4gICAgICB5OiB5MyAqIHNjYWxlICsgaGVpZ2h0IC8gMixcbiAgICAgIHo6IHozLFxuICAgICAgc2NhbGU6IHNjYWxlXG4gICAgfTtcbiAgfTtcblxuICAvLyBEcmF3IGNvbG9yIGxlZ2VuZFxuICBjb25zdCBkcmF3TGVnZW5kID0gKCkgPT4ge1xuICAgIGNvbnN0IHN0eWxlID0gZ2V0U3R5bGUoKTtcbiAgICBjb25zdCBsZWdlbmRXaWR0aCA9IDIwO1xuICAgIGNvbnN0IGxlZ2VuZEhlaWdodCA9IDIwMDtcbiAgICBjb25zdCBsZWdlbmRYID0gd2lkdGggLSA2MDtcbiAgICBjb25zdCBsZWdlbmRZID0gNTA7XG4gICAgXG4gICAgLy8gRHJhdyBncmFkaWVudFxuICAgIGNvbnN0IGdyYWRpZW50ID0gY3R4LmNyZWF0ZUxpbmVhckdyYWRpZW50KDAsIGxlZ2VuZFksIDAsIGxlZ2VuZFkgKyBsZWdlbmRIZWlnaHQpO1xuICAgIGNvbnN0IHN0ZXBzID0gMTA7XG4gICAgZm9yIChsZXQgaSA9IDA7IGkgPD0gc3RlcHM7IGkrKykge1xuICAgICAgY29uc3QgdCA9IGkgLyBzdGVwcztcbiAgICAgIGNvbnN0IHZhbHVlID0gZDMubWluKHBvaW50X2Nsb3VkX2RhdGEyLCBkID0+IGQuZGlzdGFuY2UpICsgXG4gICAgICAgICAgICAgICAgICAgdCAqIChkMy5tYXgocG9pbnRfY2xvdWRfZGF0YTIsIGQgPT4gZC5kaXN0YW5jZSkgLSBkMy5taW4ocG9pbnRfY2xvdWRfZGF0YTIsIGQgPT4gZC5kaXN0YW5jZSkpO1xuICAgICAgZ3JhZGllbnQuYWRkQ29sb3JTdG9wKDEgLSB0LCBjb2xvclNjYWxlKHZhbHVlKSk7XG4gICAgfVxuICAgIFxuICAgIGN0eC5maWxsU3R5bGUgPSBncmFkaWVudDtcbiAgICBjdHguZmlsbFJlY3QobGVnZW5kWCwgbGVnZW5kWSwgbGVnZW5kV2lkdGgsIGxlZ2VuZEhlaWdodCk7XG4gICAgXG4gICAgLy8gRHJhdyBib3JkZXIgdXNpbmcgUXVhcnRvIGJvcmRlciBjb2xvclxuICAgIGN0eC5zdHJva2VTdHlsZSA9IHN0eWxlLmJvcmRlckNvbG9yO1xuICAgIGN0eC5saW5lV2lkdGggPSAxO1xuICAgIGN0eC5zdHJva2VSZWN0KGxlZ2VuZFgsIGxlZ2VuZFksIGxlZ2VuZFdpZHRoLCBsZWdlbmRIZWlnaHQpO1xuICAgIFxuICAgIC8vIERyYXcgbGFiZWxzIHVzaW5nIFF1YXJ0byBtdXRlZCBjb2xvclxuICAgIGN0eC5maWxsU3R5bGUgPSBzdHlsZS5tdXRlZENvbG9yO1xuICAgIGN0eC5mb250ID0gYCR7c3R5bGUuZm9udFNpemV9ICR7c3R5bGUuZm9udEZhbWlseX1gO1xuICAgIGN0eC50ZXh0QWxpZ24gPSBcImxlZnRcIjtcbiAgICBcbiAgICBjb25zdCBtYXhWYWwgPSBkMy5tYXgocG9pbnRfY2xvdWRfZGF0YTIsIGQgPT4gZC5kaXN0YW5jZSk7XG4gICAgY29uc3QgbWluVmFsID0gZDMubWluKHBvaW50X2Nsb3VkX2RhdGEyLCBkID0+IGQuZGlzdGFuY2UpO1xuICAgIFxuICAgIGN0eC5maWxsVGV4dChtYXhWYWwudG9GaXhlZCgwKSwgbGVnZW5kWCArIGxlZ2VuZFdpZHRoICsgNSwgbGVnZW5kWSArIDUpO1xuICAgIGN0eC5maWxsVGV4dChtaW5WYWwudG9GaXhlZCgwKSwgbGVnZW5kWCArIGxlZ2VuZFdpZHRoICsgNSwgbGVnZW5kWSArIGxlZ2VuZEhlaWdodCArIDUpO1xuICAgIFxuICAgIC8vIFRpdGxlIGluIHJlZ3VsYXIgdGV4dCBjb2xvclxuICAgIGN0eC5maWxsU3R5bGUgPSBzdHlsZS50ZXh0Q29sb3I7XG4gICAgY3R4LmZpbGxUZXh0KFwiRGlzdGFuY2VcIiwgbGVnZW5kWCAtIDUsIGxlZ2VuZFkgLSAyMCk7XG4gIH07XG5cbiAgY29uc3QgcmVuZGVyID0gKCkgPT4ge1xuICAgIGNvbnN0IHN0eWxlID0gZ2V0U3R5bGUoKTtcbiAgICAvLyBDbGVhciBjYW52YXNcbiAgICBjdHguZmlsbFN0eWxlID0gc3R5bGUuY2FudmFzRmlsbENvbG9yO1xuICAgIGN0eC5maWxsUmVjdCgwLCAwLCB3aWR0aCwgaGVpZ2h0KTtcbiAgICBcbiAgICAvLyBQcm9qZWN0IGFuZCBzb3J0IGJ5IGRlcHRoXG4gICAgY29uc3QgcHJvamVjdGVkID0gcG9pbnRfY2xvdWRfZGF0YTIubWFwKGQgPT4ge1xuICAgICAgY29uc3QgcHJvaiA9IHByb2plY3QoeFNjYWxlKGQueCksIHlTY2FsZShkLnkpLCB6U2NhbGUoZC56KSk7XG4gICAgICByZXR1cm4ge1xuICAgICAgICAuLi5kLFxuICAgICAgICAuLi5wcm9qXG4gICAgICB9O1xuICAgIH0pLnNvcnQoKGEsIGIpID0+IGEueiAtIGIueik7IC8vIERyYXcgZmFyIHRvIG5lYXJcbiAgICBcbiAgICAvLyBEcmF3IHBvaW50c1xuICAgIHByb2plY3RlZC5mb3JFYWNoKGQgPT4ge1xuICAgICAgY29uc3QgcmFkaXVzID0gMi41ICogZC5zY2FsZTsgLy8gU2l6ZSBiYXNlZCBvbiBkZXB0aFxuICAgICAgY3R4LmJlZ2luUGF0aCgpO1xuICAgICAgY3R4LmFyYyhkLngsIGQueSwgcmFkaXVzLCAwLCAyICogTWF0aC5QSSk7XG4gICAgICBjdHguZmlsbFN0eWxlID0gY29sb3JTY2FsZShkLmRpc3RhbmNlKTtcbiAgICAgIGN0eC5maWxsKCk7XG4gICAgICBjdHguc3Ryb2tlU3R5bGUgPSBzdHlsZS5tdXRlZENvbG9yO1xuICAgICAgY3R4LmxpbmVXaWR0aCA9IDAuNTtcbiAgICAgIGN0eC5zdHJva2UoKTtcbiAgICB9KTtcblxuICAgIC8vIERyYXcgbGVnZW5kXG4gICAgZHJhd0xlZ2VuZCgpO1xuICAgIFxuICAgIC8vIERyYXcgYXhlcyBsYWJlbHNcbiAgICBjdHguZmlsbFN0eWxlID0gc3R5bGUubXV0ZWRDb2xvcjtcbiAgICBjdHguZm9udCA9IGAke3N0eWxlLmZvbnRTaXplfSAke3N0eWxlLmZvbnRGYW1pbHl9YDtcbiAgICBjdHgudGV4dEFsaWduID0gXCJsZWZ0XCI7XG4gICAgY3R4LmZpbGxUZXh0KFwiRHJhZyB0byByb3RhdGVcIiwgMTAsIDIwKTtcbiAgfTtcblxuICAvLyBVcGRhdGUgYnV0dG9uIGNvbG9ycyB3aGVuIHRoZW1lIGNoYW5nZXNcbiAgY29uc3QgdXBkYXRlQnV0dG9uQ29sb3JzID0gKCkgPT4ge1xuICAgIGNvbnN0IHN0eWxlID0gZ2V0U3R5bGUoKTtcbiAgICByZXNldEJ0bi5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBzdHlsZS5iZ0NvbG9yO1xuICAgIHJlc2V0QnRuLnN0eWxlLmNvbG9yID0gc3R5bGUudGV4dENvbG9yO1xuICAgIHJlc2V0QnRuLnN0eWxlLmJvcmRlciA9IGAxcHggc29saWQgJHtzdHlsZS5ib3JkZXJDb2xvcn1gO1xuICB9O1xuICBcbiAgcmVuZGVyKCk7XG5cbiAgLy8gTW91c2UgaW50ZXJhY3Rpb25cbiAgbGV0IGxhc3RYLCBsYXN0WTtcbiAgXG4gIGNhbnZhcy5hZGRFdmVudExpc3RlbmVyKFwibW91c2Vkb3duXCIsIChlKSA9PiB7XG4gICAgaXNEcmFnZ2luZyA9IHRydWU7XG4gICAgbGFzdFggPSBlLmNsaWVudFg7XG4gICAgbGFzdFkgPSBlLmNsaWVudFk7XG4gICAgY2FudmFzLnN0eWxlLmN1cnNvciA9IFwiZ3JhYmJpbmdcIjtcbiAgfSk7XG4gIFxuICBjYW52YXMuYWRkRXZlbnRMaXN0ZW5lcihcIm1vdXNlbW92ZVwiLCAoZSkgPT4ge1xuICAgIGlmICghaXNEcmFnZ2luZykgcmV0dXJuO1xuICAgIFxuICAgIGNvbnN0IGR4ID0gZS5jbGllbnRYIC0gbGFzdFg7XG4gICAgY29uc3QgZHkgPSBlLmNsaWVudFkgLSBsYXN0WTtcbiAgICBcbiAgICBhbmdsZVogKz0gZHggKiAwLjAwNTtcbiAgICBhbmdsZVggKz0gZHkgKiAwLjAwNTtcbiAgICBcbiAgICBsYXN0WCA9IGUuY2xpZW50WDtcbiAgICBsYXN0WSA9IGUuY2xpZW50WTtcbiAgICBcbiAgICByZW5kZXIoKTtcbiAgfSk7XG4gIFxuICBjYW52YXMuYWRkRXZlbnRMaXN0ZW5lcihcIm1vdXNldXBcIiwgKCkgPT4ge1xuICAgIGlzRHJhZ2dpbmcgPSBmYWxzZTtcbiAgICBjYW52YXMuc3R5bGUuY3Vyc29yID0gXCJncmFiXCI7XG4gIH0pO1xuICBcbiAgY2FudmFzLmFkZEV2ZW50TGlzdGVuZXIoXCJtb3VzZWxlYXZlXCIsICgpID0+IHtcbiAgICBpc0RyYWdnaW5nID0gZmFsc2U7XG4gICAgY2FudmFzLnN0eWxlLmN1cnNvciA9IFwiZ3JhYlwiO1xuICB9KTtcbiAgXG4gIC8vIFdhdGNoIGZvciB0aGVtZSBjaGFuZ2VzXG4gIGNvbnN0IG9ic2VydmVyID0gbmV3IE11dGF0aW9uT2JzZXJ2ZXIoKCkgPT4ge1xuICAgIHVwZGF0ZUJ1dHRvbkNvbG9ycygpO1xuICAgIHJlbmRlcigpO1xuICB9KTtcbiAgb2JzZXJ2ZXIub2JzZXJ2ZShkb2N1bWVudC5ib2R5LCB7IFxuICAgIGF0dHJpYnV0ZXM6IHRydWUsIFxuICAgIGF0dHJpYnV0ZUZpbHRlcjogWydjbGFzcyddIFxuICB9KTtcblxuICAvLyBBc3NlbWJsZSB3cmFwcGVyXG4gIHdyYXBwZXIuYXBwZW5kQ2hpbGQoY2FudmFzKTtcbiAgd3JhcHBlci5hcHBlbmRDaGlsZChyZXNldEJ0bik7XG4gIFxuICByZXR1cm4gd3JhcHBlcjtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtOCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IklucHV0cy50YWJsZShwb2ludF9jbG91ZF9kYXRhMilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYW5nbGVfc3RlcHMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2Vydm9fZGVsYXlzJykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/rpi-tfluna-pan-tilt";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/AnesBenmerzoug\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
