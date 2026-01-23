@@ -1,0 +1,99 @@
+```{ojs}
+metrics_data = FileAttachment("metrics.csv").csv({ typed: true })
+
+unique_angle_step = [...new Set(metrics_data.map(d => d.angle_step))];
+unique_servo_delay = [...new Set(metrics_data.map(d => d.servo_motor_delay))];
+
+filtered_metrics_data = metrics_data.filter(function(row) {
+    return (
+        servo_delays.includes(row.servo_motor_delay)
+        && angle_steps.includes(row.angle_step)
+    );
+})
+```
+
+```{ojs}
+//| panel: input
+viewof angle_steps = Inputs.checkbox(
+    unique_angle_step,
+    {
+        value: unique_angle_step, 
+        label: "Angle Step:"
+    }
+)
+viewof servo_delays = Inputs.checkbox(
+    unique_servo_delay,
+    {
+        value: unique_servo_delay, 
+        label: "Servo Motor Delay:"
+    }
+)
+```
+
+::: {.panel-tabset}
+
+## Plot
+
+```{ojs}
+import { Plot } from "@observablehq/plot";
+
+{
+    const plot = Plot.plot({
+        width: 800,
+        height: 600,
+        marginLeft: 60,
+        marginBottom: 50,
+        style: {
+            background: "transparent",
+        },
+        x: {
+            label: "Mean Y-Intercept Error (mm)",
+            grid: true,
+            type: "log",
+        },
+        y: {
+            label: "Mean Angle Error (deg)",
+            grid: true,
+            type: "log",
+        },
+        color: {
+            type: "linear",
+            scheme: "Cool",
+            legend: true,
+            label: "Total Time (s)",
+        },
+        marks: [
+            Plot.dot(filtered_metrics_data, {
+                x: "y_intercept_error",
+                y: "angle_error_deg",
+                fill: "total_time_s",
+                r: 6,
+                title: (d) =>
+                    `Angle: ${d.angle_step.toFixed(2)}deg\nServo: ${d.servo_motor_delay.toFixed(2)}ms\nTotal Time: ${d.total_time_s.toFixed(2)}s`,
+            }),
+        ],
+    });
+
+    // Fix the white background on the legend ramp
+    const ramp = plot.querySelector('svg[class*="-ramp"]');
+    if (ramp) {
+        const style = document.createElement("style");
+        style.textContent = `
+            svg[class*="-ramp"] {
+                background: transparent !important;
+            }
+        `;
+        plot.appendChild(style);
+    }
+
+    return plot;
+}
+```
+
+## Data
+
+```{ojs}
+Inputs.table(filtered_metrics_data)
+```
+
+:::

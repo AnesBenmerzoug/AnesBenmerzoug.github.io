@@ -13,6 +13,9 @@ keywords = []
 authors = [{ name = "AnesBenmerzoug", email = "anes.benmerzoug@gmail.com" }]
 dependencies = ["jupyter", "jupyter-cache", "ipykernel", "tqdm", "IPython"]
 
+[tool.hatch.build.targets.wheel]
+packages = []
+
 [tool.hatch.envs.llm_information_extraction]
 dependencies = [
     "llama-cpp-python==0.3.2",
