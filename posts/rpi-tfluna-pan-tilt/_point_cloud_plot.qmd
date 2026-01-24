@@ -237,38 +237,62 @@ point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed
 
   // Mouse interaction
   let lastX, lastY;
-  
-  canvas.addEventListener("mousedown", (e) => {
+
+  // Helper to get coordinates
+  const getEventCoordinates = (event) => {
+    if (event.touches && event.touches.length > 0) {
+        return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }
+    return { x: event.clientX, y: event.clientY };
+  }
+
+  /// Event Handlers
+
+  const handle_start = (event) => {
+    // Prevent default browser behaviors (like zooming or scrolling)
+    event.preventDefault();
+
     isDragging = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
+    const { x, y } = getEventCoordinates(event);
+    lastX = x;
+    lastY = y;
     canvas.style.cursor = "grabbing";
-  });
-  
-  canvas.addEventListener("mousemove", (e) => {
+  };
+
+  const handle_move = (event) => {
     if (!isDragging) return;
-    
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
+    // Prevent default browser behaviors (like zooming or scrolling)
+    event.preventDefault();
+
+    const { x, y } = getEventCoordinates(e);
+
+    const dx = x - lastX;
+    const dy = y - lastY;
     
     angleZ += dx * 0.005;
     angleX += dy * 0.005;
-    
-    lastX = e.clientX;
-    lastY = e.clientY;
-    
+  
+    lastX = x;
+    lastY = y;
     render();
-  });
+  };
   
-  canvas.addEventListener("mouseup", () => {
+  const handle_end = (e) => {
     isDragging = false;
     canvas.style.cursor = "grab";
-  });
-  
-  canvas.addEventListener("mouseleave", () => {
-    isDragging = false;
-    canvas.style.cursor = "grab";
-  });
+  };
+
+  // Attach event listeners
+  // Mouse
+  canvas.addEventListener("mousedown", handle_start);
+  canvas.addEventListener("mousemove", handle_move);
+  canvas.addEventListener("mouseup", handle_end);
+  canvas.addEventListener("mouseleave", handle_end);
+  // Touch
+  canvas.addEventListener("touchstart", handle_start, { passive: false });
+  canvas.addEventListener("touchmove", handle_move, { passive: false });
+  canvas.addEventListener("touchup", handle_end);
+  canvas.addEventListener("touchcancel", handle_end);
   
   // Watch for theme changes
   const observer = new MutationObserver(() => {
