@@ -90,6 +90,7 @@ point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed
   });
 
   // 3D rotation state
+  const zoom = 2.0;
   let angleX = 2.0;
   let angleY = 0.03;
   let angleZ = 0.0;
@@ -113,12 +114,17 @@ point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed
 
   // 3D projection with perspective
   const project = (x, y, z) => {
+    // Apply zoom
+    const zx = x * zoom;
+    const zy = y * zoom;
+    const zz = z * zoom;
+
     // Rotate around Z axis
     const cosZ = Math.cos(angleZ);
     const sinZ = Math.sin(angleZ);
-    const x1 = x * cosZ + y * sinZ;
-    const y1 = - x * sinZ + y * cosZ;
-    const z1 = z;
+    const x1 = zx * cosZ + zy * sinZ;
+    const y1 = - zx * sinZ + zy * cosZ;
+    const z1 = zz;
 
     // Rotate around Y axis
     const cosY = Math.cos(angleY);
@@ -264,8 +270,7 @@ point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed
     // Prevent default browser behaviors (like zooming or scrolling)
     event.preventDefault();
 
-    const { x, y } = getEventCoordinates(e);
-
+    const { x, y } = getEventCoordinates(event);
     const dx = x - lastX;
     const dy = y - lastY;
     
@@ -277,7 +282,7 @@ point_cloud_data2 = FileAttachment("point_cloud_data_1deg_50ms.csv").csv({ typed
     render();
   };
   
-  const handle_end = (e) => {
+  const handle_end = (event) => {
     isDragging = false;
     canvas.style.cursor = "grab";
   };
