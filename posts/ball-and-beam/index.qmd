@@ -1,0 +1,75 @@
+---
+date: 2026-04-01
+title: "Ball and Beam: Controlling a ball's position on a beam"
+keywords: [
+    "Control",
+    "ESP32-C6",
+    "Time-of-Flight (ToF)",
+    "FreeCAD",
+    "Rust",
+]
+---
+
+::: {.callout-note}
+The full code and files for this project can be found in the following repository:
+[ball-and-beam](https://github.com/AnesBenmerzoug/ball-and-beam)
+:::
+
+# Introduction
+
+I have had this project in mind for many years.
+I actually started working on it at the end of 2024, but got distracted by a few other things and only managed
+to finish it now in 2026. Better late than ever, I guess.
+
+# Design
+
+I designed the system in FreeCAD using other projects as inspiration:
+
+- 
+
+The system is composed of:
+
+- A base.
+- A fulcrum.
+- A mount for the servo motor.
+- A base for perf board holding the micro-controller and the wiring.
+- A servo motor.
+- A time-of-flight range sensor.
+- A holder for the sensor.
+- A beam.
+- An end stop for preventing the ball from falling off.
+- A horn for the servo motor.
+- An arm to connect the servo motor's horn to the beam.
+
+The beam is split into separate bars because of MuJoCo's collision handling.
+
+# Control
+
+## Manual
+
+This is mostly useful for testing the system.
+
+## PID
+
+$\theta = P * err + I * \int err + D * \frac{d}{dt} err$
+
+# Code
+
+## Backend
+
+- Embassy.
+- Control loop task.
+- Update parameters task.
+- Networks tasks.
+- API server with picoserve.
+
+## Frontend
+
+- Preact for small size.
+- Vite for bundling.
+- Embedding with build.rs and include_bytes! macro.
+
+# Conclusion
+
+For the next step, I would like to export the FreeCAD Assembly to MuJoCo in order to create a gymnasium environment
+in order to use Reinforcement Learning to train different controllers.
