@@ -1,5 +1,5 @@
 ---
-date: 2026-04-01
+date: 2026-04-06
 title: "Ball and Beam: Controlling a ball's position on a beam"
 keywords: [
     "Control",
@@ -10,6 +10,7 @@ keywords: [
     "Microcontroller",
     "Time-of-Flight (ToF)",
 ]
+draft: true
 ---
 
 ::: {.callout-note}
