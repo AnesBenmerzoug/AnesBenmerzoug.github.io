@@ -3,10 +3,12 @@ date: 2026-04-01
 title: "Ball and Beam: Controlling a ball's position on a beam"
 keywords: [
     "Control",
-    "ESP32-C6",
-    "Time-of-Flight (ToF)",
+    "PID",
     "FreeCAD",
     "Rust",
+    "ESP32-C6",
+    "Microcontroller",
+    "Time-of-Flight (ToF)",
 ]
 ---
 
@@ -21,11 +23,28 @@ I have had this project in mind for many years.
 I actually started working on it at the end of 2024, but got distracted by a few other things and only managed
 to finish it now in 2026. Better late than ever, I guess.
 
+The [ball and beam system](https://en.wikipedia.org/wiki/Ball_and_beam) is a classical textbook control system
+used in [research](https://link.springer.com/article/10.1007/s11071-009-9534-8) and [academic projects](https://dspace.mit.edu/bitstream/handle/1721.1/32780/57571320-MIT.pdf;sequence=2) to showcase different control and observer approaches.
+
+It is a relatively simple system composed of a long beam that can be tilted with a motor (most often a servo motor or a stepper motor) to control the position of ball that rolls along it. 
+
+There are many variations of it depending mostly on the position of the motor and the fulcrum and the type of motor and sensor used.
+
+These variations have different trade-offs:
+
+- Servo motor vs Stepper motor:
+- Fulcrum in center vs at the edge:
+- Motor in center or at the edge: 
+
 # Design
 
-I designed the system in FreeCAD using other projects as inspiration:
+For my design, I took inspiration from a few designs available online:
 
-- 
+- [Balance Beam Kit](https://careyi3.github.io/balance_beam_kit/)
+- [Osinski, Cristiano, et al. "Control of ball and beam system using fuzzy PID controller." 2018 13th IEEE International Conference on Industry Applications (INDUSCON). IEEE, 2018.](https://ieeexplore.ieee.org/abstract/document/8627251)
+- [Arduino PID Control System (Ball and Beam) - YouTube](https://www.youtube.com/watch?v=oy58S4beC9c)
+
+I designed mine in FreeCAD. The CAD file can be found in the linked repository.
 
 The system is composed of:
 
@@ -45,9 +64,13 @@ The beam is split into separate bars because of MuJoCo's collision handling.
 
 # Control
 
+To control the system I decided to start with two different approaches: manual and PID.
+
 ## Manual
 
 This is mostly useful for testing the system.
+
+It is done through the webpage served by the microcontroller.
 
 ## PID
 
@@ -72,4 +95,8 @@ $\theta = P * err + I * \int err + D * \frac{d}{dt} err$
 # Conclusion
 
 For the next step, I would like to export the FreeCAD Assembly to MuJoCo in order to create a gymnasium environment
-in order to use Reinforcement Learning to train different controllers.
+in order to use different control approaches including but not limited to:
+
+- Reinforcement Learning.
+- Sliding Mode Control.
+- Koopman Operator 
