@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Anes Benmerzoug">
-<meta name="dcterms.date" content="2025-08-27">
-<meta name="keywords" content="Raspberry Pi, TF-Luna, LiDAR, Time of Flight, Rust, Rerun">
+<meta name="dcterms.date" content="2026-04-26">
+<meta name="keywords" content="Control Engineering, PID, FreeCAD, 3D Printing, Rust, Javascript, Preact, ESP32-C6, Microcontroller, Servo Motor, Time-of-Flight (ToF) Range Sensor">
 
-<title>Measuring distance with a TF-Luna LiDAR and a Raspberry Pi – Personal Blog</title>
+<title>Ball and Beam: Open-Source System for Controlling a ball’s position on a beam – Personal Blog</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,41 +25,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,6 +50,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap-1e24a7367e46f71585428ae55e79b974.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark-9c6ea3e6c2fd92443d8c8b8853b1da03.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../../site_libs/bootstrap/bootstrap-1e24a7367e46f71585428ae55e79b974.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
 <script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -115,6 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -371,10 +341,27 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#tf-luna-and-distance-measurements-with-lidars" id="toc-tf-luna-and-distance-measurements-with-lidars" class="nav-link active" data-scroll-target="#tf-luna-and-distance-measurements-with-lidars">TF-Luna and distance measurements with LiDARS</a></li>
-  <li><a href="#raspberry-pi-and-tf-luna" id="toc-raspberry-pi-and-tf-luna" class="nav-link" data-scroll-target="#raspberry-pi-and-tf-luna">Raspberry Pi and TF-Luna</a></li>
-  <li><a href="#raspberry-pi-and-rust" id="toc-raspberry-pi-and-rust" class="nav-link" data-scroll-target="#raspberry-pi-and-rust">Raspberry Pi and Rust</a></li>
-  <li><a href="#data-collection-and-visualization" id="toc-data-collection-and-visualization" class="nav-link" data-scroll-target="#data-collection-and-visualization">Data Collection and Visualization</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design">Design</a></li>
+  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
+  <li><a href="#control" id="toc-control" class="nav-link" data-scroll-target="#control">Control</a></li>
+  <li><a href="#build" id="toc-build" class="nav-link" data-scroll-target="#build">Build</a>
+  <ul class="collapse">
+  <li><a href="#bill-of-materials-bom" id="toc-bill-of-materials-bom" class="nav-link" data-scroll-target="#bill-of-materials-bom">Bill of Materials (BoM)</a>
+  <ul class="collapse">
+  <li><a href="#electronics-sensors" id="toc-electronics-sensors" class="nav-link" data-scroll-target="#electronics-sensors">Electronics &amp; Sensors</a></li>
+  <li><a href="#fasteners-hardware" id="toc-fasteners-hardware" class="nav-link" data-scroll-target="#fasteners-hardware">Fasteners &amp; Hardware</a></li>
+  <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
+  </ul></li>
+  <li><a href="#circuit" id="toc-circuit" class="nav-link" data-scroll-target="#circuit">Circuit</a></li>
+  </ul></li>
+  <li><a href="#software-implementation" id="toc-software-implementation" class="nav-link" data-scroll-target="#software-implementation">Software Implementation</a>
+  <ul class="collapse">
+  <li><a href="#embedded-backend" id="toc-embedded-backend" class="nav-link" data-scroll-target="#embedded-backend">Embedded Backend</a></li>
+  <li><a href="#web-frontend" id="toc-web-frontend" class="nav-link" data-scroll-target="#web-frontend">Web Frontend</a></li>
+  <li><a href="#how-it-all-connects" id="toc-how-it-all-connects" class="nav-link" data-scroll-target="#how-it-all-connects">How It All Connects</a></li>
+  </ul></li>
+  <li><a href="#future-improvements" id="toc-future-improvements" class="nav-link" data-scroll-target="#future-improvements">Future Improvements</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
@@ -385,7 +372,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Measuring distance with a TF-Luna LiDAR and a Raspberry Pi</h1>
+<h1 class="title">Ball and Beam: Open-Source System for Controlling a ball’s position on a beam</h1>
 </div>
 
 
@@ -402,7 +389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 27, 2025</p>
+      <p class="date">April 26, 2026</p>
     </div>
   </div>
   
@@ -413,27 +400,13 @@ window.Quarto = {
 <div>
   <div class="keywords">
     <div class="block-title">Keywords</div>
-    <p>Raspberry Pi, TF-Luna, LiDAR, Time of Flight, Rust, Rerun</p>
+    <p>Control Engineering, PID, FreeCAD, 3D Printing, Rust, Javascript, Preact, ESP32-C6, Microcontroller, Servo Motor, Time-of-Flight (ToF) Range Sensor</p>
   </div>
 </div>
 
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="EDIT 2025-08-29">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>EDIT 2025-08-29
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>After publishing the original version of the post, I realized that the user manual I was using was out-of-date and that there was a <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">newer one available</a> on the Benewake website.</p>
-<p>I have updated the post to reflect this.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -444,288 +417,473 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The full code for this project/experiment can be found in the following repository: <a href="https://github.com/AnesBenmerzoug/rpi-tfluna-lidar">rpi-tfluna-lidar</a></p>
+<p>The full code and files for this project can be found in the following repository: <a href="https://github.com/AnesBenmerzoug/ball-and-beam">ball-and-beam</a></p>
 </div>
 </div>
-<p>I recently learned Rust and was looking to put it into practice by working on some cool side-projects. Since I work as an AI Engineer and have developed my fair share of chatbots, I first developed <a href="https://github.com/AnesBenmerzoug/pincer-chat">PincerChat</a> a few months ago, a desktop GUI for interacting with local LLMs served with Ollama. Looking back at it, I realize that I tried to chew more than I could swallow but nevertheless I learned a lot making it.</p>
-<p>I then decided to try something simpler and at the same time get back into embedded systems and micro-controller development. During my master’s studies for Control Engineering in Algeria, a group of friends and I had our own team, called <em>OTO</em> which is a homonym for <em>Auto.</em> an abbreviation for <em>Automatique</em> (Automation in French), that built many different embedded projects like <a href="https://en.wikipedia.org/wiki/Ball_and_beam">a ball and beam system</a>, a ball and plate system and a <a href="https://en.wikipedia.org/wiki/Persistence_of_vision">persistence of vision</a> (PoV) display.</p>
-<p>Before starting, I had to get some hardware. Luckily for me, I had a <a href="https://www.raspberrypi.com/products/raspberry-pi-3-model-b/">Raspberry Pi 3 model B</a> laying around that I was using as a Pi-Hole before moving into my current apartment and while browsing through AliExpress I stumbled upon the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna LiDAR</a>, a low cost LiDAR sensor and thought that I could use it to make a mobile robot that maps and navigates autonomously.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="raspberry_pi_with_tfluna.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Picture of TF-Luna connected to the Raspberry Pi"><img src="raspberry_pi_with_tfluna.jpg" class="img-fluid figure-img" style="width:80.0%" alt="Picture of TF-Luna connected to the Raspberry Pi"></a></p>
-<figcaption>Picture of TF-Luna connected to the Raspberry Pi</figcaption>
-</figure>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Unfortunately for me, once I received the TF-Luna and read its <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">user manual</a> I quickly realized that it is 1D LiDAR, i.e.&nbsp;that it only measures the distance to a single point, instead of being a 2D (distance and angle) or 3D (3D distance) LiDAR.</p>
-<p>This is fine for a start, especially since I’m getting back into embedded systems after a long time but I will hopefully buy a better sensor in the future.</p>
-<section id="tf-luna-and-distance-measurements-with-lidars" class="level1">
-<h1>TF-Luna and distance measurements with LiDARS</h1>
-<p>The <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna</a> is a low-cost LiDAR distance sensor made by <a href="https://en.benewake.com/index.html">Benewake</a>, a LiDAR manufacturer based in Beijing, China.</p>
-<p>LiDAR is an acronym of “Light Detection And Ranging”. It is a method for determining distances by targeting an object or a surface with a laser and measuring the time for the reflected light to return to the receiver. It is commonly used for creating detailed 3D maps and is effective in various applications, including autonomous vehicles and environmental monitoring.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="time_of_flight_wikipedia.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Basic time-of-flight principles applied to laser range-finding - Wikipedia"><img src="time_of_flight_wikipedia.svg" class="img-fluid figure-img" alt="Basic time-of-flight principles applied to laser range-finding - Wikipedia"></a></p>
-<figcaption>Basic time-of-flight principles applied to laser range-finding - <a href="https://en.wikipedia.org/wiki/Lidar">Wikipedia</a></figcaption>
-</figure>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Disclaimer
 </div>
-<p>A LiDAR determines the distance of an object or a surface with the formula:</p>
-<p><span class="math display">\[
-D = \frac{c \cdot t}{2}
-\]</span></p>
-<p>where <strong>D</strong> is the distance between the sensor and the object or surface being measured, <strong>c</strong> is the speed of light, and <strong>t</strong> is the time spent for the laser light to travel to the object or surface being detected, then travel back to the sensor.</p>
-<p>The TF-Luna however does not send a single pulse at a time, but rather periodically emits near infrared modulated waves and calculates the time by measuring the phase difference between the original wave and the reflected wave and uses that time to compute the relative distance of the object at which it is pointed.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="time_of_flight_tfluna.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Schematics of ToF Principle - TF-Luna user manual"><img src="time_of_flight_tfluna.svg" class="img-fluid figure-img" alt="Schematics of ToF Principle - TF-Luna user manual"></a></p>
-<figcaption>Schematics of ToF Principle - <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna user manual</a></figcaption>
-</figure>
 </div>
-<p><span class="math display">\[
-D = \frac{c}{2} \cdot \frac{1}{2\pi f} \cdot \Delta\varphi
-\]</span></p>
-<p>where <strong>D</strong> is the distance between the sensor and the object or surface being measured, <strong>c</strong> is the speed of light, and <strong>f</strong> is the frequency of the emitted signal, and <span class="math inline">\(\Delta\varphi\)</span> is the phase difference between emitted and received signal.</p>
-<p>The device’s specifications can be seen in <a href="#tbl-tfluna-parameters" class="quarto-xref">Table&nbsp;1</a>.</p>
-<div id="tbl-tfluna-parameters" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Parameters specification of TF-Luna - <a href="https://en.benewake.com/DataDownload/index_pid_20_lcid_21.html">TF-Luna user manual</a>
+<div class="callout-body-container callout-body">
+<p>I used a local LLM to provide me feedback on the writing and to draft a few of the sections when I ran out of inspiration. I did however write most of the post myself and verified whatever content the LLM wrote.</p>
+</div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/2Y5gJVTIj8Q" title="Video of Ball and Beam System and Web UI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>In this post, I will describe an open-source ball and beam system that I designed and built from scratch. I have had this project in mind for many years, but only started working on it at the end of 2024. Back then, I had no idea how many design iterations and technical challanges awaited me, delaying the initial build until April 2026.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Ball_and_beam">ball and beam system</a> is a classical textbook control system used in <a href="https://link.springer.com/article/10.1007/s11071-009-9534-8">research</a> and <a href="https://dspace.mit.edu/bitstream/handle/1721.1/32780/57571320-MIT.pdf;sequence=2">academic projects</a> to showcase different control and observer methods. It is a relatively simple system composed of a long beam that can be tilted with a motor (most often a servo motor or a stepper motor) to control the position of a ball that rolls along it and whose position is measured with a range sensor (most often an ultrasound sensor).</p>
+</section>
+<section id="design" class="level1">
+<h1>Design</h1>
+<div id="fig-ball-and-beam-freecad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ball-and-beam-freecad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="ball_and_beam_freecad.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Screenshot of Ball and Beam Design created in FreeCAD"><img src="ball_and_beam_freecad.png" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ball-and-beam-freecad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Screenshot of Ball and Beam Design created in FreeCAD
 </figcaption>
-<div aria-describedby="tbl-tfluna-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figure>
+</div>
+<p>There are many possible variations of the system, each hinging on a few key design choices that alter the dynamics of the system.</p>
+<p>These variations introduce specific trade-offs:</p>
+<ul>
+<li><p><strong>Servo vs.&nbsp;Stepper Motor:</strong> Servos are compact, self-contained, and easy to control via PWM. Steppers deliver more raw torque but need additional drivers, limit switches, and microstepping firmware.</p></li>
+<li><p><strong>Fulcrum Position:</strong> Centering the pivot keeps the beam balanced and simplifies PID tuning, but it requires a motor capable of swinging through larger angles without stalling.</p></li>
+<li><p><strong>Motor Placement:</strong> Mounting the motor at or near the fulcrum simplifies the linkage and minimizes the effect of gear backlash, while mounting it at the end requires a longer lever arm that complicates the geometry and increases the effect of gear backlash.</p></li>
+<li><p><strong>Dimensions:</strong> Bigger beams need stronger motors, longer-range sensors, and faster control loops to compensate for increased inertia and signal latency.</p></li>
+</ul>
+<p>For my design (see <a href="#fig-ball-and-beam-freecad" class="quarto-xref">Figure&nbsp;1</a>), I settled on a simple and straightforward compact design whose parts fit neatly inside my 3D printer. I positioned the fulcrum and the servo motor on opposite edges of the beam. I drew inspiration from the following existing implementations:</p>
+<ul>
+<li><a href="https://careyi3.github.io/balance_beam_kit/">Balance Beam Kit</a></li>
+<li><a href="https://ieeexplore.ieee.org/abstract/document/8627251">Osinski, Cristiano, et al.&nbsp;“Control of ball and beam system using fuzzy PID controller.” 2018 13th IEEE International Conference on Industry Applications (INDUSCON). IEEE, 2018.</a></li>
+<li><a href="https://www.youtube.com/watch?v=oy58S4beC9c">Arduino PID Control System (Ball and Beam) - YouTube</a></li>
+</ul>
+<p>I modeled every part from scratch in <a href="https://www.freecad.org/">FreeCAD</a> and used the builtin <a href="https://wiki.freecad.org/Assembly_Workbench">Assembly workbench</a> to assemble them. This made it easy to validate the fit of the parts and the kinematics of the system before printing.</p>
+<p>The final build includes:</p>
+<ul>
+<li>Rigid base plate.</li>
+<li>Fulcrum pivot block.</li>
+<li>Servo motor mounting bracket.</li>
+<li>Board platform for the perfboard containing the microcontroller and power routing.</li>
+<li>Distance sensor mount.</li>
+<li>Two-segment beam.</li>
+<li>End stop.</li>
+<li>Servo horn and linkage arm.</li>
+</ul>
+<p>I chose a split beam design specifically for compatibility with simulation in MuJoCo simulation. Because MuJoCo approximates collisions using convex hulls, a single solid beam would cause the ball to float above it. The split design also made it easier to print flat on the build plate.</p>
+<p>The design process was neither simple nor straightforward. I had to iterate through multiple versions, 3D printing, assembling and testing the system multiple times before I was satisfied with it. The current design incorporates the lessons I learned into a simple build that’s ready to be built and used.</p>
+</section>
+<section id="simulation" class="level1">
+<h1>Simulation</h1>
+<div id="fig-simulation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simulation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title="Animation of Simulation of Ball and Beam System"><source src="simulation_animation.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-simulation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+<p>To validate the system dynamics and perform initial controller tuning, I exported the FreeCAD assembly to MuJoCo using the <a href="https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo/tree/main">Assembly2MuJoCo</a> workbench. The simulation served as a controlled testbed for validating the system dynamics and for tuning the PID gain parameters without risking mechanical damage.</p>
+<p>After exporting the assembly, I manually adjusted the exported MuJoCo model as follows:</p>
+<ul>
+<li>Attached a <code>site</code> to the sensor body so the ToF (Time-of-Flight) ray could accurately measure ball distance.</li>
+<li>Matched the simulated ball mass to <code>29.9 g</code>, the exact weight of the 3D printed ball I was planning to use.</li>
+<li>Configured a static camera view for a better visualization of the simulated system.</li>
+</ul>
+<p>In <a href="#fig-simulation" class="quarto-xref">Figure&nbsp;2</a>, you can see the simulated result of the system using tuned PID parameters.</p>
+<p>While matching the simulated ball mass to the real one reduced the sim-to-real gap, several other factors caused divergence between simulation and the built system:</p>
+<ul>
+<li><strong>Mechanical non-idealities:</strong> Backlash in the servo linkage and friction at the different axes of rotation.</li>
+<li><strong>Surface irregularities:</strong> Uneven ball surfaces and beam roughness that cause the ball to stick and slip, which triggers integral windup during motion transitions.</li>
+<li><strong>Sensor limitations:</strong> Sensor measurement noise and quantization artifacts.</li>
+<li><strong>Computational latency:</strong> Hardware scheduling delays that introduce timing jitter into the control loop.</li>
+</ul>
+<p>These differences didn’t invalidate the simulation but prevented me from using the tuned PID gain parameters obtained with the simulation in the real system.</p>
+</section>
+<section id="control" class="level1">
+<h1>Control</h1>
+<div id="fig-pid-block-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pid-block-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="PID_block_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;3: PID Block Diagram. Taken from Wikipedia"><img src="PID_block_diagram.svg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pid-block-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: PID Block Diagram. Taken from <a href="https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller">Wikipedia</a>
+</figcaption>
+</figure>
+</div>
+<p>In order to control the system in the simplest way, I chose to implement a Proportional-Integral-Derivative (PID) controller (see <a href="#fig-pid-block-diagram" class="quarto-xref">Figure&nbsp;3</a>).</p>
+<p>The controller’s continuous-time control law is:</p>
+<p><span id="eq-pid-continuous-time"><span class="math display">\[
+u(t) = K_p * e(t) + K_i * \int e(t) + K_d * \frac{d}{dt} e(t)
+\tag{1}\]</span></span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(u(t)\)</span> is the control signal which corresponds to the servo motor’s angle in our case.</li>
+<li><span class="math inline">\(e(t)\)</span> is the position error defined as <span class="math inline">\(e(t) = \text{target distance} - \text{measured distance}\)</span>.</li>
+<li><span class="math inline">\(K_p\)</span> is the coefficient of the proportional part of the controller.</li>
+<li><span class="math inline">\(K_i\)</span> is the coefficient of the integral part of the controller.</li>
+<li><span class="math inline">\(K_d\)</span> is the coefficient of the derivative part of the controller.</li>
+</ul>
+<p>Since microcontrollers sample at fixed time intervals, I couldn’t use this formula directly and had to discretize it first.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Mathematical derivation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I avoid direct integral approximation by first differentiating <a href="#eq-pid-continuous-time" class="quarto-xref">Equation&nbsp;1</a>:</p>
+<p><span id="eq-pid-differentiated"><span class="math display">\[
+\dot{u}(t) = K_p * \frac{d}{dt}e(t) + K_i * e(t) + K_d * \frac{d^2}{dt^2} e(t)
+\tag{2}\]</span></span></p>
+<p>I then apply the <a href="https://en.wikipedia.org/wiki/Backward_differentiation_formula">backward finite difference method</a> to <a href="#eq-pid-differentiated" class="quarto-xref">Equation&nbsp;2</a>:</p>
+<p><span id="eq-pid-backward-difference"><span class="math display">\[
+\frac{u(t_k) - u(t_{k-1})}{h} = K_p * \frac{e(t_k) - e_{k-1}}{h} + K_i * e(t_k) + K_d * \frac{e(t_k) - 2*e_{k-1} + e_{k-2}}{h^2}
+\tag{3}\]</span></span></p>
+<p>Where <span class="math inline">\(h\)</span> represents the step size.</p>
+<p>Multiplying both sides of <a href="#eq-pid-backward-difference" class="quarto-xref">Equation&nbsp;3</a> by <span class="math inline">\(h\)</span> gives us:</p>
+<p><span id="eq-pid-discretized-increment"><span class="math display">\[
+\begin{equation}
+\begin{split}
+\Delta u(t_k) &amp; = u(t_k) - u(t_{k-1}) \\
+&amp; = K_p * [e(t_k) - (e_{k-1})] + K_i * h * e(t_k) + \frac{K_d}{h} *  [e(t_k) - 2*e_{k-1} + e_{k-2}]
+\end{split}
+\end{equation}
+\tag{4}\]</span></span></p>
+<p>Finally, solving for <span class="math inline">\(u(t_k)\)</span> in <a href="#eq-pid-discretized-increment" class="quarto-xref">Equation&nbsp;4</a> yields the recursive discrete-time formula:</p>
+<p><span id="eq-pid-incremental"><span class="math display">\[
+\begin{equation}
+u(t_k) = u(t_{k-1}) + K_p * [e(t_k) - (e_{k-1})] + K_i * h * e(t_k) + \frac{K_d}{h} * [e(t_k) - 2*e_{k-1} + e_{k-2}]
+\end{equation}
+\tag{5}\]</span></span></p>
+</div>
+</div>
+</div>
+<p><span id="eq-pid-incremental"><span class="math display">\[
+\begin{equation}
+u(t_k) = u(t_{k-1}) + K_p * [e(t_k) - (e_{k-1})] + K_i * h * e(t_k) + \frac{K_d}{h} * [e(t_k) - 2*e_{k-1} + e_{k-2}]
+\end{equation}
+\tag{6}\]</span></span></p>
+<p><a href="#eq-pid-incremental" class="quarto-xref">Equation&nbsp;6</a> can be rewritten as:</p>
+<p><span id="eq-pid-discrete-split"><span class="math display">\[
+\begin{equation}
+u(t_k) = P(t_k) + I(t_k) + D(t_k)
+\end{equation}
+\tag{7}\]</span></span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(P(t_k) = P(t_{k-1}) + K_p * [e(t_k) - (e_{k-1})]\)</span></li>
+<li><span class="math inline">\(I(t_k) = I(t_{k-1}) + K_i * h * e(t_k)\)</span></li>
+<li><span class="math inline">\(D(t_k) = D(t_{k-1}) + \frac{K_d}{h} * [e(t_k) - 2*e_{k-1} + e_{k-2}]\)</span></li>
+</ul>
+<p><a href="#eq-pid-discrete-split" class="quarto-xref">Equation&nbsp;7</a> is more useful from an implementation perspective, because it decouples the <span class="math inline">\(P\)</span>, <span class="math inline">\(I\)</span>, and <span class="math inline">\(D\)</span> updates and naturally supports anti-windup schemes.</p>
+<p>When a PID controller gets stuck at its limits, it suffers from <a href="https://en.wikipedia.org/wiki/Integral_windup">“integral windup.”</a> This means the controller keeps adding up errors even when it can’t actually change the output, causing the system to overshoot and take a long time to settle.</p>
+<p>In this system, two areas are subject to hard constraints and can trigger this phenomenon:</p>
+<ul>
+<li><p><strong>Control Input Saturation</strong>: The assembly forms what’s called a crank-rocker <a href="https://en.wikipedia.org/wiki/Four-bar_linkage">four-bar linkage</a> (see <a href="#fig-crank-rocker" class="quarto-xref">Figure&nbsp;4</a>) whose input link, the servo motor arm, is a crank link meaning that it can rotate a full <span class="math inline">\(360^\circ\)</span>, whereas the output link, the beam, is a rocker link meaning that it can rotate through a limited range of angles. To prevent the servo motor arm from rotating continuously we limit the angles of the servo motor to the range <span class="math inline">\([-30.0^{\circ}, 30.0^{\circ}]\)</span> which can saturate the PID output during large disturbances.</p>
+<div id="fig-crank-rocker" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-crank-rocker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="ball_and_beam_fourbar_linkage.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;4: Crank-Rocker Linkage behaviour of Ball and Beam system"><img src="ball_and_beam_fourbar_linkage.gif" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-crank-rocker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Crank-Rocker Linkage behaviour of Ball and Beam system
+</figcaption>
+</figure>
+</div></li>
+<li><p><strong>State Constraint Saturation</strong>: The ball’s position is strictly limited on both ends by two physical stops: the sensor holder on one end which prevents the distance from becoming negative and an end stop on the other end which prevents it from rolling off the beam. This confines the ball’s physical state to a finite interval, preventing out-of-bounds positioning.</p></li>
+</ul>
+<p>Additionally, real-world imperfections can also trigger integral windup: when the ball is uneven or it encounters uneven surfaces or in the presence of <a href="https://en.wikipedia.org/wiki/Backlash_(engineering)">backlash</a>, which is the case for this system because the parts are 3D printed, the controller interprets this as sustained error causing the integral term to grow unchecked until the ball breaks free, resulting in overshoot.</p>
+<p>There are a few different solutions to mitigate this problem. I used the simplest one which is a clamping approach that stops the integral term from accumulating if it exceeds an upper, respectively lower, threshold value <span class="math inline">\(I_{\text{Max}}\)</span>, respectively <span class="math inline">\(I_{\text{Min}}\)</span>.</p>
+<p><span class="math display">\[
+I_{\text{clamped}}(t_k) = \begin{cases}
+I_{\text{Max}} &amp;, \text{if } I(t_k) &gt; I_{\text{Max}}\\
+I_{\text{Min}} &amp;, \text{if } I(t_k) &lt; I_{\text{Min}}\\
+I(t_k) &amp;, \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>In my case, I used <span class="math inline">\(I_{\text{Max}} = 30.0\)</span> and <span class="math inline">\(I_{\text{Min}} = -30\)</span>.</p>
+<p>This approach is computationally lightweight and proved sufficient for this system, though more advanced anti-windup methods (e.g.&nbsp;back-calculation or conditional integration) may be an interesting update to add to the system in a future iteration.</p>
+</section>
+<section id="build" class="level1">
+<h1>Build</h1>
+<section id="bill-of-materials-bom" class="level2">
+<h2 class="anchored" data-anchor-id="bill-of-materials-bom">Bill of Materials (BoM)</h2>
+<section id="electronics-sensors" class="level3">
+<h3 class="anchored" data-anchor-id="electronics-sensors">Electronics &amp; Sensors</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
+<th>Part Name</th>
 <th>Description</th>
-<th style="text-align: left;">Parameter value</th>
+<th>Quantity</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Operating range</td>
-<td style="text-align: left;">0.2 ~ 8m<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
+<td><a href="https://www.espressif.com/en/products/modules/esp32-c6">ESP32-C6-WROOM-1</a> *</td>
+<td>WiFi/BLE microcontroller devkit</td>
+<td>1</td>
 </tr>
 <tr class="even">
-<td>Accuracy</td>
-<td style="text-align: left;"><ul>
-<li>±6cm@ (0.2-3m)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
-<li>±2%@ (3m-8m)</li>
-</ul></td>
+<td><a href="https://www.st.com/en/imaging-and-photonics-solutions/vl6180.html">VL6180</a> **</td>
+<td>Time-of-Flight (ToF) proximity sensor</td>
+<td>1</td>
 </tr>
 <tr class="odd">
-<td>Measurement unit</td>
-<td style="text-align: left;">cm (Default)</td>
+<td>MG 996R</td>
+<td>Digital servo motor</td>
+<td>1</td>
 </tr>
 <tr class="even">
-<td>Range resolution</td>
-<td style="text-align: left;">1cm</td>
-</tr>
-<tr class="odd">
-<td>Field of View (FOV)</td>
-<td style="text-align: left;">0.2°<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></td>
-</tr>
-<tr class="even">
-<td>Framerate</td>
-<td style="text-align: left;">1~250Hz<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> (100Hz default)</td>
-</tr>
-<tr class="odd">
-<td>Weight</td>
-<td style="text-align: left;">≤ 5g<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></td>
-</tr>
-<tr class="even">
-<td>Power</td>
-<td style="text-align: left;">≤ 0.35W<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></td>
-</tr>
-<tr class="odd">
-<td>Dimensions</td>
-<td style="text-align: left;">35mm x 21.25mm x 13.5mm<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></td>
-</tr>
-<tr class="even">
-<td>Communication</td>
-<td style="text-align: left;">I2C and UART<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></td>
+<td>470 µF Electrolytic Capacitor</td>
+<td>Stabilize 5v power line</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
-</div>
-</figure>
-</div>
+<blockquote class="blockquote">
+<ul>
+<li>*: If you use another microcontroller, then you should make sure the pins are still the same.</li>
+<li>**: The VL6180 is now deprecated and not recommended for new design (NRND) and may not be readily available. If you can’t find it, then consider using the <a href="https://www.st.com/en/imaging-and-photonics-solutions/vl53l4cd.html">VL53L4CD</a> instead.</li>
+</ul>
+</blockquote>
 </section>
-<section id="raspberry-pi-and-tf-luna" class="level1">
-<h1>Raspberry Pi and TF-Luna</h1>
-<p>I wired the TF-Luna to the Raspberry Pi as shown in <a href="#fig-wiring" class="quarto-xref">Figure&nbsp;1</a> and <a href="#tbl-wiring" class="quarto-xref">Table&nbsp;2</a>.</p>
+<section id="fasteners-hardware" class="level3">
+<h3 class="anchored" data-anchor-id="fasteners-hardware">Fasteners &amp; Hardware</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 29%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part Name</th>
+<th>Description</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M3 × 10mm Bolts and Nuts</td>
+<td>Mounting for fulcrum and servo bracket</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td>M8 × 60mm Bolts and Nuts</td>
+<td>Primary rotation axes</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>M5 × 10mm Flat Washers</td>
+<td>Friction reduction at pivot points</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="materials" class="level3">
+<h3 class="anchored" data-anchor-id="materials">Materials</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 29%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part Name</th>
+<th>Description</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 kg PLA Spool</td>
+<td>FDM printing material for structural parts</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="circuit" class="level2">
+<h2 class="anchored" data-anchor-id="circuit">Circuit</h2>
+<p>Wiring this system requires two things: a clean power path for the servo, and noise-free I²C communication for the sensor.</p>
+<p>The 470 µF capacitor across the 5 V rail helps smooth out the current spikes that happen when the servo changes direction. Without it, the ESP32 would occasionally brown out.</p>
+<p>All ground wires connect to a single point on the board to keep the signal reference stable.</p>
+<p>The complete wiring schematic is shown in <a href="#fig-wiring" class="quarto-xref">Figure&nbsp;5</a>. Pin mappings are summarized in <a href="#tbl-wiring" class="quarto-xref">Table&nbsp;1</a>.</p>
 <div id="fig-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="wiring_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;1: Wiring diagram made with Cirkit Designer"><img src="wiring_diagram.svg" class="img-fluid figure-img"></a>
+<a href="wiring_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;5: Wiring diagram made with Cirkit Designer"><img src="wiring_diagram.svg" class="img-fluid figure-img" style="width:30.0%"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Wiring diagram made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
+Figure&nbsp;5: Wiring diagram made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
 </figcaption>
 </figure>
 </div>
 <div id="tbl-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Raspberry Pi and TF-Luna Pin Wiring
+Table&nbsp;1: Pin Wiring
 </figcaption>
 <div aria-describedby="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th style="text-align: left;">TF-Luna Pin</th>
-<th style="text-align: left;">Raspberry Pi Pin</th>
+<th style="text-align: left;">Microcontroller pin</th>
+<th style="text-align: left;">Target pin(s)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Pin 1 (+3.7-5.2V)</td>
-<td style="text-align: left;">Pin 2 (5V)</td>
+<td style="text-align: left;"><strong>5V</strong></td>
+<td style="text-align: left;">Servo motor <strong>Power</strong>; VL6180 <strong>VIN</strong>; Capacitor <strong>+</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Pin 2 (RXD/SDA)</td>
-<td style="text-align: left;">Pin 3 (GPIO 2 / SDA)</td>
+<td style="text-align: left;"><strong>GND</strong></td>
+<td style="text-align: left;">Servo motor <strong>GND</strong> ; VL6180 <strong>GND</strong>; Capacitor <strong>-</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Pin 3 (TXD/SCL)</td>
-<td style="text-align: left;">Pin 5 (GPIO 3 / SCL)</td>
+<td style="text-align: left;"><strong>GPIO 15</strong></td>
+<td style="text-align: left;">Servo motor <strong>Signal</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Pin 4 (Gnd)</td>
-<td style="text-align: left;">Pin 6 (Gnd)</td>
+<td style="text-align: left;"><strong>GPIO 9</strong></td>
+<td style="text-align: left;">VL6180 <strong>SCL</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Pin 5 (I2C Enable)</td>
-<td style="text-align: left;">Pin 9 (Gnd)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Pin 6 (Data Signal)</td>
-<td style="text-align: left;">Not connected / used</td>
+<td style="text-align: left;"><strong>GPIO 8</strong></td>
+<td style="text-align: left;">VL6180 <strong>SDA</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p>The TF-Luna supports both Serial (<a href="https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter">UART</a>) and <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> for communication. I decided to use I2C because I am planning to use more sensors and it allows multiplexing whereas UART is just used for point-to-point communication.</p>
-<p>In order to enable I2C mode, we need to connect the TF-Luna’s 5th pin (I2C Enable) to ground.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you’re interested in using UART, please read this post instead <a href="https://makersportal.com/blog/distance-detection-with-the-tf-luna-lidar-and-raspberry-pi">Distance Detection with the TF-Luna LiDAR and Raspberry Pi - MakerPortal</a>.</p>
-</div>
-</div>
-<p>Since there was, as of writing this post, no existing crate on <a href="https://crates.io">crates.io</a> for interacting with the TF-Luna, I had to write the code for that myself. Luckily for me, it turned out to be pretty straightforward thanks to the <a href="https://docs.rs/rppal/latest/rppal/">rppal</a> crate as well as these two sources:</p>
+</section>
+</section>
+<section id="software-implementation" class="level1">
+<h1>Software Implementation</h1>
+<p>Building the control software was just as iterative as the mechanical design. I chose Rust as the programming language because I’m familiar with it and for its memory safety and deterministic execution, paired with <a href="https://embassy.dev/">Embassy</a>’s cooperative asynchronous runtime to manage sensor polling, control computation, and network communication on a single core.</p>
+<p>The firmware is split into two logical layers: an embedded backend that runs directly on the ESP32-C6, and a lightweight web frontend that is served by the controller but runs in the user’s browser.</p>
+<section id="embedded-backend" class="level2">
+<h2 class="anchored" data-anchor-id="embedded-backend">Embedded Backend</h2>
+<p>On the microcontroller side, the backend handles peripheral initialization, WiFi provisioning, servo PWM setup, and I²C communication with the distance sensor. Rather than running everything in a single blocking loop, I structured the code around Embassy’s asynchronous task model. This keeps the system responsive without requiring a real-time OS or multiple cores.</p>
+<p>Tasks communicate asynchronously to avoid blocking the control thread:</p>
 <ul>
-<li>The <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">TF-Luna user manual</a>.</li>
-<li>The <a href="https://github.com/budryerson/TFLuna-I2C">TFLuna-I2C</a> Arduino library by budryerson.</li>
+<li><strong>Control Loop:</strong> Reads the sensor, filters the signal, runs the control algorithm, and adjusts the servo.</li>
+<li><strong>Parameter Task:</strong> Listens for updates from the web interface and safely applies them to the controller.</li>
+<li><strong>Network &amp; HTTP Tasks:</strong> Manage the TCP/IP stack, mDNS discovery, serve the API and the web UI.</li>
 </ul>
-<p>Once the wiring was done and the rppal crate added, all I had to do was figure out the correct register addresses from the user manual for reading the sensor measurements. This task should have been easy but it was made hard by the structure of the manual itself. Most of the pages are about the UART protocol and the different output format and only a few are about I2C and the registers.</p>
-<p>I struggled at first to read measurements from the TF-Luna. I kept reading constant values no matter what I did ever I wrote <strong>0</strong> to the <strong>0x25</strong> register to enable it. It only worked after I decided randomly to try writing <strong>1</strong> instead. After investigating for a bit, I realized that I was using an <a href="https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf">older version</a> of the user manual (<code>A03</code> from 2020.3.15) instead of the newer version (<code>A05</code> from 2020.7.23).</p>
-<p>In this newer version, the definition of I2C register <strong>0x25</strong> was changed so that to <strong>enable</strong> (respectively <strong>disable</strong>) the LiDAR sensor we have to set the <strong>0x25</strong> register to <strong>1</strong> (respectively <strong>0</strong>) instead of <strong>0</strong> (respectively <strong>1</strong>), see <a href="#fig-user-manual-error" class="quarto-xref">Figure&nbsp;2</a>.</p>
-<div id="fig-user-manual-error" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>I also added a manual control mode during development, which lets me override the PID loop and send direct commands to the servo. This made bench testing and debugging much easier.</p>
+</section>
+<section id="web-frontend" class="level2">
+<h2 class="anchored" data-anchor-id="web-frontend">Web Frontend</h2>
+<div id="fig-frontend" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="tfluna_user_manual_error.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;2: Excerpt from page 30 of TF-Luna user manual version A03 showing values that were changed in version A05"><img src="tfluna_user_manual_error.svg" class="img-fluid figure-img"></a>
+<div aria-describedby="fig-frontend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="frontend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;6: Screenshot of Web UI"><img src="frontend.png" class="img-fluid figure-img" style="width:80.0%"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-user-manual-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Excerpt from page 30 of TF-Luna user manual version <code>A03</code> showing values that were changed in version <code>A05</code>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frontend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Screenshot of Web UI
 </figcaption>
 </figure>
 </div>
+<p>The user interface (see <a href="#fig-frontend" class="quarto-xref">Figure&nbsp;6</a>) is built with <a href="https://preactjs.com/">Preact</a> and bundled using <a href="https://vite.dev/">Vite</a> for fast development and minimal output size.</p>
+<p>Instead of hosting the UI on an external server, I compiled it into static assets and embedded it directly into the firmware using <code>build.rs</code> and the <code>include_bytes!</code> macro. This means the entire project is self-contained: flash the ESP32, connect to <code>http://ball-and-beam.local</code>, and you’re ready to go.</p>
 </section>
-<section id="raspberry-pi-and-rust" class="level1">
-<h1>Raspberry Pi and Rust</h1>
-<p>The Raspberry Pi 3 model B is not the most powerful computer there is and compiling the code on it could actually take too long, that’s why we cross-compile it on a separate, more powerful computer and then transfer the binary to it.</p>
-<p>If you want to learn more about cross-compilation in general or specifically about cross-compilation for the Raspberry Pi, you should refer to the following links:</p>
-<ul>
-<li><a href="https://rustprojectprimer.com/building/cross.html">Cross-Compiling chapter from Rust Project Primer book</a></li>
-<li><a href="https://rustmeup.com/using-rust-with-raspberry-pi">Using Rust with Raspberry Pi - RustMeUp</a></li>
-</ul>
-<p>The gist of it is to:</p>
-<ul>
-<li><p>Install the rustup target for the Raspberry Pi 3:</p>
-<pre class="shell"><code>rustup target add aarch64-unknown-linux-gnu</code></pre>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="how-it-all-connects" class="level2">
+<h2 class="anchored" data-anchor-id="how-it-all-connects">How It All Connects</h2>
+<p>The backend and frontend communicate over a simple REST API. When you start/stop the controller or adjust parameters in the browser, the request hits the <code>/api/v1/controller</code> endpoint of the API, which triggers an async signal to wake the parameter task. That task acquires a mutex lock, updates the controller, and releases it keeping the real-time control loop uninterrupted. The control loop publishes fresh telemetry (timestamp, distance, filtered distance, angle) at a fixed interval, which the web UI fetches at a fixed interval by calling <code>/api/v1/data</code> endpoint of the API in order to display it.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-sequence-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequence-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-sequence-diagram">sequenceDiagram
+    participant WebUI as Web UI
+    participant API as API
+    participant Sig as Data/Param Signal
+    participant Params as Controller Params Task
+    participant Ctrl as Control Loop
+    participant Sensor as VL6180 Sensor
+    participant Servo as Servo Motor
+
+    WebUI-&gt;&gt;API: GET /api/v1/data
+    API-&gt;&gt;Sig: wait()
+    Sig--&gt;&gt;API: Data(timestamp, distance, filtered distance, angle)
+    API--&gt;&gt;WebUI: JSON Response
+
+    WebUI-&gt;&gt;API: POST /api/v1/controller (JSON)
+    API-&gt;&gt;Sig: signal(ControllerParameters)
+    Sig-&gt;&gt;Params: wake up
+    Params-&gt;&gt;Ctrl: update Controller parameters (Mutex lock)
+
+    Note over Ctrl,Servo: CONTROL LOOP (fixed interval)
+    Ctrl-&gt;&gt;Sensor: read distance
+    Ctrl-&gt;&gt;Ctrl: Filter distance measurement
+    Ctrl-&gt;&gt;Ctrl: compute Controller output
+    Ctrl-&gt;&gt;Servo: set servo motor angle
+    Ctrl-&gt;&gt;Sig: signal(new Data)
+</pre>
 </div>
-<div class="callout-title-container flex-fill">
-Note
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The target may be different if you have a different Raspberry Pi model.</p>
-</div>
-</div></li>
-<li><p>Install the cross-compiler (on Ubuntu, in this case):</p>
-<pre class="shell"><code>sudo apt-get install gcc-multilib-arm-linux-gnueabihf</code></pre></li>
-<li><p>Compile the code with the new install target:</p>
-<pre class="shell"><code>cargo build --target aarch64-unknown-linux-gnu</code></pre>
-<p>For the sake of simplicity, you should define this configuration inside <code>.cargo/config.toml</code> to avoid having to constantly pass the argument:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[target.aarch64-unknown-linux-gnu]</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">linker</span> <span class="op">=</span> <span class="st">"aarch64-linux-gnu-gcc"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[build]</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">target</span> <span class="op">=</span> <span class="st">"aarch64-unknown-linux-gnu"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
-</ul>
-<p>Once that’s done, then we have to copy the binary over to the Raspberry Pi and then execute it.</p>
-<pre class="shell"><code>scp target/aarch64-unknown-linux-gnu/release/main raspberrypi:~Projects/main</code></pre>
-<pre class="shell"><code>ssh raspberrypi ~/Projects/main</code></pre>
-<p>In my repository, all of this can be done by simply calling <code>cargo run</code>.</p>
-</section>
-<section id="data-collection-and-visualization" class="level1">
-<h1>Data Collection and Visualization</h1>
-<p>For the data collection and visualization, we will use <a href="https://rerun.io/">rerun</a> which is an open-source log handling and visualization for spatial and embodied AI. The demos shown on their website definitely seem interesting.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="rerun_aria_dataset_explorer.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Example screenshot of Aria Dataset Explorer using Rerun for visualization - rerun.io"><img src="rerun_aria_dataset_explorer.png" class="img-fluid figure-img" alt="Example screenshot of Aria Dataset Explorer using Rerun for visualization - rerun.io"></a></p>
-<figcaption>Example screenshot of Aria Dataset Explorer using Rerun for visualization - <a href="https://rerun.io/">rerun.io</a></figcaption>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequence-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Sequence diagram showing interaction between backend and frontend
+</figcaption>
 </figure>
 </div>
-<p>To use it we first start by adding the rerun crate as a dependency:</p>
-<pre class="shell"><code>cargo add rerun</code></pre>
-<p>It has quite a lot of features and will increase the size of the final binary, but I didn’t bother for now to go through them and determine which ones are absolutely necessary and which ones are not.</p>
-<pre class="shell"><code>rerun</code></pre>
-<pre class="shell"><code>cargo run --release</code></pre>
-<p>I put the TF-Luna LiDAR on a table and pointed it at the ceiling, so the initial measurements are of the distance from the table to the ceiling which is about 2 meters (~200 cm).</p>
-<p>I then moved my hand, relatively quickly, in front of it 4 times and that can be seen as the 4 shorts dips to a distance of about 21 centimeters. After that, I put my hand in front of it and left it there for a few seconds. I finally moved my hand away.</p>
-<p>A 10Hz sampling frequency is not enough to detect fast movements, but it is more than enough for indoor autonomous navigation.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="rerun_screenshot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Screenshot of Rerun viewer showing recorded data"><img src="rerun_screenshot.png" class="img-fluid figure-img" alt="Screenshot of Rerun viewer showing recorded data"></a></p>
-<figcaption>Screenshot of Rerun viewer showing recorded data</figcaption>
-</figure>
 </div>
+</div>
+</section>
+</section>
+<section id="future-improvements" class="level1">
+<h1>Future Improvements</h1>
+<p>While the current version is fully functional, it is far from complete. It can be improved in many different ways and I’m planning to implement at least some of them in future iterations.</p>
+<p>What follows is a non-exhaustive list of improvement ideas that I currently have in mind:</p>
+<ul>
+<li><strong>Lower Friction Rotations:</strong> Use ball bearings at the fulcrum and pivot points to reduce stiction and shaft runout.</li>
+<li><strong>Configurable mounting:</strong> Add more possible placements for the motor mounting bracket to support alternative linkage geometries and actuator placements.</li>
+<li><strong>More realistic simulation:</strong> Update the MuJoCo model with real-world mass, friction, and damping parameters. Incorporate backlash and joint compliance models.</li>
+<li><strong>Decoupled control loops:</strong> Run sensor polling and filtering in a dedicated high-frequency task, separating I/O latency from the control computation.</li>
+<li><strong>Externalized UI:</strong> Develop a separate application for the UI using, for example, <a href="https://tauri.app/">Tauri</a> to free up ESP32 flash and RAM while making firmware updates and UI iterations far easier.</li>
+<li><strong>Advanced control algorithms:</strong> Implement additional control methods like:
+<ul>
+<li>Reinforcement Learning for adaptive tuning.</li>
+<li>Sliding Mode and Back-stepping controllers for robustness against nonlinearities.</li>
+<li>Koopman operator methods for global linearization and predictive control.</li>
+</ul></li>
+<li><strong>Kalman filter</strong>: Implement <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> to improve distance measurements and maybe estimate other system parameters (e.g.&nbsp;ball rotational and translational speed).</li>
+</ul>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>Thanks to this project, I have learned about using Rust on a Raspberry Pi and about dealing with not so intuitive sensor documents. It felt nice getting back into making projects like this after such a long time. It only took me a few days to get it working. It actually took me more time to write this post than to write the code itself.</p>
-<p>As a next step, I would like to mount the TF-Luna on something that can be rotated with a servo or stepper motor in order to change the angle and be able to generate a 2D point cloud.</p>
-<p>I have also decided to make a crate for interacting with the TF-Luna sensor (ideally with both async and embedded-hal support) hoping that it will be useful to others as well.</p>
+<p>I have finally finished the first version of my ball and beam system and open-sourced it on <a href="(https://github.com/AnesBenmerzoug/ball-and-beam)">Github</a> hoping that it may be useful to someone else. It took a considerable amount of time to iterate through the mechanical, electrical and software challenges, but the final result made the effort worthwhile.</p>
+<p>I will now take a break from it and work on another project from my backlog, but I will hopefully come back to it because I would like to at least implement a few of the improvement ideas.</p>
 
 
 </section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>Operating range measured indoor based on a standard whiteboard with 90% reflectivity.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This is the theoretical value, the real value may be different.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>This is the theoretical value, the real value may be different.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>100Hz is the default value and only any factor (500/n, n can be any integer in [2, 500] e.g.&nbsp;250Hz, 125Hz) of 500Hz are available.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>Taken from the <a href="https://en.benewake.com/TFLuna/index.html">TF-Luna’s product page</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p>The choice between the two is made based on how the 5th pin is connected. Ground for I2C and 3.3V for UART.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1140,6 +1298,7 @@ Note
   });
   </script>
 </div> <!-- /content -->
+<script>videojs(video_shortcode_videojs_video1);</script>
 <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;

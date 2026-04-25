@@ -1,11 +1,8 @@
 [
   {
-    "listing": "/posts/control-series/index.html",
-    "items": []
-  },
-  {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/ball-and-beam/index.html",
       "/posts/rpi-tfluna-pan-tilt/index.html",
       "/posts/rpi-tfluna-lidar/index.html",
       "/posts/llm-email-information-extaction/index.html",

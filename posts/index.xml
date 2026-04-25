@@ -9,8 +9,467 @@
 <link>https://AnesBenmerzoug.github.io/posts/</link>
 <atom:link href="https://AnesBenmerzoug.github.io/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>This is Anes Benmerzoug&#39;s personal Blog.</description>
-<generator>quarto-1.8.27</generator>
-<lastBuildDate>Fri, 23 Jan 2026 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.36</generator>
+<lastBuildDate>Sun, 26 Apr 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Ball and Beam: Open-Source System for Controlling a ball’s position on a beam</title>
+  <dc:creator>Anes Benmerzoug</dc:creator>
+  <link>https://AnesBenmerzoug.github.io/posts/ball-and-beam/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The full code and files for this project can be found in the following repository: <a href="https://github.com/AnesBenmerzoug/ball-and-beam">ball-and-beam</a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Disclaimer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I used a local LLM to provide me feedback on the writing and to draft a few of the sections when I ran out of inspiration. I did however write most of the post myself and verified whatever content the LLM wrote.</p>
+</div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/2Y5gJVTIj8Q" title="Video of Ball and Beam System and Web UI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>In this post, I will describe an open-source ball and beam system that I designed and built from scratch. I have had this project in mind for many years, but only started working on it at the end of 2024. Back then, I had no idea how many design iterations and technical challanges awaited me, delaying the initial build until April 2026.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Ball_and_beam">ball and beam system</a> is a classical textbook control system used in <a href="https://link.springer.com/article/10.1007/s11071-009-9534-8">research</a> and <a href="https://dspace.mit.edu/bitstream/handle/1721.1/32780/57571320-MIT.pdf;sequence=2">academic projects</a> to showcase different control and observer methods. It is a relatively simple system composed of a long beam that can be tilted with a motor (most often a servo motor or a stepper motor) to control the position of a ball that rolls along it and whose position is measured with a range sensor (most often an ultrasound sensor).</p>
+</section>
+<section id="design" class="level1">
+<h1>Design</h1>
+<div id="fig-ball-and-beam-freecad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ball-and-beam-freecad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="ball_and_beam_freecad.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Screenshot of Ball and Beam Design created in FreeCAD"><img src="https://AnesBenmerzoug.github.io/posts/ball-and-beam/ball_and_beam_freecad.png" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ball-and-beam-freecad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Screenshot of Ball and Beam Design created in FreeCAD
+</figcaption>
+</figure>
+</div>
+<p>There are many possible variations of the system, each hinging on a few key design choices that alter the dynamics of the system.</p>
+<p>These variations introduce specific trade-offs:</p>
+<ul>
+<li><p><strong>Servo vs.&nbsp;Stepper Motor:</strong> Servos are compact, self-contained, and easy to control via PWM. Steppers deliver more raw torque but need additional drivers, limit switches, and microstepping firmware.</p></li>
+<li><p><strong>Fulcrum Position:</strong> Centering the pivot keeps the beam balanced and simplifies PID tuning, but it requires a motor capable of swinging through larger angles without stalling.</p></li>
+<li><p><strong>Motor Placement:</strong> Mounting the motor at or near the fulcrum simplifies the linkage and minimizes the effect of gear backlash, while mounting it at the end requires a longer lever arm that complicates the geometry and increases the effect of gear backlash.</p></li>
+<li><p><strong>Dimensions:</strong> Bigger beams need stronger motors, longer-range sensors, and faster control loops to compensate for increased inertia and signal latency.</p></li>
+</ul>
+<p>For my design (see Figure&nbsp;1), I settled on a simple and straightforward compact design whose parts fit neatly inside my 3D printer. I positioned the fulcrum and the servo motor on opposite edges of the beam. I drew inspiration from the following existing implementations:</p>
+<ul>
+<li><a href="https://careyi3.github.io/balance_beam_kit/">Balance Beam Kit</a></li>
+<li><a href="https://ieeexplore.ieee.org/abstract/document/8627251">Osinski, Cristiano, et al.&nbsp;“Control of ball and beam system using fuzzy PID controller.” 2018 13th IEEE International Conference on Industry Applications (INDUSCON). IEEE, 2018.</a></li>
+<li><a href="https://www.youtube.com/watch?v=oy58S4beC9c">Arduino PID Control System (Ball and Beam) - YouTube</a></li>
+</ul>
+<p>I modeled every part from scratch in <a href="https://www.freecad.org/">FreeCAD</a> and used the builtin <a href="https://wiki.freecad.org/Assembly_Workbench">Assembly workbench</a> to assemble them. This made it easy to validate the fit of the parts and the kinematics of the system before printing.</p>
+<p>The final build includes:</p>
+<ul>
+<li>Rigid base plate.</li>
+<li>Fulcrum pivot block.</li>
+<li>Servo motor mounting bracket.</li>
+<li>Board platform for the perfboard containing the microcontroller and power routing.</li>
+<li>Distance sensor mount.</li>
+<li>Two-segment beam.</li>
+<li>End stop.</li>
+<li>Servo horn and linkage arm.</li>
+</ul>
+<p>I chose a split beam design specifically for compatibility with simulation in MuJoCo simulation. Because MuJoCo approximates collisions using convex hulls, a single solid beam would cause the ball to float above it. The split design also made it easier to print flat on the build plate.</p>
+<p>The design process was neither simple nor straightforward. I had to iterate through multiple versions, 3D printing, assembling and testing the system multiple times before I was satisfied with it. The current design incorporates the lessons I learned into a simple build that’s ready to be built and used.</p>
+</section>
+<section id="simulation" class="level1">
+<h1>Simulation</h1>
+<div id="fig-simulation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simulation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title="Animation of Simulation of Ball and Beam System"><source src="simulation_animation.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-simulation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+<p>To validate the system dynamics and perform initial controller tuning, I exported the FreeCAD assembly to MuJoCo using the <a href="https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo/tree/main">Assembly2MuJoCo</a> workbench. The simulation served as a controlled testbed for validating the system dynamics and for tuning the PID gain parameters without risking mechanical damage.</p>
+<p>After exporting the assembly, I manually adjusted the exported MuJoCo model as follows:</p>
+<ul>
+<li>Attached a <code>site</code> to the sensor body so the ToF (Time-of-Flight) ray could accurately measure ball distance.</li>
+<li>Matched the simulated ball mass to <code>29.9 g</code>, the exact weight of the 3D printed ball I was planning to use.</li>
+<li>Configured a static camera view for a better visualization of the simulated system.</li>
+</ul>
+<p>In Figure&nbsp;2, you can see the simulated result of the system using tuned PID parameters.</p>
+<p>While matching the simulated ball mass to the real one reduced the sim-to-real gap, several other factors caused divergence between simulation and the built system:</p>
+<ul>
+<li><strong>Mechanical non-idealities:</strong> Backlash in the servo linkage and friction at the different axes of rotation.</li>
+<li><strong>Surface irregularities:</strong> Uneven ball surfaces and beam roughness that cause the ball to stick and slip, which triggers integral windup during motion transitions.</li>
+<li><strong>Sensor limitations:</strong> Sensor measurement noise and quantization artifacts.</li>
+<li><strong>Computational latency:</strong> Hardware scheduling delays that introduce timing jitter into the control loop.</li>
+</ul>
+<p>These differences didn’t invalidate the simulation but prevented me from using the tuned PID gain parameters obtained with the simulation in the real system.</p>
+</section>
+<section id="control" class="level1">
+<h1>Control</h1>
+<div id="fig-pid-block-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pid-block-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="PID_block_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;3: PID Block Diagram. Taken from Wikipedia"><img src="https://AnesBenmerzoug.github.io/posts/ball-and-beam/PID_block_diagram.svg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pid-block-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: PID Block Diagram. Taken from <a href="https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller">Wikipedia</a>
+</figcaption>
+</figure>
+</div>
+<p>In order to control the system in the simplest way, I chose to implement a Proportional-Integral-Derivative (PID) controller (see Figure&nbsp;3).</p>
+<p>The controller’s continuous-time control law is:</p>
+<p><span id="eq-pid-continuous-time"><img src="https://latex.codecogs.com/png.latex?%0Au(t)%20=%20K_p%20*%20e(t)%20+%20K_i%20*%20%5Cint%20e(t)%20+%20K_d%20*%20%5Cfrac%7Bd%7D%7Bdt%7D%20e(t)%0A%5Ctag%7B1%7D"></span></p>
+<p>Where:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?u(t)"> is the control signal which corresponds to the servo motor’s angle in our case.</li>
+<li><img src="https://latex.codecogs.com/png.latex?e(t)"> is the position error defined as <img src="https://latex.codecogs.com/png.latex?e(t)%20=%20%5Ctext%7Btarget%20distance%7D%20-%20%5Ctext%7Bmeasured%20distance%7D">.</li>
+<li><img src="https://latex.codecogs.com/png.latex?K_p"> is the coefficient of the proportional part of the controller.</li>
+<li><img src="https://latex.codecogs.com/png.latex?K_i"> is the coefficient of the integral part of the controller.</li>
+<li><img src="https://latex.codecogs.com/png.latex?K_d"> is the coefficient of the derivative part of the controller.</li>
+</ul>
+<p>Since microcontrollers sample at fixed time intervals, I couldn’t use this formula directly and had to discretize it first.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Mathematical derivation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>I avoid direct integral approximation by first differentiating Equation&nbsp;1:</p>
+<p><span id="eq-pid-differentiated"><img src="https://latex.codecogs.com/png.latex?%0A%5Cdot%7Bu%7D(t)%20=%20K_p%20*%20%5Cfrac%7Bd%7D%7Bdt%7De(t)%20+%20K_i%20*%20e(t)%20+%20K_d%20*%20%5Cfrac%7Bd%5E2%7D%7Bdt%5E2%7D%20e(t)%0A%5Ctag%7B2%7D"></span></p>
+<p>I then apply the <a href="https://en.wikipedia.org/wiki/Backward_differentiation_formula">backward finite difference method</a> to Equation&nbsp;2:</p>
+<p><span id="eq-pid-backward-difference"><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bu(t_k)%20-%20u(t_%7Bk-1%7D)%7D%7Bh%7D%20=%20K_p%20*%20%5Cfrac%7Be(t_k)%20-%20e_%7Bk-1%7D%7D%7Bh%7D%20+%20K_i%20*%20e(t_k)%20+%20K_d%20*%20%5Cfrac%7Be(t_k)%20-%202*e_%7Bk-1%7D%20+%20e_%7Bk-2%7D%7D%7Bh%5E2%7D%0A%5Ctag%7B3%7D"></span></p>
+<p>Where <img src="https://latex.codecogs.com/png.latex?h"> represents the step size.</p>
+<p>Multiplying both sides of Equation&nbsp;3 by <img src="https://latex.codecogs.com/png.latex?h"> gives us:</p>
+<p><span id="eq-pid-discretized-increment"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation%7D%0A%5Cbegin%7Bsplit%7D%0A%5CDelta%20u(t_k)%20&amp;%20=%20u(t_k)%20-%20u(t_%7Bk-1%7D)%20%5C%5C%0A&amp;%20=%20K_p%20*%20%5Be(t_k)%20-%20(e_%7Bk-1%7D)%5D%20+%20K_i%20*%20h%20*%20e(t_k)%20+%20%5Cfrac%7BK_d%7D%7Bh%7D%20*%20%20%5Be(t_k)%20-%202*e_%7Bk-1%7D%20+%20e_%7Bk-2%7D%5D%0A%5Cend%7Bsplit%7D%0A%5Cend%7Bequation%7D%0A%5Ctag%7B4%7D"></span></p>
+<p>Finally, solving for <img src="https://latex.codecogs.com/png.latex?u(t_k)"> in Equation&nbsp;4 yields the recursive discrete-time formula:</p>
+<p><span id="eq-pid-incremental"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation%7D%0Au(t_k)%20=%20u(t_%7Bk-1%7D)%20+%20K_p%20*%20%5Be(t_k)%20-%20(e_%7Bk-1%7D)%5D%20+%20K_i%20*%20h%20*%20e(t_k)%20+%20%5Cfrac%7BK_d%7D%7Bh%7D%20*%20%5Be(t_k)%20-%202*e_%7Bk-1%7D%20+%20e_%7Bk-2%7D%5D%0A%5Cend%7Bequation%7D%0A%5Ctag%7B5%7D"></span></p>
+</div>
+</div>
+</div>
+<p><span id="eq-pid-incremental"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation%7D%0Au(t_k)%20=%20u(t_%7Bk-1%7D)%20+%20K_p%20*%20%5Be(t_k)%20-%20(e_%7Bk-1%7D)%5D%20+%20K_i%20*%20h%20*%20e(t_k)%20+%20%5Cfrac%7BK_d%7D%7Bh%7D%20*%20%5Be(t_k)%20-%202*e_%7Bk-1%7D%20+%20e_%7Bk-2%7D%5D%0A%5Cend%7Bequation%7D%0A%5Ctag%7B6%7D"></span></p>
+<p>Equation&nbsp;6 can be rewritten as:</p>
+<p><span id="eq-pid-discrete-split"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bequation%7D%0Au(t_k)%20=%20P(t_k)%20+%20I(t_k)%20+%20D(t_k)%0A%5Cend%7Bequation%7D%0A%5Ctag%7B7%7D"></span></p>
+<p>Where:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?P(t_k)%20=%20P(t_%7Bk-1%7D)%20+%20K_p%20*%20%5Be(t_k)%20-%20(e_%7Bk-1%7D)%5D"></li>
+<li><img src="https://latex.codecogs.com/png.latex?I(t_k)%20=%20I(t_%7Bk-1%7D)%20+%20K_i%20*%20h%20*%20e(t_k)"></li>
+<li><img src="https://latex.codecogs.com/png.latex?D(t_k)%20=%20D(t_%7Bk-1%7D)%20+%20%5Cfrac%7BK_d%7D%7Bh%7D%20*%20%5Be(t_k)%20-%202*e_%7Bk-1%7D%20+%20e_%7Bk-2%7D%5D"></li>
+</ul>
+<p>Equation&nbsp;7 is more useful from an implementation perspective, because it decouples the <img src="https://latex.codecogs.com/png.latex?P">, <img src="https://latex.codecogs.com/png.latex?I">, and <img src="https://latex.codecogs.com/png.latex?D"> updates and naturally supports anti-windup schemes.</p>
+<p>When a PID controller gets stuck at its limits, it suffers from <a href="https://en.wikipedia.org/wiki/Integral_windup">“integral windup.”</a> This means the controller keeps adding up errors even when it can’t actually change the output, causing the system to overshoot and take a long time to settle.</p>
+<p>In this system, two areas are subject to hard constraints and can trigger this phenomenon:</p>
+<ul>
+<li><p><strong>Control Input Saturation</strong>: The assembly forms what’s called a crank-rocker <a href="https://en.wikipedia.org/wiki/Four-bar_linkage">four-bar linkage</a> (see Figure&nbsp;4) whose input link, the servo motor arm, is a crank link meaning that it can rotate a full <img src="https://latex.codecogs.com/png.latex?360%5E%5Ccirc">, whereas the output link, the beam, is a rocker link meaning that it can rotate through a limited range of angles. To prevent the servo motor arm from rotating continuously we limit the angles of the servo motor to the range <img src="https://latex.codecogs.com/png.latex?%5B-30.0%5E%7B%5Ccirc%7D,%2030.0%5E%7B%5Ccirc%7D%5D"> which can saturate the PID output during large disturbances.</p>
+<div id="fig-crank-rocker" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-crank-rocker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="ball_and_beam_fourbar_linkage.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;4: Crank-Rocker Linkage behaviour of Ball and Beam system"><img src="https://AnesBenmerzoug.github.io/posts/ball-and-beam/ball_and_beam_fourbar_linkage.gif" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-crank-rocker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Crank-Rocker Linkage behaviour of Ball and Beam system
+</figcaption>
+</figure>
+</div></li>
+<li><p><strong>State Constraint Saturation</strong>: The ball’s position is strictly limited on both ends by two physical stops: the sensor holder on one end which prevents the distance from becoming negative and an end stop on the other end which prevents it from rolling off the beam. This confines the ball’s physical state to a finite interval, preventing out-of-bounds positioning.</p></li>
+</ul>
+<p>Additionally, real-world imperfections can also trigger integral windup: when the ball is uneven or it encounters uneven surfaces or in the presence of <a href="https://en.wikipedia.org/wiki/Backlash_(engineering)">backlash</a>, which is the case for this system because the parts are 3D printed, the controller interprets this as sustained error causing the integral term to grow unchecked until the ball breaks free, resulting in overshoot.</p>
+<p>There are a few different solutions to mitigate this problem. I used the simplest one which is a clamping approach that stops the integral term from accumulating if it exceeds an upper, respectively lower, threshold value <img src="https://latex.codecogs.com/png.latex?I_%7B%5Ctext%7BMax%7D%7D">, respectively <img src="https://latex.codecogs.com/png.latex?I_%7B%5Ctext%7BMin%7D%7D">.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AI_%7B%5Ctext%7Bclamped%7D%7D(t_k)%20=%20%5Cbegin%7Bcases%7D%0AI_%7B%5Ctext%7BMax%7D%7D%20&amp;,%20%5Ctext%7Bif%20%7D%20I(t_k)%20%3E%20I_%7B%5Ctext%7BMax%7D%7D%5C%5C%0AI_%7B%5Ctext%7BMin%7D%7D%20&amp;,%20%5Ctext%7Bif%20%7D%20I(t_k)%20%3C%20I_%7B%5Ctext%7BMin%7D%7D%5C%5C%0AI(t_k)%20&amp;,%20%5Ctext%7Botherwise%7D%0A%5Cend%7Bcases%7D%0A"></p>
+<p>In my case, I used <img src="https://latex.codecogs.com/png.latex?I_%7B%5Ctext%7BMax%7D%7D%20=%2030.0"> and <img src="https://latex.codecogs.com/png.latex?I_%7B%5Ctext%7BMin%7D%7D%20=%20-30">.</p>
+<p>This approach is computationally lightweight and proved sufficient for this system, though more advanced anti-windup methods (e.g.&nbsp;back-calculation or conditional integration) may be an interesting update to add to the system in a future iteration.</p>
+</section>
+<section id="build" class="level1">
+<h1>Build</h1>
+<section id="bill-of-materials-bom" class="level2">
+<h2 class="anchored" data-anchor-id="bill-of-materials-bom">Bill of Materials (BoM)</h2>
+<section id="electronics-sensors" class="level3">
+<h3 class="anchored" data-anchor-id="electronics-sensors">Electronics &amp; Sensors</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Part Name</th>
+<th>Description</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.espressif.com/en/products/modules/esp32-c6">ESP32-C6-WROOM-1</a> *</td>
+<td>WiFi/BLE microcontroller devkit</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.st.com/en/imaging-and-photonics-solutions/vl6180.html">VL6180</a> **</td>
+<td>Time-of-Flight (ToF) proximity sensor</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>MG 996R</td>
+<td>Digital servo motor</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>470 µF Electrolytic Capacitor</td>
+<td>Stabilize 5v power line</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<ul>
+<li>*: If you use another microcontroller, then you should make sure the pins are still the same.</li>
+<li>**: The VL6180 is now deprecated and not recommended for new design (NRND) and may not be readily available. If you can’t find it, then consider using the <a href="https://www.st.com/en/imaging-and-photonics-solutions/vl53l4cd.html">VL53L4CD</a> instead.</li>
+</ul>
+</blockquote>
+</section>
+<section id="fasteners-hardware" class="level3">
+<h3 class="anchored" data-anchor-id="fasteners-hardware">Fasteners &amp; Hardware</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 29%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part Name</th>
+<th>Description</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M3 × 10mm Bolts and Nuts</td>
+<td>Mounting for fulcrum and servo bracket</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td>M8 × 60mm Bolts and Nuts</td>
+<td>Primary rotation axes</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>M5 × 10mm Flat Washers</td>
+<td>Friction reduction at pivot points</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="materials" class="level3">
+<h3 class="anchored" data-anchor-id="materials">Materials</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 29%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part Name</th>
+<th>Description</th>
+<th>Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 kg PLA Spool</td>
+<td>FDM printing material for structural parts</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="circuit" class="level2">
+<h2 class="anchored" data-anchor-id="circuit">Circuit</h2>
+<p>Wiring this system requires two things: a clean power path for the servo, and noise-free I²C communication for the sensor.</p>
+<p>The 470 µF capacitor across the 5 V rail helps smooth out the current spikes that happen when the servo changes direction. Without it, the ESP32 would occasionally brown out.</p>
+<p>All ground wires connect to a single point on the board to keep the signal reference stable.</p>
+<p>The complete wiring schematic is shown in Figure&nbsp;5. Pin mappings are summarized in Table&nbsp;1.</p>
+<div id="fig-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="wiring_diagram.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;5: Wiring diagram made with Cirkit Designer"><img src="https://AnesBenmerzoug.github.io/posts/ball-and-beam/wiring_diagram.svg" class="img-fluid figure-img" style="width:30.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Wiring diagram made with <a href="https://app.cirkitdesigner.com">Cirkit Designer</a>
+</figcaption>
+</figure>
+</div>
+<div id="tbl-wiring" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Pin Wiring
+</figcaption>
+<div aria-describedby="tbl-wiring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Microcontroller pin</th>
+<th style="text-align: left;">Target pin(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>5V</strong></td>
+<td style="text-align: left;">Servo motor <strong>Power</strong>; VL6180 <strong>VIN</strong>; Capacitor <strong>+</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>GND</strong></td>
+<td style="text-align: left;">Servo motor <strong>GND</strong> ; VL6180 <strong>GND</strong>; Capacitor <strong>-</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>GPIO 15</strong></td>
+<td style="text-align: left;">Servo motor <strong>Signal</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>GPIO 9</strong></td>
+<td style="text-align: left;">VL6180 <strong>SCL</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>GPIO 8</strong></td>
+<td style="text-align: left;">VL6180 <strong>SDA</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="software-implementation" class="level1">
+<h1>Software Implementation</h1>
+<p>Building the control software was just as iterative as the mechanical design. I chose Rust as the programming language because I’m familiar with it and for its memory safety and deterministic execution, paired with <a href="https://embassy.dev/">Embassy</a>’s cooperative asynchronous runtime to manage sensor polling, control computation, and network communication on a single core.</p>
+<p>The firmware is split into two logical layers: an embedded backend that runs directly on the ESP32-C6, and a lightweight web frontend that is served by the controller but runs in the user’s browser.</p>
+<section id="embedded-backend" class="level2">
+<h2 class="anchored" data-anchor-id="embedded-backend">Embedded Backend</h2>
+<p>On the microcontroller side, the backend handles peripheral initialization, WiFi provisioning, servo PWM setup, and I²C communication with the distance sensor. Rather than running everything in a single blocking loop, I structured the code around Embassy’s asynchronous task model. This keeps the system responsive without requiring a real-time OS or multiple cores.</p>
+<p>Tasks communicate asynchronously to avoid blocking the control thread:</p>
+<ul>
+<li><strong>Control Loop:</strong> Reads the sensor, filters the signal, runs the control algorithm, and adjusts the servo.</li>
+<li><strong>Parameter Task:</strong> Listens for updates from the web interface and safely applies them to the controller.</li>
+<li><strong>Network &amp; HTTP Tasks:</strong> Manage the TCP/IP stack, mDNS discovery, serve the API and the web UI.</li>
+</ul>
+<p>I also added a manual control mode during development, which lets me override the PID loop and send direct commands to the servo. This made bench testing and debugging much easier.</p>
+</section>
+<section id="web-frontend" class="level2">
+<h2 class="anchored" data-anchor-id="web-frontend">Web Frontend</h2>
+<div id="fig-frontend" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-frontend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="frontend.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;6: Screenshot of Web UI"><img src="https://AnesBenmerzoug.github.io/posts/ball-and-beam/frontend.png" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-frontend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Screenshot of Web UI
+</figcaption>
+</figure>
+</div>
+<p>The user interface (see Figure&nbsp;6) is built with <a href="https://preactjs.com/">Preact</a> and bundled using <a href="https://vite.dev/">Vite</a> for fast development and minimal output size.</p>
+<p>Instead of hosting the UI on an external server, I compiled it into static assets and embedded it directly into the firmware using <code>build.rs</code> and the <code>include_bytes!</code> macro. This means the entire project is self-contained: flash the ESP32, connect to <code>http://ball-and-beam.local</code>, and you’re ready to go.</p>
+</section>
+<section id="how-it-all-connects" class="level2">
+<h2 class="anchored" data-anchor-id="how-it-all-connects">How It All Connects</h2>
+<p>The backend and frontend communicate over a simple REST API. When you start/stop the controller or adjust parameters in the browser, the request hits the <code>/api/v1/controller</code> endpoint of the API, which triggers an async signal to wake the parameter task. That task acquires a mutex lock, updates the controller, and releases it keeping the real-time control loop uninterrupted. The control loop publishes fresh telemetry (timestamp, distance, filtered distance, angle) at a fixed interval, which the web UI fetches at a fixed interval by calling <code>/api/v1/data</code> endpoint of the API in order to display it.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-sequence-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequence-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-sequence-diagram">sequenceDiagram
+    participant WebUI as Web UI
+    participant API as API
+    participant Sig as Data/Param Signal
+    participant Params as Controller Params Task
+    participant Ctrl as Control Loop
+    participant Sensor as VL6180 Sensor
+    participant Servo as Servo Motor
+
+    WebUI-&gt;&gt;API: GET /api/v1/data
+    API-&gt;&gt;Sig: wait()
+    Sig--&gt;&gt;API: Data(timestamp, distance, filtered distance, angle)
+    API--&gt;&gt;WebUI: JSON Response
+
+    WebUI-&gt;&gt;API: POST /api/v1/controller (JSON)
+    API-&gt;&gt;Sig: signal(ControllerParameters)
+    Sig-&gt;&gt;Params: wake up
+    Params-&gt;&gt;Ctrl: update Controller parameters (Mutex lock)
+
+    Note over Ctrl,Servo: CONTROL LOOP (fixed interval)
+    Ctrl-&gt;&gt;Sensor: read distance
+    Ctrl-&gt;&gt;Ctrl: Filter distance measurement
+    Ctrl-&gt;&gt;Ctrl: compute Controller output
+    Ctrl-&gt;&gt;Servo: set servo motor angle
+    Ctrl-&gt;&gt;Sig: signal(new Data)
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequence-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Sequence diagram showing interaction between backend and frontend
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="future-improvements" class="level1">
+<h1>Future Improvements</h1>
+<p>While the current version is fully functional, it is far from complete. It can be improved in many different ways and I’m planning to implement at least some of them in future iterations.</p>
+<p>What follows is a non-exhaustive list of improvement ideas that I currently have in mind:</p>
+<ul>
+<li><strong>Lower Friction Rotations:</strong> Use ball bearings at the fulcrum and pivot points to reduce stiction and shaft runout.</li>
+<li><strong>Configurable mounting:</strong> Add more possible placements for the motor mounting bracket to support alternative linkage geometries and actuator placements.</li>
+<li><strong>More realistic simulation:</strong> Update the MuJoCo model with real-world mass, friction, and damping parameters. Incorporate backlash and joint compliance models.</li>
+<li><strong>Decoupled control loops:</strong> Run sensor polling and filtering in a dedicated high-frequency task, separating I/O latency from the control computation.</li>
+<li><strong>Externalized UI:</strong> Develop a separate application for the UI using, for example, <a href="https://tauri.app/">Tauri</a> to free up ESP32 flash and RAM while making firmware updates and UI iterations far easier.</li>
+<li><strong>Advanced control algorithms:</strong> Implement additional control methods like:
+<ul>
+<li>Reinforcement Learning for adaptive tuning.</li>
+<li>Sliding Mode and Back-stepping controllers for robustness against nonlinearities.</li>
+<li>Koopman operator methods for global linearization and predictive control.</li>
+</ul></li>
+<li><strong>Kalman filter</strong>: Implement <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> to improve distance measurements and maybe estimate other system parameters (e.g.&nbsp;ball rotational and translational speed).</li>
+</ul>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>I have finally finished the first version of my ball and beam system and open-sourced it on <a href="(https://github.com/AnesBenmerzoug/ball-and-beam)">Github</a> hoping that it may be useful to someone else. It took a considerable amount of time to iterate through the mechanical, electrical and software challenges, but the final result made the effort worthwhile.</p>
+<p>I will now take a break from it and work on another project from my backlog, but I will hopefully come back to it because I would like to at least implement a few of the improvement ideas.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <guid>https://AnesBenmerzoug.github.io/posts/ball-and-beam/</guid>
+  <pubDate>Sun, 26 Apr 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Creating a point cloud with a TF-Luna LiDAR</title>
   <dc:creator>Anes Benmerzoug</dc:creator>
@@ -5639,7 +6098,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb7-53"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span><span class="er" style="color: #AD0000;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span></span></code></pre></div></div>
 </section>
@@ -6317,7 +6776,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb9-53"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span><span class="er" style="color: #AD0000;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span></span></code></pre></div></div>
 <p>We also compute the average score of this approach on the test set:</p>
@@ -6997,7 +7456,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb13-37"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span><span class="er" style="color: #AD0000;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span></span></code></pre></div></div>
 <p>We also compute the average score of this approach on the test set:</p>
@@ -7482,20 +7941,30 @@ font-style: inherit;">email</span></span>
 background-color: null;
 font-style: inherit;">Message-ID:</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">&lt;7555575.1075857946274.JavaMail.evans@thyme&gt;</span></span>
+font-style: inherit;">&lt;</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7555575.1075857946274</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.JavaMail.evans@thyme&gt;</span></span>
 <span id="cb15-28"><span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Date:</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">Mon,</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">Mon,</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">30</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">Apr</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">Apr</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2001</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">2001</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">11:17:00</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">11</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:00</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">-0700</span> <span class="er" style="color: #AD0000;
 background-color: null;
@@ -7533,10 +8002,14 @@ background-color: null;
 font-style: inherit;">Indicated</span></span>
 <span id="cb15-32"> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">04/30/01</span></span>
+font-style: inherit;">04/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/01</span></span>
 <span id="cb15-33"><span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">Mime-Version:</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">Mime-Version:</span> <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1.0</span></span>
 <span id="cb15-34"><span class="er" style="color: #AD0000;
@@ -7548,31 +8021,23 @@ background-color: null;
 font-style: inherit;">charset=us-ascii</span></span>
 <span id="cb15-35"><span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">Content-Transfer-Encoding:</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">Content-Transfer-Encoding:</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">7bit</span></span>
+font-style: inherit;">7</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bit</span></span>
 <span id="cb15-36"><span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">X-From:</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">X-From:</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Cathy</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Lopez"</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">"Cathy Lopez"</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;cathy@pira.com&gt;</span></span>
 <span id="cb15-37"><span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">X-To:</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">X-To:</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"PIRA</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Natural</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Gas</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Retainer</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Client"</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">"PIRA Natural Gas Retainer Client"</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;greg@pira.com&gt;</span></span>
 <span id="cb15-38"><span class="er" style="color: #AD0000;
@@ -7585,7 +8050,11 @@ font-style: inherit;">X-bcc:</span></span>
 background-color: null;
 font-style: inherit;">X-Folder:</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">\Lawrence_May_Jun2001_1\Notes</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">\Lawrence_May_Jun2001_</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\Notes</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Folders\Notes</span> <span class="er" style="color: #AD0000;
 background-color: null;
@@ -7615,18 +8084,10 @@ font-style: inherit;">Special</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Release</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">entitled</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">entitled</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Gas</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Flash:</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Strong</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Supply</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Growth</span></span>
-<span id="cb15-45"><span class="er" style="color: #AD0000;
+font-style: inherit;">"Gas Flash: Strong Supply Growth</span></span>
+<span id="cb15-45"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">Indicated."</span></span>
 <span id="cb15-46"></span>
@@ -7701,9 +8162,15 @@ font-style: inherit;">jane@pira.com),</span> <span class="er" style="color: #AD0
 background-color: null;
 font-style: inherit;">at</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">(212)</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">686-6808.</span></span>
+font-style: inherit;">212</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">686-6808</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.</span></span>
 <span id="cb15-51"></span>
 <span id="cb15-52"><span class="er" style="color: #AD0000;
 background-color: null;
@@ -7730,9 +8197,15 @@ font-style: inherit;">changes</span></span>
 background-color: null;
 font-style: inherit;">at</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">(212)</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">686-6808,</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">212</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">686-6808</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">,</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">email:</span> <span class="er" style="color: #AD0000;
 background-color: null;
@@ -7746,13 +8219,9 @@ font-style: inherit;">Circulation</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">of</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">the</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">the</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Gas</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Flash</span> <span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">Weekly"</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">"Gas Flash Weekly"</span> <span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">outside</span> <span class="er" style="color: #AD0000;
 background-color: null;
@@ -8282,7 +8751,7 @@ background-color: null;
 font-style: inherit;">]</span></span>
 <span id="cb16-37"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span><span class="er" style="color: #AD0000;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span></span></code></pre></div></div>
 <p>The average score of this second approach on the test set is:</p>

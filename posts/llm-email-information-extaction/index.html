@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,6 +12,9 @@
 
 <title>Using an LLM for information extraction – Personal Blog</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -70,19 +73,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2dba9b82c5c06815e0215dcd166ee7b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7469c427aae4075093f490a0b9f952ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e23a13671634b964dd3a364caebef59e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0ab0f0980ecbea3b52fae5f311f6e2ff.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e23a13671634b964dd3a364caebef59e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-76498bfce059d61718358ccdf6963f9f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-f40e77e678b98c78be070ae289422144.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-76498bfce059d61718358ccdf6963f9f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-2696c0d2644c26340a17a4fe088a8614.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-5f23adfde412e41627dcd782d36be000.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-2696c0d2644c26340a17a4fe088a8614.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -792,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"bcc"</span></span>
 <span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
 <span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="approaches" class="level1">
 <h1>Approaches</h1>
@@ -911,7 +913,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"bcc"</span></span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
 <span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We also compute the average score of this approach on the test set:</p>
 <p>84.29%</p>
 <p>The results are plotted as a box plot, showing that while the extraction is relatively good, it is far from perfect.</p>
@@ -1049,7 +1051,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"cc"</span></span>
 <span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
 <span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We also compute the average score of this approach on the test set:</p>
 <p>64.55%</p>
 <div id="cell-35" class="cell" data-execution_count="22">
@@ -1198,35 +1200,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="er">#</span> <span class="er">Raw</span> <span class="er">email</span></span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="er">Message-ID:</span> <span class="er">&lt;7555575.1075857946274.JavaMail.evans@thyme&gt;</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="er">Date:</span> <span class="er">Mon,</span> <span class="er">30</span> <span class="er">Apr</span> <span class="er">2001</span> <span class="er">11:17:00</span> <span class="er">-0700</span> <span class="er">(PDT)</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="er">Message-ID:</span> <span class="er">&lt;</span><span class="fl">7555575.1075857946274</span><span class="er">.JavaMail.evans@thyme&gt;</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="er">Date:</span> <span class="er">Mon,</span> <span class="dv">30</span> <span class="er">Apr</span> <span class="dv">2001</span> <span class="dv">11</span><span class="er">:</span><span class="dv">17</span><span class="er">:00</span> <span class="er">-0700</span> <span class="er">(PDT)</span></span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="er">From:</span> <span class="er">cathy@pira.com</span></span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="er">To:</span> <span class="er">greg@pira.com</span></span>
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="er">Subject:</span> <span class="er">PIRA's</span> <span class="er">Special</span> <span class="er">Release</span> <span class="er">Gas</span> <span class="er">Flash:</span> <span class="er">Strong</span> <span class="er">Supply</span> <span class="er">Growth</span> <span class="er">Indicated</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a> <span class="er">04/30/01</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="er">Mime-Version:</span> <span class="er">1.0</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a> <span class="er">04/</span><span class="dv">30</span><span class="er">/01</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="er">Mime-Version:</span> <span class="fl">1.0</span></span>
 <span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="er">Content-Type:</span> <span class="er">text/plain;</span> <span class="er">charset=us-ascii</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="er">Content-Transfer-Encoding:</span> <span class="er">7bit</span></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="er">X-From:</span> <span class="er">"Cathy</span> <span class="er">Lopez"</span> <span class="er">&lt;cathy@pira.com&gt;</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="er">X-To:</span> <span class="er">"PIRA</span> <span class="er">Natural</span> <span class="er">Gas</span> <span class="er">Retainer</span> <span class="er">Client"</span> <span class="er">&lt;greg@pira.com&gt;</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="er">Content-Transfer-Encoding:</span> <span class="dv">7</span><span class="er">bit</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="er">X-From:</span> <span class="st">"Cathy Lopez"</span> <span class="er">&lt;cathy@pira.com&gt;</span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="er">X-To:</span> <span class="st">"PIRA Natural Gas Retainer Client"</span> <span class="er">&lt;greg@pira.com&gt;</span></span>
 <span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="er">X-cc:</span></span>
 <span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="er">X-bcc:</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="er">X-Folder:</span> <span class="er">\Lawrence_May_Jun2001_1\Notes</span> <span class="er">Folders\Notes</span> <span class="er">inbox</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="er">X-Folder:</span> <span class="er">\Lawrence_May_Jun2001_</span><span class="dv">1</span><span class="er">\Notes</span> <span class="er">Folders\Notes</span> <span class="er">inbox</span></span>
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="er">X-Origin:</span> <span class="er">May-L</span></span>
 <span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="er">X-FileName:</span> <span class="er">lmay2.nsf</span></span>
 <span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="er">Attached</span> <span class="er">is</span> <span class="er">a</span> <span class="er">PIRA</span> <span class="er">Special</span> <span class="er">Release</span> <span class="er">entitled</span> <span class="er">"Gas</span> <span class="er">Flash:</span> <span class="er">Strong</span> <span class="er">Supply</span> <span class="er">Growth</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="er">Indicated."</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="er">Attached</span> <span class="er">is</span> <span class="er">a</span> <span class="er">PIRA</span> <span class="er">Special</span> <span class="er">Release</span> <span class="er">entitled</span> <span class="st">"Gas Flash: Strong Supply Growth</span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="st">Indicated."</span></span>
 <span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="er">If</span> <span class="er">you</span> <span class="er">have</span> <span class="er">any</span> <span class="er">questions</span> <span class="er">regarding</span> <span class="er">the</span> <span class="er">report's</span> <span class="er">content,</span> <span class="er">please</span> <span class="er">contact:</span></span>
 <span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="er">Greg</span> <span class="er">Shuttlesworth</span> <span class="er">(email:</span> <span class="er">greg@pira.com),</span> <span class="er">Tom</span> <span class="er">Howard</span> <span class="er">(email:</span></span>
 <span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="er">tazh@pira.com),</span> <span class="er">Richard</span> <span class="er">Redash</span> <span class="er">(email:</span> <span class="er">Rich@pira.com),</span> <span class="er">Nobu</span> <span class="er">Tarui</span> <span class="er">(email:</span></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="er">nobuo@pira.com)</span> <span class="er">or</span> <span class="er">Jane</span> <span class="er">Hsu</span> <span class="er">(email:</span> <span class="er">jane@pira.com),</span> <span class="er">at</span> <span class="er">(212)</span> <span class="er">686-6808.</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="er">nobuo@pira.com)</span> <span class="er">or</span> <span class="er">Jane</span> <span class="er">Hsu</span> <span class="er">(email:</span> <span class="er">jane@pira.com),</span> <span class="er">at</span> <span class="er">(</span><span class="dv">212</span><span class="er">)</span> <span class="dv">686-6808</span><span class="er">.</span></span>
 <span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="er">Contact</span> <span class="er">John</span> <span class="er">Graziano</span> <span class="er">regarding</span> <span class="er">PIRA</span> <span class="er">report</span> <span class="er">distribution</span> <span class="er">and</span> <span class="er">address</span> <span class="er">changes</span></span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="er">at</span> <span class="er">(212)</span> <span class="er">686-6808,</span> <span class="er">email:</span> <span class="er">support@pira.com.</span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="er">at</span> <span class="er">(</span><span class="dv">212</span><span class="er">)</span> <span class="dv">686-6808</span><span class="er">,</span> <span class="er">email:</span> <span class="er">support@pira.com.</span></span>
 <span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="er">NOTE:</span> <span class="er">Circulation</span> <span class="er">of</span> <span class="er">the</span> <span class="er">"Gas</span> <span class="er">Flash</span> <span class="er">Weekly"</span> <span class="er">outside</span> <span class="er">a</span> <span class="er">Client's</span> <span class="er">licensed</span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="er">NOTE:</span> <span class="er">Circulation</span> <span class="er">of</span> <span class="er">the</span> <span class="st">"Gas Flash Weekly"</span> <span class="er">outside</span> <span class="er">a</span> <span class="er">Client's</span> <span class="er">licensed</span></span>
 <span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="er">distribution</span> <span class="er">area</span> <span class="er">is</span> <span class="er">strictly</span> <span class="er">prohibited.</span> <span class="er">Clients</span> <span class="er">that</span> <span class="er">are</span> <span class="er">unsure</span> <span class="er">of</span> <span class="er">their</span></span>
 <span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="er">licensed</span> <span class="er">distribution</span> <span class="er">or</span> <span class="er">require</span> <span class="er">an</span> <span class="er">extension</span> <span class="er">of</span> <span class="er">their</span> <span class="er">current</span> <span class="er">license</span></span>
 <span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="er">should</span> <span class="er">contact</span> <span class="er">their</span> <span class="er">PIRA</span> <span class="er">sales</span> <span class="er">representative,</span> <span class="er">or</span> <span class="er">email</span> <span class="er">to</span> <span class="er">sales@pira.com.</span></span>
@@ -1306,7 +1308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"cc"</span></span>
 <span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
 <span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="st">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The average score of this second approach on the test set is:</p>
 <p>87.27%</p>
 <div id="cell-47" class="cell" data-execution_count="49">

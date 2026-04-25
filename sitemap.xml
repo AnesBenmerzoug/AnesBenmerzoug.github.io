@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/llm-email-information-extaction/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.770Z</lastmod>
+    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.609Z</lastmod>
   </url>
   <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.808Z</lastmod>
-  </url>
-  <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/rpi-tfluna-pan-tilt/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.789Z</lastmod>
+    <loc>https://AnesBenmerzoug.github.io/posts/ball-and-beam/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.619Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.769Z</lastmod>
-  </url>
-  <url>
-    <loc>https://AnesBenmerzoug.github.io/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.769Z</lastmod>
+    <lastmod>2026-04-25T18:22:21.638Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/rpi-tfluna-lidar/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.772Z</lastmod>
+    <lastmod>2026-04-25T18:22:21.640Z</lastmod>
   </url>
   <url>
-    <loc>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.771Z</lastmod>
+    <loc>https://AnesBenmerzoug.github.io/posts/llm-email-information-extaction/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.639Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.676Z</lastmod>
   </url>
   <url>
     <loc>https://AnesBenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
-    <lastmod>2026-01-24T09:59:00.770Z</lastmod>
+    <lastmod>2026-04-25T18:22:21.639Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/rpi-tfluna-pan-tilt/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://AnesBenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
+    <lastmod>2026-04-25T18:22:21.639Z</lastmod>
   </url>
 </urlset>
