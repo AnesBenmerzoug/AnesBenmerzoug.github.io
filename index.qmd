@@ -70,14 +70,14 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
 ## Projects
 
-* [pyDVL](https://github.com/aai-institute/pyDVL)
-  An open-source library of stable implementations of algorithms for data valuation and influence function computation.
-
 * [Langsfer](https://github.com/AnesBenmerzoug/langsfer)
-  An open-source library for language transfer methods and algorithms.
+  An open-source library for language transfer methods and algorithms.\
 
 * [FreeCAD-Assembly2MuJoCo](https://github.com/AnesBenmerzoug/FreeCAD-Assembly2MuJoCo)
   An open-source FreeCAD workbench for exporting a FreeCAD Assembly to MuJoCo for physics simulation.
+
+* [ball-and-beam](https://github.com/AnesBenmerzoug/ball-and-beam)
+  An open-source ball and beam control system with CAD design, simulation files, embedded firmware and web UI.
 
 * [embedded-tfluna](https://github.com/AnesBenmerzoug/embedded-tfluna)
   An open-source platform-agnostic Rust driver for the TF-Luna LiDAR distance sensor.
