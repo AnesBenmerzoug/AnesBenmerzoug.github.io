@@ -7,9 +7,9 @@ execute:
   cache: true
 
 website:
-  title: "Personal Blog"
+  title: "Anes' Personal Blog"
   description: "This is Anes Benmerzoug's personal Blog."
-  site-url: https://AnesBenmerzoug.github.io
+  site-url: https://anesbenmerzoug.github.io
   repo-url: https://github.com:AnesBenmerzoug/AnesBenmerzoug.github.io
   reader-mode: true
   search: true
@@ -21,6 +21,8 @@ website:
         text: Posts
       - icon: github
         href: https://github.com/AnesBenmerzoug
+      - icon: rss
+        href: posts/index.xml
 
 format:
   html:
