@@ -1,5 +1,5 @@
 ---
-date: 2026-05-18
+date: 2026-05-20
 title: "LeRobot & SO-101: Setup and getting started notes"
 image: so101_ball_cup_setup.jpg
 keywords: [
