@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Anes Benmerzoug">
+<meta name="dcterms.date" content="2026-05-20">
+<meta name="keywords" content="Robotics, Robot Arm, LeRobot, SO-101, Imitation Learning, Reinforcement Learning, Raspberry Pi">
+
+<title>LeRobot &amp; SO-101: Setup and getting started notes – Anes’ Personal Blog</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e23a13671634b964dd3a364caebef59e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0ab0f0980ecbea3b52fae5f311f6e2ff.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e23a13671634b964dd3a364caebef59e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-696b1acadbbf5ea920d7715f09989028.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-d044d3c61ab8b3f6f71af03c3513ce54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-696b1acadbbf5ea920d7715f09989028.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Anes’ Personal Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AnesBenmerzoug"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../posts/index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#hardware" id="toc-hardware" class="nav-link" data-scroll-target="#hardware">Hardware</a></li>
+  <li><a href="#raspberry-pi-setup" id="toc-raspberry-pi-setup" class="nav-link" data-scroll-target="#raspberry-pi-setup">Raspberry Pi Setup</a>
+  <ul class="collapse">
+  <li><a href="#os-and-dependencies" id="toc-os-and-dependencies" class="nav-link" data-scroll-target="#os-and-dependencies">OS and Dependencies</a></li>
+  <li><a href="#remote-connectivity-ssh-configuration" id="toc-remote-connectivity-ssh-configuration" class="nav-link" data-scroll-target="#remote-connectivity-ssh-configuration">Remote Connectivity &amp; SSH Configuration</a></li>
+  <li><a href="#changing-camera-zoom-and-field-of-view" id="toc-changing-camera-zoom-and-field-of-view" class="nav-link" data-scroll-target="#changing-camera-zoom-and-field-of-view">Changing Camera Zoom and Field-of-View</a></li>
+  </ul></li>
+  <li><a href="#so-101" id="toc-so-101" class="nav-link" data-scroll-target="#so-101">SO-101</a>
+  <ul class="collapse">
+  <li><a href="#setup-and-calibration" id="toc-setup-and-calibration" class="nav-link" data-scroll-target="#setup-and-calibration">Setup and calibration</a>
+  <ul class="collapse">
+  <li><a href="#finding-usb-ports" id="toc-finding-usb-ports" class="nav-link" data-scroll-target="#finding-usb-ports">Finding usb ports</a></li>
+  <li><a href="#setting-motor-ids" id="toc-setting-motor-ids" class="nav-link" data-scroll-target="#setting-motor-ids">Setting motor IDs</a></li>
+  <li><a href="#calibrating-the-motors" id="toc-calibrating-the-motors" class="nav-link" data-scroll-target="#calibrating-the-motors">Calibrating the motors</a></li>
+  <li><a href="#teleoperation" id="toc-teleoperation" class="nav-link" data-scroll-target="#teleoperation">Teleoperation</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#imitation-learning" id="toc-imitation-learning" class="nav-link" data-scroll-target="#imitation-learning">Imitation Learning</a>
+  <ul class="collapse">
+  <li><a href="#task" id="toc-task" class="nav-link" data-scroll-target="#task">Task</a></li>
+  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection">Data Collection</a></li>
+  <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
+  <li><a href="#inference" id="toc-inference" class="nav-link" data-scroll-target="#inference">Inference</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">LeRobot &amp; SO-101: Setup and getting started notes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Anes Benmerzoug <a href="https://orcid.org/0000-0002-0270-8446" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 20, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>Robotics, Robot Arm, LeRobot, SO-101, Imitation Learning, Reinforcement Learning, Raspberry Pi</p>
+  </div>
+</div>
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Disclaimer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I used a local LLM for feedback on the writing and to draft a few of the sections when I ran out of inspiration. I did however write most of the post myself and verified whatever content the LLM wrote.</p>
+</div>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this post, I document the steps I took to set up a robotic system consisting of an SO-101 follower/leader arm pair, a Logitech Brio webcam, and a Raspberry Pi 5 and uses the <a href="https://huggingface.co/docs/lerobot/index">LeRobot</a> library for controlling the robot arms, data collection and policy training and inference.</p>
+<p>My long-term goal is to build a system that can play chess using the robot arm against a human. The system would make use of ROS2 to split the different components into nodes (e.g.&nbsp;robot arm node, camera node, inference node, visualization node) that communicate between each other through message passing.</p>
+<p>This serves mostly as a form of personal note taking and covers the initial setup: establishing a reliable data collection and policy deployment pipeline using a simpler ball-in-cup task. I decided to share it in case it proves useful to someone else.</p>
+<p>While experimenting with the <a href="https://huggingface.co/docs/lerobot/index">LeRobot</a> library, I encountered a few bugs and submitted two PRs to fix them (<a href="https://github.com/huggingface/lerobot/pull/3571">#3571</a>, <a href="https://github.com/huggingface/lerobot/pull/3593">#3593</a>), which I hope will be merged soon enough.</p>
+</section>
+<section id="hardware" class="level1">
+<h1>Hardware</h1>
+<p>The hardware I used for the system is:</p>
+<ul>
+<li><strong>SO-101 motor kit</strong>: I bought the kit without 3D printed parts from <a href="https://www.seeedstudio.com/SO-ARM101-Low-Cost-AI-Arm-Kit-p-6426.html">SeeedStudio.</a></li>
+<li><strong>SO-101 3D printed parts</strong>: I printed <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/STL/SO101">the parts</a> on my own because I have a 3D printer and wanted to choose colors freely.</li>
+<li><strong>Raspberry Pi 5 4GB</strong>: I had one that a friend gifted me for my birthday (Thanks, Oussama!)</li>
+<li><strong>Logitech Brio webcam</strong>: My daily driver, repurposed for robot vision.</li>
+</ul>
+</section>
+<section id="raspberry-pi-setup" class="level1">
+<h1>Raspberry Pi Setup</h1>
+<section id="os-and-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="os-and-dependencies">OS and Dependencies</h2>
+<p>For this project, I decided to use Ubuntu 24.04 on the Pi instead of the more typical choice of Raspberry Pi OS, because it has first-class support of ROS2 which I’m planning to use in later parts of the project.</p>
+<p>Here’s what I did to set it up:</p>
+<ul>
+<li>Flashed Ubuntu 24.04 on an SD card using <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a>.</li>
+<li>Plugged in keyboard, mouse, and screen for the initial setup and configuring wifi access. I unplugged them once SSH access was set up.</li>
+<li>Installed <a href="https://ffmpeg.org/">FFmpeg</a> for video encoding.</li>
+<li>Installed and enabled <code>openssh-server</code> to access the Pi remotely.</li>
+<li>Installed <code>avahi</code> for enabling <a href="https://en.wikipedia.org/wiki/Multicast_DNS">mDNS</a> on the Pi to access it remotely within needing its IP address.</li>
+</ul>
+</section>
+<section id="remote-connectivity-ssh-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="remote-connectivity-ssh-configuration">Remote Connectivity &amp; SSH Configuration</h2>
+<p>Since the Pi will operate without a monitor, I set up secure SSH access immediately:</p>
+<ul>
+<li>Generated an SSH keypair on my workstation.</li>
+<li>Copied the public key using <code>ssh-copy-id pi@&lt;ip&gt;</code></li>
+<li>Disabled password authentication in <code>/etc/ssh/sshd_config</code></li>
+<li>Configured mDNS by following instructions from <a href="https://oneuptime.com/blog/post/2026-01-15-configure-mdns-avahi-ubuntu/view">this post</a> so I can connect to the Pi via <code>ssh pi@rpi-robotarm.local</code></li>
+<li>Added an entry in my workstation’s ssh configuration file (<code>~/.ssh/config</code>) with X11 forwarding for easier GUI debugging and SSH access.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>~/.ssh/config
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Host rpi-robotarm</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    Hostname rpi-robotarm.local</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    User pi</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    PreferredAuthentications publickey</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    IdentityFile ~/.ssh/id_ed25519_rpi</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    ForwardX11 yes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="changing-camera-zoom-and-field-of-view" class="level2">
+<h2 class="anchored" data-anchor-id="changing-camera-zoom-and-field-of-view">Changing Camera Zoom and Field-of-View</h2>
+<p>I needed a wider view to capture the full workspace. Unfortunately, Logitech’s official configuration tools are Windows-only. Fortunately for me, I found the open-source <a href="https://github.com/soyersoyer/cameractrls">Camera Controls</a> tool which fills the gap on Linux.</p>
+<p>I set the zoom to 100% and adjusted the FoV to 90° for a wide enough view of the workspace.</p>
+</section>
+</section>
+<section id="so-101" class="level1">
+<h1>SO-101</h1>
+<p>The SO-101 is an open-source, affordable robot arm designed by the <a href="https://www.therobotstudio.com/">RobotStudio</a> in collaboration with <a href="https://huggingface.co/lerobot">Hugging Face</a>. I followed the official LeRobot <a href="https://huggingface.co/docs/lerobot/so101">SO-101 tutorial</a> for assembly and motor initialization and setup. The documentation is thorough if a bit confusing at times.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>3D Printing Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some of the the SO-101’s STL files require support structures to print correctly. If you’re printing these yourself, consider printing in different orientations and changing some of the print parameters (e.g.&nbsp;layer height, support type) to improve print quality.</p>
+</div>
+</div>
+<section id="setup-and-calibration" class="level2">
+<h2 class="anchored" data-anchor-id="setup-and-calibration">Setup and calibration</h2>
+<p>I created a virtual environment and installed LeRobot and its dependencies:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="st">"lerobot[feetech,dataset,hardware]==0.5.1"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For simple use cases like this one, I prefer using venv directly instead of a proper package manager like poetry or uv (the latter of which I don’t like because Astra, the company that created and develops it, was acquired by OpenAI).</p>
+<p>All following commands assume we are in the virtual environment created above.</p>
+<p>To make sure that everything was installed correctly, we can run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-info</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>lerobot-info output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> LeRobot version: 0.5.2</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Platform: Linux-7.0.4-200.fc44.x86_64-x86_64-with-glibc2.43</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Python version: 3.12.12</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Huggingface Hub version: 1.14.0</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Transformers version: N/A</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Datasets version: 4.8.5</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Numpy version: 2.4.3</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> FFmpeg version: 8.0.1</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> PyTorch version: 2.10.0+rocm7.13.0a20260417</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Torchcodec version: 0.10.0</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Is PyTorch built with CUDA support<span class="pp">?</span>: True</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Cuda version: None</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> GPU model: Radeon 8060S Graphics</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> Using GPU in script<span class="pp">?</span>: <span class="op">&lt;</span>fill in<span class="op">&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> lerobot scripts: [<span class="st">'lerobot-calibrate'</span>, <span class="st">'lerobot-dataset-viz'</span>, <span class="st">'lerobot-edit-dataset'</span>, <span class="st">'lerobot-eval'</span>, <span class="st">'lerobot-find-cameras'</span>, <span class="st">'lerobot-find-joint-limits'</span>, <span class="st">'lerobot-find-port'</span>, <span class="st">'lerobot-imgtransform-viz'</span>, <span class="st">'lerobot-info'</span>, <span class="st">'lerobot-record'</span>, <span class="st">'lerobot-replay'</span>, <span class="st">'lerobot-rollout'</span>, <span class="st">'lerobot-setup-can'</span>, <span class="st">'lerobot-setup-motors'</span>, <span class="st">'lerobot-teleoperate'</span>, <span class="st">'lerobot-train'</span>, <span class="st">'lerobot-train-tokenizer'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<section id="finding-usb-ports" class="level3">
+<h3 class="anchored" data-anchor-id="finding-usb-ports">Finding usb ports</h3>
+<p>The first step after installing the dependencies, is to find the right USB ports for the motor controllers and the camera.</p>
+<section id="motor-bus" class="level4">
+<h4 class="anchored" data-anchor-id="motor-bus">Motor bus</h4>
+<p>For the motor controllers, I plugged them in, powered them on and ran the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-find-port</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This lists all possible ports and then asks to disconnect one of the motor controllers and then to press <code>Enter</code> on the keyboard. Once done and if there was no issue, it prints the corresponding USB port.</p>
+<p>For me, it detected <code>/dev/ttyACM0</code> as the port for the follower arm and <code>/dev/ttyACM1</code> as the port for the leader arm.</p>
+<p>After seeing the detected ports, I was curious about the meaning of <code>ACM</code> and did a bit of research and found information in <a href="https://rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/">this blog post from 2013</a>. It apparently stands for Abstract Control Model<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> which is a protocol defined in the USB CDC (Communications Device Class) specification originally meant for modem hardware that can be used in USB devices to exchange data with a computer.</p>
+</section>
+<section id="camera" class="level4">
+<h4 class="anchored" data-anchor-id="camera">Camera</h4>
+<p>For the camera, I plugged it in and ran the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-find-camera</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The script is supposed to detect all video devices and then go through them one by one and do the following: connect, take a picture, save it on disk and then disconnect.</p>
+<p>For me it detected two video devices, but only one of them worked at first and not the one I wanted, because of bugs I found in the code that I fixed locally and for which I submitted two PRs to the project repository (<a href="https://github.com/huggingface/lerobot/pull/3571">#3571</a>, <a href="https://github.com/huggingface/lerobot/pull/3593">#3593</a>).</p>
+<p>With the bugs fixed, both virtual devices worked.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>lerobot-find-camera output
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span> Detected Cameras <span class="at">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Camera</span> <span class="co">#0:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Name:</span> OpenCV Camera @ /dev/video0</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Type:</span> OpenCV</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Id:</span> /dev/video0</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Backend</span> api: V4L2</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Default</span> stream profile:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Format:</span> 0.0</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Fourcc:</span> YUYV</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Width:</span> 640</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Height:</span> 480</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Fps:</span> 30.0</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">--------------------</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Camera</span> <span class="co">#1:</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Name:</span> OpenCV Camera @ /dev/video2</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Type:</span> OpenCV</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Id:</span> /dev/video2</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Backend</span> api: V4L2</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Default</span> stream profile:</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Format:</span> 0.0</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Fourcc:</span> GREY</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Width:</span> 340</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Height:</span> 340</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Fps:</span> 30.0</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="ex">--------------------</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="ex">Image</span> capture finished. Images saved to outputs/captured_images</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="setting-motor-ids" class="level3">
+<h3 class="anchored" data-anchor-id="setting-motor-ids">Setting motor IDs</h3>
+<p>After getting the ports of the motor controllers, I moved on to assigning a unique ID to each motor for each arm as well as setting the same baudrate to all motors and controllers with the following two commands:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-setup-motors</span> <span class="at">--robot.type</span><span class="op">=</span>so101_follower <span class="at">--robot.port</span><span class="op">=</span>/dev/ttyACM0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-setup-motors</span> <span class="at">--teleop.type</span><span class="op">=</span>so101_leader <span class="at">--teleop.port</span><span class="op">=</span>/dev/ttyACM1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I had to do this because brand new motors come preconfigured with an ID of to <code>1</code>, which creates conflicts during the communication between the controller and the motors.</p>
+<p>Each of the commands, will ask you to connect a single motor at a time to the controller starting from the gripper/handle motor and ending at the shoulder pan motor.</p>
+</section>
+<section id="calibrating-the-motors" class="level3">
+<h3 class="anchored" data-anchor-id="calibrating-the-motors">Calibrating the motors</h3>
+<p>Once that was done, I had to calibrate the motors to ensure that the leader and follower arms have the same position values when they are in the same physical position.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-calibrate</span> <span class="at">--robot.type</span><span class="op">=</span>so101_follower <span class="at">--robot.port</span><span class="op">=</span>/dev/ttyACM0 <span class="at">--robot.id</span><span class="op">=</span>follower_arm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-calibrate</span> <span class="at">--teleop.type</span><span class="op">=</span>so101_leader <span class="at">--teleop.port</span><span class="op">=</span>/dev/ttyACM1 <span class="at">--teleop.id</span><span class="op">=</span>leader_arm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each command will asks to first move the joints of the corresponding arm to the middle of their range, press <code>Enter</code> on the keyboard and then to move them through their entire range of movement.</p>
+<p>The calibration profiles are saved under <code>~/.cache/huggingface/lerobot/calibration/robots/so_follower/follower_arm.json</code> and <code>~/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/leader_arm.json</code></p>
+</section>
+<section id="teleoperation" class="level3">
+<h3 class="anchored" data-anchor-id="teleoperation">Teleoperation</h3>
+<p>Finally, to test that everything works as expected, I used the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-teleoperate</span> <span class="dt">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.type</span><span class="op">=</span>so101_follower <span class="dt">\</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.port</span><span class="op">=</span>/dev/ttyACM0 <span class="dt">\</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.id</span><span class="op">=</span>follower_arm <span class="dt">\</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.type</span><span class="op">=</span>so101_leader <span class="dt">\</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.port</span><span class="op">=</span>/dev/ttyACM1 <span class="dt">\</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.id</span><span class="op">=</span>leader_arm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The leader arm (with the handle) should now control the follower arm (with the gripper) in real-time.</p>
+<p>I ran into some issues at this step and had to redo some of the previous steps. For example, at some point the command complained about a mismatch between the calibration file for one of the arms and the detected motors. Some of the motors were somehow disconnected and wouldn’t work any more. I had to disconnect and reconnect them one by one and redo the calibration.</p>
+</section>
+</section>
+</section>
+<section id="imitation-learning" class="level1">
+<h1>Imitation Learning</h1>
+<p>After the setup and calibration, I went to the <a href="https://huggingface.co/docs/lerobot/il_robots">Imitation Learning on Real-World Robots</a> tutorial in order to train a policy for the robot arm using Imitation Learning.</p>
+<p>Imitation learning is a reinforcement learning approach where an agent learns to perform a task by supervised learning from expert demonstrations<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>I chose to use ACT (Action Chunking with Transformers) for this task because it’s fast, lightweight, and surprisingly effective for fine manipulation and is also the recommended method by the LeRobot documentation for manipulation tasks<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>It was introduced in “Learning fine-grained bimanual manipulation with low-cost hardware”<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. What makes it different from previous imitation learning approaches like Behavioral Cloning (BC)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and its variants, is the introduction of <em>action chunking</em> and <em>temporal ensembling</em> (See <a href="#fig-act-action-chunk-temporal-ensemble" class="quarto-xref">Figure&nbsp;1 (b)</a>).</p>
+<div id="fig-act-details" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-act-details-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-act-details" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-act-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-act-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="architecture_action_chunking_with_transformers.svg" class="lightbox" data-gallery="fig-act-details" title="Figure&nbsp;1&nbsp;(a): Architecture of Action Chunking with Transformers (ACT). Left: The encoder of the CVAE compresses action sequence and joint observation into z, the style variable. Right: The decoder or policy of ACT synthesizes images from multiple viewpoints, joint positions, and z with a transformer encoder, and predicts a sequence of actions with a transformer decoder."><img src="architecture_action_chunking_with_transformers.svg" class="img-fluid figure-img" data-ref-parent="fig-act-details"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-act-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Architecture of Action Chunking with Transformers (ACT). <strong>Left</strong>: The encoder of the CVAE compresses action sequence and joint observation into z, the style variable. <strong>Right</strong>: The decoder or policy of ACT synthesizes images from multiple viewpoints, joint positions, and z with a transformer encoder, and predicts a sequence of actions with a transformer decoder.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-act-details" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-act-action-chunk-temporal-ensemble" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-act-action-chunk-temporal-ensemble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="action_chunking_temporal_ensembling.svg" class="lightbox" data-gallery="fig-act-details" title="Figure&nbsp;1&nbsp;(b): Action Chunking and Temporal Ensembling are employed together when applying actions, instead of interleaving observing and executing."><img src="action_chunking_temporal_ensembling.svg" class="img-fluid figure-img" data-ref-parent="fig-act-details"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-act-action-chunk-temporal-ensemble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Action Chunking and Temporal Ensembling are employed together when applying actions, instead of interleaving observing and executing.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-act-details-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: <strong>Left</strong>: Illustration of CVAE encoder and decoder components. <strong>Right</strong>: Illustration of Action Chunking and Temporal Ensembling<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.
+</figcaption>
+</figure>
+</div>
+<p>Action chunking consists of having the policy predict a chunk of actions of size <span class="math inline">\(k &gt; 1\)</span> at each time step instead of predicting a single action in order to reduce the compounding errors of imitation learning and to help with non-markovian behaviour in human demonstrations such as pauses in the middle of a demonstration. Temporal ensembling consists in combining predicted actions from <span class="math inline">\(k\)</span> steps for the time step by averaging them using an exponential weighting scheme <span class="math inline">\(w_i = exp(−m ∗ i)\)</span>, where <span class="math inline">\(w_0\)</span> is the weight for the oldest action. The speed for incorporating new observation is governed by <span class="math inline">\(m\)</span>, where a smaller value means faster incorporation.</p>
+<section id="task" class="level2">
+<h2 class="anchored" data-anchor-id="task">Task</h2>
+<p>The task I decided to use consists of having the follower arm grab a ball that is in view of the camera and put it inside a cup (see <a href="#fig-ball-cup-setup" class="quarto-xref">Figure&nbsp;2</a>).</p>
+<p>The leader arm will be used to teleoperate the follower arm to complete the task during data collection.</p>
+<div id="fig-ball-cup-setup" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ball-cup-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="so101_ball_cup_setup.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;2: Picture of the task setup"><img src="so101_ball_cup_setup.jpg" class="img-fluid figure-img" style="width:80.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ball-cup-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Picture of the task setup
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="data-collection" class="level2">
+<h2 class="anchored" data-anchor-id="data-collection">Data Collection</h2>
+<p>Before training a policy, we need expert demonstrations. I wouldn’t necessarily call myself an expert, but I’m the best the robot has. The ACT papers recommends recording around 50 episodes for training a policy.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you want to replicate this experiment, make sure to vary the ball and cup positions across episodes. Diverse scenarios lead to a more robust policy.</p>
+</div>
+</div>
+<p>To run the data collection, I used the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-record</span> <span class="dt">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.type</span><span class="op">=</span>so101_follower <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.port</span><span class="op">=</span>/dev/ttyACM0 <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.id</span><span class="op">=</span>follower_arm <span class="dt">\</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.cameras</span><span class="op">=</span><span class="st">"{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, warmup_s: 2}}"</span> <span class="dt">\</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.type</span><span class="op">=</span>so101_leader <span class="dt">\</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.port</span><span class="op">=</span>/dev/ttyACM1 <span class="dt">\</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--teleop.id</span><span class="op">=</span>leader_arm <span class="dt">\</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.repo_id</span><span class="op">=</span>ball-cup <span class="dt">\</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.num_episodes</span><span class="op">=</span>50 <span class="dt">\</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.episode_time_s</span><span class="op">=</span>30 <span class="dt">\</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.reset_time_s</span><span class="op">=</span>10 <span class="dt">\</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.single_task</span><span class="op">=</span><span class="st">"Put ball in cup"</span> <span class="dt">\</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.streaming_encoding</span><span class="op">=</span>true <span class="dt">\</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.encoder_threads</span><span class="op">=</span>2 <span class="dt">\</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.push_to_hub</span><span class="op">=</span>False</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This goes through to process of data recording for 50 episodes (<code>--dataset.num_episodes=50</code>), each of which is 30 seconds long (<code>--dataset.episode_time_s=30</code>) with a 10 second delay in between each episode to allow resetting the environment (<code>--dataset.reset_time_s=10</code>).</p>
+<p>I explicitly disabled pushing the HuggingFace hub (<code>--dataset.push_to_hub=False</code>), because I don’t want to share a dataset that contains a recording of parts of my apartment. To be honest, I would have expected this to be the default and not the other way around.</p>
+<p>In <a href="#fig-ball-cup-demonstrations" class="quarto-xref">Figure&nbsp;3</a>, you can see example demonstration from my data collection process.</p>
+<div id="fig-ball-cup-demonstrations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ball-cup-demonstrations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title="Example demonstrations from data collection" aria-label="Video showing 6 demonstrations of teleoperating the robot arm for data collection"><source src="so101_ball_cup_demonstrations.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ball-cup-demonstrations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Sample demonstrations from data collection.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<p>Once the data collection was completed, I copied the dataset over from the PI to my workstation to train a model using it’s GPU.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-train</span> <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dataset.repo_id</span><span class="op">=</span>ball-cup_20260512_093538 <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output_dir</span><span class="op">=</span>outputs/train/act_so101_ball_cup <span class="dt">\</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--job_name</span><span class="op">=</span>act_so101_ball_cup <span class="dt">\</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--policy.push_to_hub</span><span class="op">=</span>False <span class="dt">\</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--policy.type</span><span class="op">=</span>act <span class="dt">\</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--policy.repo_id</span><span class="op">=</span>ball_cup_policy <span class="dt">\</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--policy.device</span><span class="op">=</span>cuda</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once again, I explicitly disabled pushing the HuggingFace hub (<code>--policy.push_to_hub=False</code>).</p>
+<p>The training took around 7 hours to finish, which is slower than I expected and can probably be attributed to using an AMD APU, namely the Ryzen™ AI Max+ 395, and ROCm.</p>
+</section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<p>Finally, I copied the last checkpoint of the training from my workstation to the PI and used this command to run inference:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">lerobot-rollout</span> <span class="dt">\</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--strategy.type</span><span class="op">=</span>base <span class="dt">\</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--policy.path</span><span class="op">=</span>/home/pi/projects/lerobot/output/train/act_so101_ball_cup/checkpoints/last/pretrained_model/ <span class="dt">\</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.type</span><span class="op">=</span>so101_follower <span class="dt">\</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.port</span><span class="op">=</span>/dev/ttyACM0 <span class="dt">\</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.id</span><span class="op">=</span>follower_arm <span class="dt">\</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--robot.cameras</span><span class="op">=</span><span class="st">"{ front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, warmup_s: 2}}"</span> <span class="dt">\</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--task</span><span class="op">=</span><span class="st">"Put ball in cup"</span> <span class="dt">\</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--duration</span><span class="op">=</span>30</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I was a bit worried that my Pi wouldn’t be able to handle the inference part, either because of the lack of memory (it only has 4GBs of RAM) or because of its weak CPU, but it managed to run it without an issue as you can see in <a href="#fig-ball-cup-policy" class="quarto-xref">Figure&nbsp;4</a>.</p>
+<div id="fig-ball-cup-policy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ball-cup-policy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-video"><video id="video_shortcode_videojs_video2" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid" controls="" preload="auto" data-setup="{}" title="Demonstration of trained policy" aria-label="Video showing SO-101 robot arm controlled by the trained policy"><source src="so101_ball_cup_policy.mp4"></video></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ball-cup-policy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Demonstration of trained policy successfully completing the task.
+</figcaption>
+</figure>
+</div>
+<p>The policy works, but it’s not fully robust. Some rollouts succeeded, while others failed due to release timing, trajectory hesitation or the specific setup missing from the training dataset. In a follow-up post, I’ll experiment with data augmentation, hyperparameter tuning, as well as other methods.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>This was the first phase of the project. I assembled and set up everything, confirmed that the system works and went through all the steps (data collection, training, rollout or inference) that lead to a working trained policy.</p>
+<p>In follow-up posts, I will try to further extend and play with the system by following this rough roadmap:</p>
+<ul>
+<li><strong>Policy refinement</strong>: Add data augmentation (randomized lighting, perspective shifts, jittered start positions) and run a hyperparameter sweep on the ACT chunk size and lookahead window with the aim of increasing the policy’s success rate and robustness.</li>
+<li><strong>Chess perception</strong>: Use the camera to detect the board state and classify piece positions. I will most likely start with a simple approach based on heuristics and if that doesn’t work at all or not well enough then I would move towards fine-tuning a lightweight YOLO model.</li>
+<li><strong>Chess planning</strong>: Use a chess engine, most likely <a href="https://stockfishchess.org/">stockfish</a>, to plan the next move and detect any illegal moves made by the human player.</li>
+<li><strong>Chess movement</strong>: Train a policy to move the chess pieces based on the planning.</li>
+<li><strong>Modular architecture</strong>: Decouple perception, planning, and control into independent ROS2 nodes that communicate through message passing.</li>
+<li><strong>Closed-loop play</strong>: Test against a human. Track win/draw/loss ratios, log failure states, and iterate on the different layers.</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>https://en.wikipedia.org/wiki/USB_communications_device_class<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://en.wikipedia.org/wiki/Imitation_learning<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://huggingface.co/docs/lerobot/act<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Zhao, Tony Z., et al.&nbsp;<a href="https://arxiv.org/abs/2304.13705">“Learning fine-grained bimanual manipulation with low-cost hardware.”</a> arXiv preprint arXiv:2304.13705 (2023).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Pomerleau, Dean A. <a href="https://proceedings.neurips.cc/paper/1988/file/812b4ba287f5ee0bc9d43bbf5bbe87fb-Paper.pdf">“Alvinn: An autonomous land vehicle in a neural network.”</a> Advances in neural information processing systems 1 (1988).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Zhao, Tony Z., et al.&nbsp;<a href="https://arxiv.org/abs/2304.13705">“Learning fine-grained bimanual manipulation with low-cost hardware.”</a> arXiv preprint arXiv:2304.13705 (2023).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/anesbenmerzoug\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<script>videojs(video_shortcode_videojs_video1);</script>
+<script>videojs(video_shortcode_videojs_video2);</script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

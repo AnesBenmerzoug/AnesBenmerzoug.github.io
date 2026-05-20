@@ -2,6 +2,7 @@
   {
     "listing": "/posts/index.html",
     "items": [
+      "/posts/so101-robot-arm/index.html",
       "/posts/ball-and-beam/index.html",
       "/posts/rpi-tfluna-pan-tilt/index.html",
       "/posts/rpi-tfluna-lidar/index.html",
