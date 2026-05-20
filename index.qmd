@@ -14,20 +14,18 @@ about:
 
 ---
 
-I'm a Senior AI Engineer at [appliedAI Initiative](https://www.appliedai.de/), Europe's largest initiative for the application of leading edge trustworthy AI technology with the vision to shape Europe's innovative power in AI.
+Welcome to my personal blog post!
 
-I'm passionate about machine learning, robotics, software engineering, and open-source development.
+I'm passionate about machine learning, robotics, software engineering, and open-source development. I try to write about topics and projects that I personally find interesting. 
 
-I am currently working on LLM and Agent projects for different clients.
+I currently work as a Senior AI Engineer at [appliedAI Initiative](https://www.appliedai.de/) where I have worked on many different customer and internal projects.
 
-When I'm not staffed on client projects, I work on internal projects,
-contribute to open-source projects such as [pyDVL](https://github.com/aai-institute/pyDVL)
-and help with [TransferLab](https://transferlab.ai/authors/anes-benmerzoug)'s research projects
+When I'm not staffed on customer projects, I work on internal projects: I contributed to the [pyDVL](https://github.com/aai-institute/pyDVL) open-source library
+and helped with the [TransferLab](https://transferlab.ai/authors/anes-benmerzoug)'s research projects
 such as the [replication](https://github.com/ReScience/MLRC/blob/main/2022/32/article.pdf) of
 the [If You Like Shapley Then You'll Love the Core](http://procaccia.info/wp-content/uploads/2020/12/core.pdf) paper.
 
-I hold a M.Sc. in Embedded Systems from the [Technical University
-of Kaiserslautern](https://www.uni-kl.de/en/home/) and a M.Sc. in Control and Automation from
+I hold a M.Sc. in Embedded Systems from the [Technical University of Kaiserslautern](https://www.uni-kl.de/en/home/) and a M.Sc. in Control and Automation from
 the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
 ---
@@ -68,7 +66,7 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 
 ---
 
-## Projects
+## Open-Source Projects
 
 * [Langsfer](https://github.com/AnesBenmerzoug/langsfer)
   An open-source library for language transfer methods and algorithms.\
@@ -96,23 +94,21 @@ the [Ecole Nationale Polytechnique](http://www.enp.edu.dz/) in Algiers.
 ### AI & Machine Learning
 
 * **Computer Vision**: Image processing, object detection
-* **Sensor Fusion**: Multi-modal data processing, SLAM, localization
 * **Large Language Models (LLMs)**: Fine-tuning, deployment, optimization
-* **Retrieval Augmented Generation (RAG)**: Vector databases, semantic search
-* **Natural Language Processing (NLP)**: Text processing, language understanding
+* **Reinforcement Learning**: Simulation (MuJoCo, Gymnasium), Imitation Learning
 * **Explainability (XAI)**: Model interpretability, debugging
 * **Data Valuation**: Game-theoretic approaches (e.g. Shapley Values)
 
-### AI & Language Models
+### NLP & Language Models
 
 * **Large Language Models (LLMs)**: Fine-tuning, deployment, optimization
 * **Retrieval Augmented Generation (RAG)**: Vector databases, semantic search
 * **Natural Language Processing (NLP)**: Text processing, language understanding
-* **Explainability (XAI)**: Model interpretability, debugging
 
 ### DevOps & Infrastructure
 
 * **Containerization**: Docker
 * **Orchestration**: Kubernetes
+* **Infastructure**: Terraform
 * **Cloud Platforms**: AWS, Azure
 * **Experimentation**: MLflow, Tensorboard, Optuna
