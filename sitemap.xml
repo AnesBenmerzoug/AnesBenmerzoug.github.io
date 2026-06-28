@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://anesbenmerzoug.github.io/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.657Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/rpi-tfluna-pan-tilt/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.701Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/rpi-tfluna-lidar/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.685Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.764Z</lastmod>
+    <lastmod>2026-06-28T21:40:57.242Z</lastmod>
   </url>
   <url>
     <loc>https://anesbenmerzoug.github.io/posts/llm-email-information-extaction/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.684Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.683Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.685Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/ball-and-beam/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.666Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anesbenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.684Z</lastmod>
+    <lastmod>2026-06-28T21:40:57.267Z</lastmod>
   </url>
   <url>
     <loc>https://anesbenmerzoug.github.io/posts/so101-robot-arm/index.html</loc>
-    <lastmod>2026-05-20T14:30:21.754Z</lastmod>
+    <lastmod>2026-06-28T21:40:57.332Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/rpi-tfluna-lidar/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.268Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/ball-and-beam/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.250Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/when-ecr-lifecycle-policies-are-not-enough/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.341Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/model-versioning-with-mlflow/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.267Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/rpi-tfluna-pan-tilt/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.283Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.266Z</lastmod>
+  </url>
+  <url>
+    <loc>https://anesbenmerzoug.github.io/posts/poetry-and-python-versions/index.html</loc>
+    <lastmod>2026-06-28T21:40:57.268Z</lastmod>
   </url>
 </urlset>
