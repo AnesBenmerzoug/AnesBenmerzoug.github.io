@@ -14,7 +14,7 @@ about:
 
 ---
 
-Welcome to my personal blog post!
+Welcome to my personal blog!
 
 I'm passionate about machine learning, robotics, software engineering, and open-source development. I try to write about topics and projects that I personally find interesting. 
 
